@@ -73,7 +73,7 @@ class Connection
         return $this->stmt->execute();
     }
 
-    public function rs() : array
+    public function rs() : array 
     {
         
         $this->execute();
@@ -81,7 +81,7 @@ class Connection
         $arrayResult = $this->stmt->fetchAll(\PDO::FETCH_ASSOC);
 
      
-        return  !empty($arrayResult) ? $arrayResult : "Sem Resultado";
+        return  !empty($arrayResult) ? $arrayResult : ["retorno" => "Sem Resultado"];
     }
 
     public function getTotalResults(array $results) : int

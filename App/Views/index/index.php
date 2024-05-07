@@ -1,3 +1,9 @@
+<?php 
+
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +12,7 @@
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <title>SOS - RS</title>
+    <title>SOS Enchente - RS</title>
 </head>
 <body>
 <nav>
@@ -20,16 +26,18 @@
                 <li><a href="/">Inicio</a></li>
                 <li><a href="/ver-doacoes">O que precisa?</a></li>
                 <li><a href="/ver-locais">Locais de doação</a></li>
-                <li><a href="/ver-abrigos">Abrigos</a></li>     
+                <li><a href="/ver-abrigos"> Abrigos</a></li>     
+                <li><a href="/about">Sobre</a></li>     
             </ul>
         </div>
     </div>
 </nav>
 <ul class="sidenav" id="menu-mobile">
-    <li><a href="/">Inicio</a></li>0
+    <li><a href="/">Inicio</a></li>
     <li><a href="/ver-doacoes">O que precisa?</a></li>
     <li><a href="/ver-locais">Locais de doação</a></li>
     <li><a href="/ver-abrigos">Abrigos</a></li>
+    <li><a href="/about">Sobre</a></li>
 </ul>
     <div class="container">
         <div class="row">
@@ -62,11 +70,11 @@
                     <div class="card-content white-text">
                         <span class="card-title">Novos locais</span>
                         <p>
-                            Cadastrar novos locais.
+                            Cadastrar novos locais para doações.
                         </p>
                     </div>
                     <div class="card-action">
-                        <a href="#" data-target="mdlLocal">Onde doar</a>
+                        <a href="#mdlLocal" class="btn modal-trigger green lighten-2">Cadastrar</a>
                     </div>
                 </div>
             </div>
@@ -80,7 +88,7 @@
                         </p>
                     </div>
                     <div class="card-action">
-                        <a href="#mdlDoacao" class="btn modal-trigger">Cadastrar</a>
+                        <a href="#mdlDoacao" class="btn modal-trigger green lighten-2">Cadastrar</a>
                     </div>
                 </div>
             </div>
@@ -94,7 +102,7 @@
                         </p>
                     </div>
                     <div class="card-action">
-                        <a href="#mdlAbrigo" href="#" class="btn modal-trigger">Cadastrar</a>
+                        <a href="#mdlAbrigo" href="#" class="btn modal-trigger green lighten-2">Cadastrar</a>
                     </div>
                 </div>
             </div>
@@ -134,39 +142,39 @@
     <div id="mdlDoacao" class="modal">
         <div class="modal-content">
             <h5>O que é preciso para doar?</h5>
-            <small>Descreva aqui os items necessários, mais urgentes para serem doados.</small>
-            <form action="/nova/doacao" method="post">
+            <small>Descreva aqui os itens necessários, mais urgentes para serem doados.</small>
+            <form method="post" action="#">
                 <div class="row">
                     <div class="input-field col s6">
-                        <input id="first_name" name="nome" type="text" class="validate">
-                        <label for="first_name">Nome do item:</label>
+                        <input id="txt_nome" name="nome" type="text" class="validate">
+                        <label for="txt_nome">Nome do item:</label>
                     </div>
                     <div class="input-field col s6">
-                        <select name="tipo">
+                        <select id="slc_tipo" name="tipo">
                             <option value="">Escolha</option>
-                            <option value="1">Ração para animais</option>
-                            <option value="2">Produtos de higiene pessoal</option>
-                            <option value="3">Roupas</option>
-                            <option value="4">Roupas de cama</option>
-                            <option value="5">Kits de limpeza</option>
-                            <option value="6"></option>
+                            <?php if(!empty($this->view->dataSelect)) { ?>
+                              <?php foreach($this->view->dataSelect as $key => $value) { ?>
+                                <option value="<?= $value['idtipo_doacao'];?>"><?=$value['nome']; ?></option>
+                              <?php }?>
+                            <?php } ?>
                         </select>
                         <label>Tipo</label>
                     </div>
                 </div>
                 <div class="row">
                   <div class="input-field col s6">
-                    <input id="first_name" name="quantidade" type="text" class="validate">
-                    <label for="first_name">Quantidade:</label>
+                    <input id="txt_qtd" name="quantidade" type="text" class="validate">
+                    <label for="txt_qtd">Quantidade:</label>
                   </div>
                 </div>
-                
+                <div class="row">
+                  <button class="btn light-green darken-2" id="submitItens" type="submit" name="">Cadastrar doação
+                    <i class="material-icons right">send</i>
+                  </button>
+                </div>
             </form>
         </div>
         <div class="modal-footer">
-          <button class="btn  green lighten-3" type="submit" name="action">Submit
-            <i class="material-icons right">send</i>
-          </button>
         </div>
     </div>
 
@@ -178,7 +186,7 @@
             
         </div>
         <div class="modal-footer">
-            <a href="/novo/abrigo" class="modal-close waves-effect waves-green btn-flat">Cadastrar Abrigo</a>
+            <a href="/novo/abrigo" class="modal-close waves-effect waves-green">Cadastrar Abrigo</a>
         </div>
     </div>
 
@@ -197,7 +205,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- Importando Materialize JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-  
+
+    <script src="../../../../assets/js/functions.js"></script>
     <script>
     $(document).ready(function(){
         $('.sidenav').sidenav();
@@ -215,7 +224,33 @@
         var instances = M.Sidenav.init(elems, {
             edge: 'left'
         });
-    })
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+      var elems = document.querySelectorAll('select');
+      var instances = M.FormSelect.init(elems, {});
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+        // Obtém o caminho da URL atual
+        var path = window.location.pathname;
+
+        // Seleciona a lista da navbar
+        var navbarList = document.querySelector('.right');
+
+        // Seleciona todos os itens da lista da navbar
+        var links = navbarList.querySelectorAll('li');
+
+        // Itera sobre os links da navbar
+        links.forEach(function(link) {
+            var href = link.querySelector('a').getAttribute('href');
+            // Verifica se o atributo href do link corresponde ao caminho da URL atual
+            if (href === path) {
+                // Adiciona a classe 'active' ao link correspondente
+                link.classList.add('active');
+            }
+        });
+    });
     </script>
 </body>
 </html>

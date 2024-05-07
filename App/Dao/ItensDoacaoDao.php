@@ -4,6 +4,7 @@ namespace App\Dao;
 
 
 use App\Connection\ConnectionInstance;
+use App\Helper\JsonHelper;
 use App\Model\ItensDoacao;
 
 
@@ -18,21 +19,31 @@ class ItensDoacaoDao
 
     public function insert(ItensDoacao $model) : int
     {
-        $sql = "INSERT INTO itens_doacao (nome, tipo, quantidade, dt_cadastro) VALUES (:nome, :tipo, :quantidade, NOW())";
+        $sql = "INSERT INTO itens_doacao (nome, quantidade, dtcadastro, idtipo_doacao) VALUES (:nome, :quantidade, NOW(), :idtipo_doacao)";
         $this->connection->prepare($sql);
         $this->connection->bind(':nome', $model->getNome());
-        $this->connection->bind(':tipo', $model->getTipo());
+        $this->connection->bind(':idtipo_doacao', $model->getTipo());
         $this->connection->bind(':quantidade', $model->getQuantidade());
-        $this->connection->bind(':dtcadastro', $model->getDtCadastro());
         return $this->connection->execute();
         
     }
 
-    public function selectAll(string $orderBy = "ASC") : array | null
+    public function returnAllTypes()
     {
-        $sql = "SELECT nome, tipo, quantidade FROM itens_doacao";
+        $sql = "SELECT idtipo_doacao, nome FROM tipo_doacao";
         if(isset($orderBy)){
-            $sql .= " ORDER BY modelo ".$orderBy; 
+            $sql .= " ORDER BY nome ".$orderBy; 
+        }
+        $this->connection->query($sql);
+        $resultado = $this->connection->rs();
+        return $resultado;
+    }
+
+    public function selectAll(string $orderBy = "ASC") : array | string
+    {
+        $sql = "SELECT d.nome, d.idtipo_doacao, d.quantidade, d.dtcadastro , t.nome as nome_tipo FROM itens_doacao d INNER JOIN tipo_doacao t ON d.idtipo_doacao = t.idtipo_doacao";
+        if(isset($orderBy)){
+            $sql .= " ORDER BY quantidade ".$orderBy; 
         }
         $this->connection->query($sql);
         $resultado = $this->connection->rs();
@@ -40,16 +51,6 @@ class ItensDoacaoDao
 
     }
 
-    public function selectInfoCarrosCliente(int $idCliente) : array | null
-    {
-        $sql = "SELECT idveiculo, modelo, placa, cor, ano, marca FROM veiculo WHERE idcliente = :idcliente";
-        $this->connection->prepare($sql);
-        $this->connection->bind(':idcliente', $idCliente);
-        $resultado = $this->connection->rs();
-        return $resultado;
-    } 
-
-    
 
     public function delete(string $placa) : bool
     {
@@ -57,6 +58,19 @@ class ItensDoacaoDao
         $this->connection->prepare($sql);
         $this->connection->bind(':placa', $placa);
         return $this->connection->execute();
+    }
+
+    public function getItemPorPagina($limite, $offset)
+    {
+        $sql = "
+            SELECT d.nome, d.idtipo_doacao, d.quantidade, d.dtcadastro , t.nome as nome_tipo 
+            FROM itens_doacao d 
+            INNER JOIN tipo_doacao t ON d.idtipo_doacao = t.idtipo_doacao ORDER BY d.dtcadastro DESC
+            LIMIT $limite 
+            OFFSET $offset";
+            $this->connection->query($sql);
+        $resultado = $this->connection->rs();
+        return $resultado;
     }
 
     /*public function softDelete(Carro $model) : bool

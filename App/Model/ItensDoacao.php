@@ -35,12 +35,12 @@ class ItensDoacao
         return $this->nome;
     }
 
-    public function setTipo(string $tipo) : void
+    public function setTipo(int $tipo) : void
     {
         $this->tipo = $tipo;
     }
 
-    public function getTipo() : string
+    public function getTipo() : int
     {
         return $this->tipo;
     }

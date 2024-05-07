@@ -24,12 +24,20 @@ class ItensDoacaoRepository
         return $this->dao->selectAll();
     }
 
+    public function returnAllTypes()
+    {
+        return $this->dao->returnAllTypes();
+    }
 
-    
-    
+    public function pegarItensPorPagina(int $limit, int $offset)
+    {
+        return $this->dao->getItemPorPagina($limit, $offset);
+    }
 
     public function totalItens()
     {
         return $this->dao->getTotalItens();
     }
+
+
 }
