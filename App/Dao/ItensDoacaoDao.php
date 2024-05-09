@@ -41,13 +41,29 @@ class ItensDoacaoDao
 
     public function selectAll(string $orderBy = "ASC") : array | string
     {
-        $sql = "SELECT d.nome, d.idtipo_doacao, d.quantidade, d.dtcadastro , t.nome as nome_tipo FROM itens_doacao d INNER JOIN tipo_doacao t ON d.idtipo_doacao = t.idtipo_doacao";
+        $sql = "SELECT d.nome, d.idtipo_doacao, d.quantidade, d.dtcadastro , t.nome as nome_tipo 
+        FROM itens_doacao d 
+        INNER JOIN tipo_doacao t ON d.idtipo_doacao = t.idtipo_doacao
+        INNER JOIN local_doacao l ON d.id
+        ";
         if(isset($orderBy)){
             $sql .= " ORDER BY quantidade ".$orderBy; 
         }
         $this->connection->query($sql);
         $resultado = $this->connection->rs();
         return $resultado;
+
+    }
+
+    public function filtroPorNome(string $nome)
+    {
+        $sql = "SELECT d.nome, d.idtipo_doacao, d.quantidade, d.dtcadastro , t.nome as nome_tipo 
+        FROM itens_doacao d 
+        INNER JOIN tipo_doacao t ON d.idtipo_doacao = t.idtipo_doacao";
+        $sql .= " WHERE d.nome LIKE :nome";
+        $this->connection->prepare($sql);
+        $this->connection->bind(':nome', '%'.$nome.'%');
+        return $this->connection->rs();
 
     }
 

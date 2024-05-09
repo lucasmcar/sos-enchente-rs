@@ -19,12 +19,29 @@ class Route extends Bootstrap
                 'action' => 'index'
             ],
 
+            'about' => [
+                'route' => '/about',
+                'controller' => 'indexController',
+                'action' => 'about'
+            ],
+
             'registroDoacoes' => [
                 'route' => '/ver-doacoes',
                 'controller' => 'itensDoacaoController',
                 'action' => 'verDoacoes'
             ],
 
+            'filtro' => [
+                'route' => '/doacoes/filtro',
+                'controller' => 'itensDoacaoController',
+                'action' => 'filtroDoacoes'
+            ],
+
+            'filtroLocal' => [
+                'route' => '/local/filtro',
+                'controller' => 'localDoacaoController',
+                'action' => 'filtroLocal'
+            ],
 
             //Rotas de cadastro das modais
             'cadastroDoacoes' => [
@@ -33,13 +50,21 @@ class Route extends Bootstrap
                 'action' => 'create'
             ],
 
-
-
-            'about' => [
-                'route' => '/about',
-                'controller' => 'indexController',
-                'action' => 'about'
+            'cadastroLocalDoacao' => [
+                'route' => '/novo/local-doacao',
+                'controller' => 'localDoacaoController',
+                'action' => 'create'
             ],
+
+            'verLocalDoacao' => [
+                'route' => '/ver-locais',
+                'controller' => 'localDoacaoController',
+                'action' => 'verLocais'
+            ],
+
+
+
+            
 
             'contact' => [
                 'route' => '/contact',

@@ -27,7 +27,7 @@ use App\Helper\DateTimeHelper;
                 <li><a href="/ver-locais">Locais de doação</a></li>
                 <li><a href="/ver-abrigos"> Abrigos</a></li>     
                 <li><a href="/ver-abrigos-pets">Abrigos Pets</a></li>     
-                <li><a href="/about">Sobre</a></li>     
+                <li><a href="/about">Sobre</a></li>   
             </ul>
         </div>
     </div>
@@ -40,12 +40,11 @@ use App\Helper\DateTimeHelper;
     <li><a href="/ver-abrigos-pets">Abrigos Pets</a></li>     
     <li><a href="/about">Sobre</a></li> 
 </ul>
-
 <div class="container">
 
-<?php if(isset($this->view->itens['retorno']) && $this->view->itens['retorno'] == "Sem Resultado"){ ?>
+<?php if(isset($this->view->locais['retorno']) && $this->view->locais['retorno'] == "Sem Resultado"){ ?>
     <div class="col s12 m7">
-        <h2 class="header">Resultado</h2>
+        <h4 class="header">Sem dados</h4>
         <div class="card horizontal">
             <div class="card-stacked">
                 <div class="card-content">
@@ -56,52 +55,58 @@ use App\Helper\DateTimeHelper;
     </div>
 <?php exit;}?>
     <div class="col s12 m7">
-        <h2 class="header">Itens necessários</h2>
-        <p>Verifique aqui os itens necessários para serem doados</p>
+        <h2 class="header">Locais de doação</h2>
+        <p>Verifique aqui os locais que recebem doação</p>
         <div class="card horizontal">
             <div class="card-stacked">
                 <div class="card-content">
-                <div id="preloader" class="preloader-wrapper big active" style="display: none;">
-                    <div class="spinner-layer spinner-blue-only">
-                        <div class="circle-clipper left">
-                            <div class="circle"></div>
-                        </div>
-                        <div class="gap-patch">
-                            <div class="circle"></div>
-                        </div>
-                        <div class="circle-clipper right">
-                            <div class="circle"></div>
-                        </div>
-                    </div>
-                </div>
                     <div id="data">
+                        <div id="preloader" class="preloader-wrapper big active" style="display: none;">
+                            <div class="spinner-layer spinner-blue-only">
+                                <div class="circle-clipper left">
+                                    <div class="circle"></div>
+                                    </div><div class="gap-patch">
+                                        <div class="circle"></div>
+                                    </div><div class="circle-clipper right">
+                                    <div class="circle"></div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="row">
                             <form class="col s12">
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <input id="search" type="text" name="filtro" class="validate">
-                                    <label for="search">Buscar Itens</label>
+                                    <input id="local" type="text" name="filtro_local" class="validate">
+                                    <label for="local">Buscar Locais</label>
                                     <span class="helper-text" data-error="wrong" data-success="right"></span>
                                 </div>
                             </div>
                             </form>
                         </div>
-                        <table id="itens">
+                        <table id="locais">
                             <thead>
                                 <tr>
                                     <th>Nome</th>
-                                    <th>Quantidade</th>
-                                    <th>Tipo</th>
-                                    <th>Data de Cadastro</th>
+                                    <th>Logradouro</th>
+                                    <th>Numero</th>
+                                    <th>Bairro</th>
+                                    <th>Cidade</th>
+                                    <th>UF</th>
+                                    <th>Telefone</th>
+                                    <th>Cadastrado Em</th>
                                 </tr>
                             </thead>
 
                             <tbody>
-                                <?php foreach($this->view->itens as $key => $value) { ?>
+                                <?php foreach($this->view->locais as $key => $value) { ?>
                                     <tr>
                                         <td><?= $value['nome'];?></td>
-                                        <td><?= $value['quantidade'];?></td>
-                                        <td><?= $value['nome_tipo'];?></td>
+                                        <td><?= $value['logradouro'];?></td>
+                                        <td><?= $value['numero'];?></td>
+                                        <td><?= $value['bairro'];?></td>
+                                        <td><?= $value['cidade'];?></td>
+                                        <td><?= $value['uf'];?></td>
+                                        <td><?= $value['telefone'];?></td>
                                         <td><?= DateTimeHelper::toNormalFormat($value['dtcadastro']);?></td>
                                     </tr>
                                 <?php } ?>
@@ -133,11 +138,10 @@ use App\Helper\DateTimeHelper;
             preloader.style= 'display: block';
 
             // Make request to server
-            fetch('/ver-doacoes')
+            fetch('/ver-locais')
                 .then((response) => response.json())
                 .then(data => {
 
-                    console.log(data)
                     // Hide preloader
                     preloader.style.display = 'none';
 
@@ -174,17 +178,17 @@ use App\Helper\DateTimeHelper;
         });
     });
 
-    let inputSearch = document.getElementById("search");
+    let inputSearch = document.getElementById("local");
     inputSearch.addEventListener('keyup', ()=>{
     let filtro = inputSearch.value.toLowerCase();
     
 
-    fetch('/doacoes/filtro', {
+    fetch('/local/filtro', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
-        body: `filtro=${filtro}`
+        body: `filtro_local=${filtro}`
     })
     .then((resp) =>resp.json())
     .then((data) => {
@@ -197,7 +201,7 @@ use App\Helper\DateTimeHelper;
             aviso.style.color = "black";
             aviso.innerHTML = `Resultados encontrados para "${filtro.length == 0 ? "todos" : filtro}": ${data.length}`;
         }
-        let tabelaResultados = document.getElementById('itens');
+        let tabelaResultados = document.getElementById('locais');
         const tbody = tabelaResultados.querySelector('tbody');
 
         // Limpa o conteúdo anterior da tabela

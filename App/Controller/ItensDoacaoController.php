@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Helper\JsonHelper;
 use App\Model\ItensDoacao;
 use App\Repository\ItensDoacaoRepository;
 use App\Router\Controller\Action;
@@ -48,5 +49,16 @@ class ItensDoacaoController extends Action
         $this->view->itens = $itens;
 
         $this->render('itens');
+    }
+
+    public function filtroDoacoes()
+    {
+        $filtroDoacaoRepo = new ItensDoacaoRepository();
+
+        $filtro = filter_input(INPUT_POST, 'filtro');
+
+        $dados = $filtroDoacaoRepo->filtroPorNome($filtro);
+        
+        echo JsonHelper::toJson($dados);
     }
 }

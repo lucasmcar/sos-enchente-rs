@@ -39,5 +39,9 @@ class ItensDoacaoRepository
         return $this->dao->getTotalItens();
     }
 
+    public function filtroPorNome(string $nome)
+    {
+        return $this->dao->filtroPorNome($nome);
+    }
 
 }
