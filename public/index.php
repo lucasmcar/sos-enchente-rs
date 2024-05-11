@@ -13,4 +13,5 @@ $path = dirname(__FILE__, 2);
 
 DotEnvUtil::loadEnv($path."/.env");
 
+//entry point da aplicaçao
 $route = new Route();

@@ -1,8 +1,5 @@
 <?php 
-use App\Helper\DateTimeHelper;
-
-
-
+    use App\Helper\DateTimeHelper;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -11,9 +8,19 @@ use App\Helper\DateTimeHelper;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+
     <title>SOS Enchente - RS</title>
 </head>
 <body>
+<ul id="drpDoacao" class="dropdown-content">
+  <li><a href="/ver-doacoes">O que precisa?</a></li>
+  <li><a href="/ver-locais">Locais de doação</a></li>
+</ul>
+<ul id="drpPessoasPets" class="dropdown-content">
+    <li><a href="/ver-abrigos"> Abrigos</a></li>     
+    <li><a href="/ver-abrigos-pets">Abrigos Pets</a></li>  
+</ul>
 <nav>
     <div class="nav-wrapper  green darken-1">
         <div class="container">
@@ -23,11 +30,11 @@ use App\Helper\DateTimeHelper;
             </a>
             <ul class="right hide-on-med-and-down">
                 <li><a href="/">Inicio</a></li>
-                <li><a href="/ver-doacoes">O que precisa?</a></li>
-                <li><a href="/ver-locais">Locais de doação</a></li>
-                <li><a href="/ver-abrigos"> Abrigos</a></li>     
-                <li><a href="/ver-abrigos-pets">Abrigos Pets</a></li>     
-                <li><a href="/about">Sobre</a></li>   
+                <li><a class="dropdown-trigger" href="#!" data-target="drpDoacao">Doações<i class="material-icons right">arrow_drop_down</i></a></li>
+                <li><a class="dropdown-trigger" href="#!" data-target="drpPessoasPets">Pessoas<i class="material-icons right">arrow_drop_down</i></a></li>
+                <li><a href="/info">Informações</a></li>
+                <li><a href="/ajude">Faça sua doação</a></li>    
+                <li><a href="/about">Sobre</a></li>     
             </ul>
         </div>
     </div>
@@ -35,11 +42,13 @@ use App\Helper\DateTimeHelper;
 <ul class="sidenav" id="menu-mobile">
     <li><a href="/">Inicio</a></li>
     <li><a href="/ver-doacoes">O que precisa?</a></li>
-    <li><a href="/ver-locais">Locais de doação</a></li>
-    <li><a href="/ver-abrigos"> Abrigos</a></li>     
-    <li><a href="/ver-abrigos-pets">Abrigos Pets</a></li>     
-    <li><a href="/about">Sobre</a></li> 
-</ul>
+        <li><a href="/ver-locais">Locais de doação</a></li>
+        <li><a href="/ver-abrigos"> Abrigos</a></li>     
+        <li><a href="/ver-abrigos-pets">Abrigos Pets</a></li>  
+        <li><a href="/info">Informações</a></li> 
+        <li><a href="/ajude">Faça sua doação</a></li>   
+        <li><a href="/about">Sobre</a></li> 
+    </ul>
 <div class="container">
 
 <?php if(isset($this->view->locais['retorno']) && $this->view->locais['retorno'] == "Sem Resultado"){ ?>
@@ -61,7 +70,7 @@ use App\Helper\DateTimeHelper;
             <div class="card-stacked">
                 <div class="card-content">
                     <div id="data">
-                        <div id="preloader" class="preloader-wrapper big active" style="display: none;">
+                        <div id="preloader-local" class="preloader-wrapper big active" style="display: none;">
                             <div class="spinner-layer spinner-blue-only">
                                 <div class="circle-clipper left">
                                     <div class="circle"></div>
@@ -80,6 +89,28 @@ use App\Helper\DateTimeHelper;
                                     <label for="local">Buscar Locais</label>
                                     <span class="helper-text" data-error="wrong" data-success="right"></span>
                                 </div>
+                            </div>
+                            <div class="progress" id="preloader-search" style="display: none;">
+                                <div class="indeterminate"></div>
+                            </div>
+                            <div class="row">
+                                <a class='dropdown-trigger btn' href='#' data-target='convert'>
+                                    Exportar para...
+                                </a>
+
+                                <!-- Dropdown Structure -->
+                                <ul id='convert' class='dropdown-content'>
+                                    <li>
+                                        <a href="/local/export-pdf">
+                                            PDF
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/local/export-excel">
+                                            EXCEL
+                                        </a>
+                                    </li>
+                                </ul>
                             </div>
                             </form>
                         </div>
@@ -126,63 +157,61 @@ use App\Helper\DateTimeHelper;
             </div>
         </div>
         
-    </div>
-    <!-- Importando jQuery -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <!-- Materializa -->                        
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Show preloader
-            var preloader = document.getElementById('preloader');
-            preloader.style= 'display: block';
-
-            // Make request to server
-            fetch('/ver-locais')
-                .then((response) => response.json())
-                .then(data => {
-
-                    // Hide preloader
-                    preloader.style.display = 'none';
-
-                    // Display data in the 'data' div
-                    var dataDiv = document.getElementById('data');
-                    dataDiv.innerHTML = JSON.stringify(data);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    // Hide preloader in case of error
-                    preloader.style.display = 'none';
-                });
-        });
-
-
-        document.addEventListener("DOMContentLoaded", function() {
-        // Obtém o caminho da URL atual
-        var path = window.location.pathname;
-
-        // Seleciona a lista da navbar
-        var navbarList = document.querySelector('.right');
-
-        // Seleciona todos os itens da lista da navbar
-        var links = navbarList.querySelectorAll('li');
-
-        // Itera sobre os links da navbar
-        links.forEach(function(link) {
-            var href = link.querySelector('a').getAttribute('href');
-            // Verifica se o atributo href do link corresponde ao caminho da URL atual
-            if (href === path) {
-                // Adiciona a classe 'active' ao link correspondente
-                link.classList.add('active');
-            }
-        });
-    });
-
-    let inputSearch = document.getElementById("local");
-    inputSearch.addEventListener('keyup', ()=>{
-    let filtro = inputSearch.value.toLowerCase();
+</div>
+<!-- Importando jQuery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Materializa -->                        
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<!-- Inicialização de váriaveis -->
+<script src="/assets/js/inits.js"></script>
+<script src="/assets/js/functions.js"></script>
     
+<script>
 
+$(document).ready(function(){
+    $('.sidenav').sidenav();
+});
+
+$(".dropdown-trigger").dropdown();
+
+document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.dropdown-trigger');
+    var instances = M.Dropdown.init(elems, {
+        hover : true
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Show preloader
+    var preloaderLocal = document.getElementById('preloader-local');
+    preloaderLocal.style.display='block';
+
+    // Make request to server
+    fetch('/ver-locais') 
+        .then((response) => response.json())
+        .then(data => {
+            // Hide preloader
+            preloaderLocal.style.display = 'none';
+            // Display data in the 'data' div
+            var dataDiv = document.getElementById('data');
+            dataDiv.innerHTML = JSON.stringify(data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Hide preloader in case of error
+            preloaderLocal.style.display = 'none';
+        });
+});
+
+let inputSearchLocal = document.getElementById("local");
+
+
+inputSearchLocal.addEventListener('keyup', ()=>{
+    let preloaderSearch = document.getElementById('preloader-search');
+    let filtro = inputSearchLocal.value.toLowerCase();
+        
+    preloaderSearch.style.display = 'block';
+    
     fetch('/local/filtro', {
         method: 'POST',
         headers: {
@@ -190,38 +219,57 @@ use App\Helper\DateTimeHelper;
         },
         body: `filtro_local=${filtro}`
     })
-    .then((resp) =>resp.json())
+    .then((resp) => resp.json())
     .then((data) => {
-        console.log(data);
-        let aviso = document.querySelector(".helper-text");
-        if(data.retorno == "Sem Resultado"){
-            aviso.style.color = "red";
-            aviso.innerHTML = `Sem resultados para "${filtro}"`;
-        } else if(data.length >= 1) {
-            aviso.style.color = "black";
-            aviso.innerHTML = `Resultados encontrados para "${filtro.length == 0 ? "todos" : filtro}": ${data.length}`;
+        if(data != undefined || data != null){
+            let aviso = document.querySelector(".helper-text");
+            if(data.retorno == "Sem Resultado"){
+                aviso.style.color = "red";
+                aviso.innerHTML = `Sem resultados para "${filtro}"`;
+            } else if(data.length >= 1) {
+                aviso.style.color = "black";
+                aviso.innerHTML = `Resultados encontrados para "${filtro.length == 0 ? "todos" : filtro}": ${data.length}`;
+            }
+            preloaderSearch.style.display = 'none';
+            let tabelaResultados = document.getElementById('locais');
+            const tbody = tabelaResultados.querySelector('tbody');
+
+            // Limpa o conteúdo anterior da tabela
+            tbody.innerHTML = '';
+
+            // Renderiza as linhas da tabela de acordo com os resultados
+            data.forEach(resultado => {
+
+                var partes = resultado.dtcadastro.split(' ');
+
+                // Dividindo a parte da data em ano, mês e dia
+                var partesData = partes[0].split('-');
+                var ano = partesData[0];
+                var mes = partesData[1];
+                var dia = partesData[2];
+
+                // Construindo a data formatada
+                var dataFormatada = dia + '/' + mes + '/' + ano;
+
+                // Se houver uma parte de hora, adicione-a à data formatada
+                if (partes[1]) {
+                    dataFormatada += ' ' + partes[1];
+                }
+
+                resultado.dtcadastro = dataFormatada;
+                
+                const tr = document.createElement('tr');
+                Object.values(resultado).forEach(valor => {
+
+                    const td = document.createElement('td');
+                    td.textContent = valor;
+                    tr.appendChild(td);
+                });
+                tbody.appendChild(tr);
+            });   
         }
-        let tabelaResultados = document.getElementById('locais');
-        const tbody = tabelaResultados.querySelector('tbody');
-
-        // Limpa o conteúdo anterior da tabela
-        tbody.innerHTML = '';
-
-        // Renderiza as linhas da tabela de acordo com os resultados
-        data.forEach(resultado => {
-            
-            const tr = document.createElement('tr');
-            Object.values(resultado).forEach(valor => {
-                const td = document.createElement('td');
-                td.textContent = valor;
-                tr.appendChild(td);
-            });
-            tbody.appendChild(tr);
-        });
-        
-
     }).catch( e => console.log(e) );
-    });
-    </script>
+});
+</script>
 </body>
 </html>

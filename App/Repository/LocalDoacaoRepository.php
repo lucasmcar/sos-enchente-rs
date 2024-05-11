@@ -38,4 +38,9 @@ class LocalDoacaoRepository
     {
         return $this->dao->getTotalLocal();
     }
+
+    public function selectAll()
+    {
+        return $this->dao->returnAll();
+    }
 }

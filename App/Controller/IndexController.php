@@ -40,4 +40,14 @@ class IndexController extends Action
     {
         $this->render('about');
     }
+
+    public function doar()
+    {
+        $this->render('ajude');
+    }
+
+    public function info()
+    {
+        $this->render('informacoes');
+    }
 }

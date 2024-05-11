@@ -6,9 +6,18 @@
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <title>SOS Enchente - RS</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <title>SOS RS</title>
 </head>
 <body>
+<ul id="drpDoacao" class="dropdown-content">
+  <li><a href="/ver-doacoes">O que precisa?</a></li>
+  <li><a href="/ver-locais">Locais de doação</a></li>
+</ul>
+<ul id="drpPessoasPets" class="dropdown-content">
+    <li><a href="/ver-abrigos"> Abrigos</a></li>     
+    <li><a href="/ver-abrigos-pets">Abrigos Pets</a></li>  
+</ul>
 <nav>
     <div class="nav-wrapper  green darken-1">
         <div class="container">
@@ -18,10 +27,10 @@
             </a>
             <ul class="right hide-on-med-and-down">
                 <li><a href="/">Inicio</a></li>
-                <li><a href="/ver-doacoes">O que precisa?</a></li>
-                <li><a href="/ver-locais">Locais de doação</a></li>
-                <li><a href="/ver-abrigos"> Abrigos</a></li>     
-                <li><a href="/ver-abrigos-pets">Abrigos Pets</a></li>     
+                <li><a class="dropdown-trigger" href="#!" data-target="drpDoacao">Doações<i class="material-icons right">arrow_drop_down</i></a></li>
+                <li><a class="dropdown-trigger" href="#!" data-target="drpPessoasPets">Pessoas<i class="material-icons right">arrow_drop_down</i></a></li>
+                <li><a href="/info">Informações</a></li>
+                <li><a href="/ajude">Faça sua doação</a></li>    
                 <li><a href="/about">Sobre</a></li>     
             </ul>
         </div>
@@ -30,11 +39,14 @@
 <ul class="sidenav" id="menu-mobile">
     <li><a href="/">Inicio</a></li>
     <li><a href="/ver-doacoes">O que precisa?</a></li>
-        <li><a href="/ver-locais">Locais de doação</a></li>
-        <li><a href="/ver-abrigos"> Abrigos</a></li>     
-        <li><a href="/ver-abrigos-pets">Abrigos Pets</a></li>     
-        <li><a href="/about">Sobre</a></li> 
-    </ul>
+    <li><a href="/ver-locais">Locais de doação</a></li>
+    <li><a href="/ver-abrigos"> Abrigos</a></li>     
+    <li><a href="/ver-abrigos-pets">Abrigos Pets</a></li>
+    <li><a href="/info">Informações</a></li> 
+    <li><a href="/ajude">Faça sua doação</a></li>       
+    <li><a href="/about">Sobre</a></li> 
+</ul>
+<section>
     <div class="container">
         <div class="row">
             <div class="col s12">
@@ -64,31 +76,15 @@
                         <img src="/assets/imgs/add-location.png" alt="" class="circle">
                         <span class="title">1. Local</span>
                         <p>Cadastre o local onde <br>
-                            estão recebendo doações
+                            estão recebendo doações e pessoas desabrigadas
                         </p>
                     </li>
                     <li class="collection-item avatar">
                         <img src="/assets/imgs/solidarity.png" alt="" class="circle">
-                        <span class="title">2. Doações</span>
+                        <span class="title">2. Doações e pessoas</span>
                         <p>Após cadastro do local, <br>
-                            cadastre os itens que estão precisando.
+                            cadastre os itens necessários e as pessoas desabrigadas .
                         </p>
-                    </li>
-                    <li class="collection-item avatar">
-                    <i class="material-icons circle green">insert_chart</i>
-                        <span class="title">Title</span>
-                        <p>First Line <br>
-                            Second Line
-                        </p>
-                        <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-                    </li>
-                    <li class="collection-item avatar">
-                        <i class="material-icons circle red">play_arrow</i>
-                        <span class="title">Title</span>
-                        <p>First Line <br>
-                            Second Line
-                        </p>
-                        <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
                     </li>
                 </ul>
             </div>
@@ -156,41 +152,58 @@
                 </div>
             </div>
             <!--/Card cadastro  pessoas e pets-->
+
+            <!--Card cadastro de pessoas e pets desaparecidos -->
+            <div class="col s6 m6">
+                <div class="card green darken-2">
+                    <div class="card-content white-text">
+                        <span class="card-title">Desaparecidos</span>
+                        <p>
+                            Cadastrar pessoas ou pets que podem estar desaparecidos.
+                        </p>
+                    </div>
+                    <div class="card-action">
+                        <a href="#mdlPessoaPetDesaparecido" class="btn modal-trigger green lighten-2">Cadastrar</a>
+                    </div>
+                </div>
+            </div>
+            <!--/Card cadastro  pessoas e pets-->
             
         </div>
     </div>
-    <footer class="page-footer  green darken-1">
+</section>
+<footer class="page-footer  green darken-1">
+    <div class="container">
+        <div class="row">
+            <div class="col l6 s12">
+                <h5 class="white-text"></h5>
+                <p class="grey-text text-lighten-4">Esse sistema foi projetado para registrar locais de doação e o que precisa ser doado para as pessoas
+                    vitimas das enchentes do RS.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="footer-copyright">
         <div class="container">
             <div class="row">
-                <div class="col l6 s12">
-                    <h5 class="white-text"></h5>
-                    <p class="grey-text text-lighten-4">Esse sistema foi projetado para registrar locais de doação e o que precisa ser doado para as pessoas
-                        vitimas das enchentes do RS.
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="footer-copyright">
-            <div class="container">
-                <div class="row">
                 <div class="col s4">
-                        <small>
+                    <small>
                         Desenvolvido por Code Experts Sistemas &copy <?php echo date('Y'); ?>
-                        </small>
-                    </div>
-                    <div class="col s2">
-                    <img src="/assets/imgs/rs.png" alt="Bandeira do RS" width="32" height="32">
-                    </div>
-                    <div class="col s6">
-                        <small>
-                          CNPJ 52.916.779/0001-93
-                        </small>
-                    </div>
-                    
+                    </small>
                 </div>
+                <div class="col s2">
+                    <img src="/assets/imgs/rs.png" alt="Bandeira do RS" width="32" height="32">
+                </div>
+                <div class="col s6">
+                    <small>
+                        CNPJ 52.916.779/0001-93
+                    </small>
+                </div>
+                    
             </div>
         </div>
-    </footer>
+    </div>
+</footer>
 
     <!-- Modal Doação -->
     <div id="mdlDoacao" class="modal">
@@ -238,8 +251,6 @@
                   </button>
                 </div>
             </form>
-        </div>
-        <div class="modal-footer">
         </div>
     </div>
 
@@ -339,9 +350,6 @@
             </form>
             
         </div>
-        <div class="modal-footer">
-            <a href="/novo/local-doacao" class="modal-close waves-effect waves-green btn-flat">Cadastrar local</a>
-        </div>
     </div>
 
     <!-- Model cadastro pessoas ou pet -->
@@ -350,8 +358,16 @@
             <h4>Cadastro de pessoas ou pets</h4>
             
         </div>
+    </div>
+
+    <!--modal sucesso-->
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <h4>Sucesso!</h4>
+            <p>Dados inseridos com sucesso.</p>
+        </div>
         <div class="modal-footer">
-            <a href="/nova/pessoa-pet" class="modal-close waves-effect waves-green btn-flat">Cadastrar local</a>
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Fechar</a>
         </div>
     </div>
 
@@ -361,11 +377,14 @@
     <!-- Importando Materialize JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
-    <script src="../../../../assets/js/functions.js"></script>
+    <script src="/assets/js/inits.js"></script>
+    <script src="/assets/js/functions.js"></script>
     <script>
     $(document).ready(function(){
         $('.sidenav').sidenav();
     });
+
+    $(".dropdown-trigger").dropdown();
 
     document.addEventListener('DOMContentLoaded', function() {
         var elems = document.querySelectorAll('.modal');
@@ -386,45 +405,6 @@
       var instances = M.FormSelect.init(elems, {});
     });
 
-    document.addEventListener("DOMContentLoaded", function() {
-        // Obtém o caminho da URL atual
-        var path = window.location.pathname;
-
-        // Seleciona a lista da navbar
-        var navbarList = document.querySelector('.right');
-
-        // Seleciona todos os itens da lista da navbar
-        var links = navbarList.querySelectorAll('li');
-
-        // Itera sobre os links da navbar
-        links.forEach(function(link) {
-            var href = link.querySelector('a').getAttribute('href');
-            // Verifica se o atributo href do link corresponde ao caminho da URL atual
-            if (href === path) {
-                // Adiciona a classe 'active' ao link correspondente
-                link.classList.add('active');
-            }
-        });
-    });
-
-    let telefone = document.getElementById('txt_telefone');
-
-    telefone.addEventListener('keyup', (event)=>{
-        // Get the input value and remove non-digit characters
-        let input = event.target.value.replace(/\D/g, '');
-
-        // Check if the input length is less than 11 characters
-        if (input.length < 11) {
-            // Apply the mask for phone numbers with 10 digits (e.g., (11) 91234-5678)
-            input = input.replace(/^(\d{2})(\d{4,5})(\d{4})$/, '($1) $2-$3');
-        } else {
-            // Apply the mask for phone numbers with 11 digits (e.g., (11) 99123-4567)
-            input = input.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
-        }
-
-        // Set the formatted value back to the input field
-        event.target.value = input;
-    });
     </script>
 </body>
 </html>

@@ -2,11 +2,9 @@
 
 namespace App\Dao;
 
-
-use App\Connection\ConnectionInstance;
+use App\Connection\Connection;
 use App\Helper\JsonHelper;
 use App\Model\ItensDoacao;
-
 
 class ItensDoacaoDao
 {
@@ -14,15 +12,16 @@ class ItensDoacaoDao
 
     public function __construct()
     {   
-        $this->connection = ConnectionInstance::getInstance();
+        $this->connection = new Connection;
     }
 
     public function insert(ItensDoacao $model) : int
     {
-        $sql = "INSERT INTO itens_doacao (nome, quantidade, dtcadastro, idtipo_doacao) VALUES (:nome, :quantidade, NOW(), :idtipo_doacao)";
+        $sql = "INSERT INTO itens_doacao (nome, quantidade, idlocaldoacao, dtcadastro, idtipo_doacao) VALUES (:nome, :quantidade, :idlocal_doacao, NOW(), :idtipo_doacao)";
         $this->connection->prepare($sql);
         $this->connection->bind(':nome', $model->getNome());
         $this->connection->bind(':idtipo_doacao', $model->getTipo());
+        $this->connection->bind(':idlocal_doacao', $model->getLocal());
         $this->connection->bind(':quantidade', $model->getQuantidade());
         return $this->connection->execute();
         
@@ -41,10 +40,10 @@ class ItensDoacaoDao
 
     public function selectAll(string $orderBy = "ASC") : array | string
     {
-        $sql = "SELECT d.nome, d.idtipo_doacao, d.quantidade, d.dtcadastro , t.nome as nome_tipo 
+        $sql = "SELECT d.nome, d.idtipo_doacao, d.quantidade, d.dtcadastro , t.nome as nome_tipo, l.nome as nome_local 
         FROM itens_doacao d 
         INNER JOIN tipo_doacao t ON d.idtipo_doacao = t.idtipo_doacao
-        INNER JOIN local_doacao l ON d.id
+        INNER JOIN local_doacao l ON d.idlocaldoacao = l.idlocaldoacao
         ";
         if(isset($orderBy)){
             $sql .= " ORDER BY quantidade ".$orderBy; 
@@ -57,10 +56,11 @@ class ItensDoacaoDao
 
     public function filtroPorNome(string $nome)
     {
-        $sql = "SELECT d.nome, d.idtipo_doacao, d.quantidade, d.dtcadastro , t.nome as nome_tipo 
+        $sql = "SELECT d.nome, d.quantidade,  t.nome as nome_tipo, l.nome as nome_local, l.telefone, d.dtcadastro
         FROM itens_doacao d 
-        INNER JOIN tipo_doacao t ON d.idtipo_doacao = t.idtipo_doacao";
-        $sql .= " WHERE d.nome LIKE :nome";
+        INNER JOIN tipo_doacao t ON d.idtipo_doacao = t.idtipo_doacao 
+        INNER JOIN local_doacao l ON d.idlocaldoacao = l.idlocaldoacao";
+        $sql .= " WHERE d.nome LIKE :nome OR l.nome LIKE :nome";
         $this->connection->prepare($sql);
         $this->connection->bind(':nome', '%'.$nome.'%');
         return $this->connection->rs();
@@ -79,9 +79,11 @@ class ItensDoacaoDao
     public function getItemPorPagina($limite, $offset)
     {
         $sql = "
-            SELECT d.nome, d.idtipo_doacao, d.quantidade, d.dtcadastro , t.nome as nome_tipo 
+            SELECT d.nome, d.quantidade, t.nome as nome_tipo, l.nome as nome_local, l.telefone, d.dtcadastro, d.idtipo_doacao, d.idlocaldoacao 
             FROM itens_doacao d 
-            INNER JOIN tipo_doacao t ON d.idtipo_doacao = t.idtipo_doacao ORDER BY d.dtcadastro DESC
+            INNER JOIN tipo_doacao t ON d.idtipo_doacao = t.idtipo_doacao 
+            INNER JOIN local_doacao l ON d.idlocaldoacao = l.idlocaldoacao 
+            ORDER BY d.dtcadastro DESC
             LIMIT $limite 
             OFFSET $offset";
             $this->connection->query($sql);

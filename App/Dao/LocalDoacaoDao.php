@@ -55,10 +55,19 @@ class LocalDoacaoDao
 
     public function returnAllLocal()
     {
-        $sql = "SELECT idlocaldoacao, nome FROM local_doacao";
+        $sql = "SELECT idlocaldoacao, nome, telefone FROM local_doacao";
         if(isset($orderBy)){
-            $sql .= " ORDER BY nome ".$orderBy; 
+            $sql .= " GROUP BY nome "; 
         }
+        $this->connection->query($sql);
+        $resultado = $this->connection->rs();
+        return $resultado;
+    }
+
+    public function returnAll()
+    {
+        $sql = "SELECT nome, logradouro, numero, bairro, cidade, uf, telefone, dtcadastro FROM local_doacao";
+        $sql .= " ORDER BY cidade"; 
         $this->connection->query($sql);
         $resultado = $this->connection->rs();
         return $resultado;

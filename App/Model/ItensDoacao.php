@@ -7,6 +7,7 @@ class ItensDoacao
     private $idItensDoacao;
     private $nome;
     private $tipo;
+    private $local;
     private $quantidade;
     private $dtCadastro;
    
@@ -43,6 +44,16 @@ class ItensDoacao
     public function getTipo() : int
     {
         return $this->tipo;
+    }
+
+    public function setLocal(int $local) : void
+    {
+        $this->local = $local;
+    }
+
+    public function getLocal() : int
+    {
+        return $this->local;
     }
 
     public function setQuantidade(int $quantidade) : void

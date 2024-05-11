@@ -25,6 +25,12 @@ class Route extends Bootstrap
                 'action' => 'about'
             ],
 
+            'infos' => [
+                'route' => '/info',
+                'controller' => 'indexController',
+                'action' => 'info'
+            ],
+
             'registroDoacoes' => [
                 'route' => '/ver-doacoes',
                 'controller' => 'itensDoacaoController',
@@ -41,6 +47,14 @@ class Route extends Bootstrap
                 'route' => '/local/filtro',
                 'controller' => 'localDoacaoController',
                 'action' => 'filtroLocal'
+            ],
+
+            
+
+            'doacaoPix' => [
+                'route' => '/ajude',
+                'controller' => 'indexController',
+                'action' => 'doar'
             ],
 
             //Rotas de cadastro das modais
@@ -62,18 +76,37 @@ class Route extends Bootstrap
                 'action' => 'verLocais'
             ],
 
-
-
-            
-
             'contact' => [
                 'route' => '/contact',
                 'controller' => 'indexController',
                 'action' => 'contact'
             ],
+            
 
-            
-            
+            //Rotas para gerar PDF E EXCEL
+            'convertToExcel' => [
+                'route' => '/local/export-excel',
+                'controller' => 'localDoacaoController',
+                'action' => 'convertToExcel'
+            ],
+
+            'convertToPdf' => [
+                'route' => '/local/export-pdf',
+                'controller' => 'localDoacaoController',
+                'action' => 'convertToPdf'
+            ],
+
+            'convertToExcelDoacao' => [
+                'route' => '/doacao/export-excel',
+                'controller' => 'itensDoacaoController',
+                'action' => 'convertToExcel'
+            ],
+
+            'convertToPdfDoacao' => [
+                'route' => '/doacao/export-pdf',
+                'controller' => 'itensDoacaoController',
+                'action' => 'convertToPdf'
+            ],
         ];
 
         /*$routes['home'] = [

@@ -1,60 +1,116 @@
-let submitDoacao = document.getElementById("submitItens");
-let submitLocal = document.getElementById("submitLocal");
 
-submitDoacao.addEventListener('click', (e)=>{
+const button = initButons();
+
+//Valida se componentes existem na tela
+//Se não existirem, as chamadas dos metodos não ocorrerão
+if(button.submitDoacao != undefined || button.submitLocal != undefined){
+
+  button.submitDoacao.addEventListener('click', (e)=>{
     e.preventDefault();
 
-    let nome  = document.getElementById("txt_nome").value;
-    let quantidade = document.getElementById("txt_qtd").value;
-    let selectTipo = document.getElementById("slc_tipo");
-    let selectedOptionTipo = selectTipo.options[selectTipo.selectedIndex].value;
-
-    console.log(nome, quantidade, selectedOptionTipo);
- 
+    let inputs = initVarsDoacao();
 
     fetch("/nova/doacao", {
         method: "POST",
-        body: JSON.stringify({ select: selectedOptionTipo, nome, quantidade }),
+        body: JSON.stringify({ inputs }),
         headers: {
           "Content-Type": "application/json",
         },
       })
-        .then((response) => response.json())
+        .then((response) => response.text())
         .then((data) => {
-          alert("Itens cadastrados com sucesso");
+          var successModal = document.getElementById('successModal');
+          var successModalItem = document.getElementById('successModalItens');
+          if(successModalItem != undefined){
+            let instance = M.Modal.init(successModalItem);
+            instance.open()
+            
+            
+          }
+          if(successModal != undefined){
+            let instance1 = M.Modal.init(successModal);
+            instance1.open();
+           
+          }
+          setTimeout(()=>{
+            location.reload();
+          },5000)
         })
         .catch((error) => {
           console.error("Erro ao enviar dados para o servidor:", error);
     });
-
-});
-
-submitLocal.addEventListener('click', (e)=>{
-  e.preventDefault();
-
-  let nome  = document.getElementById("txt_nome_local").value;
-  let logradouro = document.getElementById("txt_logradouro").value;
-  let numero = document.getElementById("txt_numero").value;
-  let bairro = document.getElementById("txt_bairro").value;
-  let cidade = document.getElementById("txt_cidade").value;
-  let uf = document.getElementById("txt_uf").value;
-  let telefone = document.getElementById("txt_telefone").value;
-  
-
-  fetch("/novo/local-doacao", {
-      method: "POST",
-      body: JSON.stringify({ nome, logradouro, numero, bairro, cidade, uf,telefone }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        window.location.reload();
-        alert("Itens cadastrados com sucesso");
-      })
-      .catch((error) => {
-        console.error("Erro ao enviar dados para o servidor:", error);
   });
 
+if(button.submitLocal != undefined){
+  button.submitLocal.addEventListener('click', (e)=>{
+    e.preventDefault();
+
+    let inputs = initVarsLocaoDoacao();
+
+    fetch("/novo/local-doacao", {
+        method: "POST",
+        body: JSON.stringify({ inputs }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => response.text())
+        .then((data) => {
+          var successModal = document.getElementById('successModal');
+          var instance = M.Modal.init(successModal);
+            instance.open();
+            
+          })
+        .catch((error) => {
+          console.error("Erro ao enviar dados para o servidor:", error);
+    });
+  });
+
+}
+
+}
+  
+
+//Links ativos
+document.addEventListener("DOMContentLoaded", function() {
+  // Obtém o caminho da URL atual
+  var path = window.location.pathname;
+
+  // Seleciona a lista da navbar
+  var navbarList = document.querySelector('.right');
+
+  // Seleciona todos os itens da lista da navbar
+  var links = navbarList.querySelectorAll('li');
+
+  // Itera sobre os links da navbar
+  links.forEach(function(link) {
+      var href = link.querySelector('a').getAttribute('href');
+      // Verifica se o atributo href do link corresponde ao caminho da URL atual
+      if (href === path) {
+          // Adiciona a classe 'active' ao link correspondente
+          link.classList.add('active');
+      }
+  });
 });
+
+//Formatar telefone
+let telefone = document.getElementById('txt_telefone');
+
+if(telefone != undefined){
+  telefone.addEventListener('keyup', (event)=>{
+    // Get the input value and remove non-digit characters
+    let input = event.target.value.replace(/\D/g, '');
+
+    // Check if the input length is less than 11 characters
+    if (input.length < 11) {
+        // Apply the mask for phone numbers with 10 digits (e.g., (11) 91234-5678)
+        input = input.replace(/^(\d{2})(\d{4,5})(\d{4})$/, '($1) $2-$3');
+    } else {
+        // Apply the mask for phone numbers with 11 digits (e.g., (11) 99123-4567)
+        input = input.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
+    }
+
+    // Set the formatted value back to the input field
+    event.target.value = input;
+  });
+}
