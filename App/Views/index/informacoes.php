@@ -11,24 +11,29 @@
 </head>
 <body>
 <ul id="drpDoacao" class="dropdown-content">
-  <li><a href="/ver-doacoes">O que precisa?</a></li>
-  <li><a href="/ver-locais">Locais de doação</a></li>
+    <li><a href="/ver-doacoes">O que precisa?</a></li>
+    <li><a href="/ver-locais">Locais de doação</a></li>
+</ul>
+<ul id="drpAbrigos" class="dropdown-content">
+    <li><a href="/ver-abrigos">Ver Abrigos</a></li>
+    <li><a href="/ver-abrigos-pets">Ver Abrigos Pets</a></li>
 </ul>
 <ul id="drpPessoasPets" class="dropdown-content">
-    <li><a href="/ver-abrigos"> Abrigos</a></li>     
-    <li><a href="/ver-abrigos-pets">Abrigos Pets</a></li>  
+    <li><a href="/ver-pessoas">Pessoas</a></li>     
+    <li><a href="/ver-pets">Pets</a></li>  
 </ul>
 <nav>
     <div class="nav-wrapper  green darken-1">
         <div class="container">
-            <a href="/" class="brand-logo">SOS Enchente - RS</a>
+            <a href="/" class="brand-logo">SOS - RS</a>
             <a href="#" data-target="menu-mobile" class="sidenav-trigger">
                 <i class="material-icons">dehaze</i>
             </a>
             <ul class="right hide-on-med-and-down">
                 <li><a href="/">Inicio</a></li>
                 <li><a class="dropdown-trigger" href="#!" data-target="drpDoacao">Doações<i class="material-icons right">arrow_drop_down</i></a></li>
-                <li><a class="dropdown-trigger" href="#!" data-target="drpPessoasPets">Pessoas<i class="material-icons right">arrow_drop_down</i></a></li>
+                <li><a class="dropdown-trigger" href="#!" data-target="drpAbrigos">Abrigos<i class="material-icons right">arrow_drop_down</i></a></li>
+                <li><a class="dropdown-trigger" href="#!" data-target="drpPessoasPets">Pessoas/Pets<i class="material-icons right">arrow_drop_down</i></a></li>
                 <li><a href="/info">Informações</a></li>
                 <li><a href="/ajude">Faça sua doação</a></li>    
                 <li><a href="/about">Sobre</a></li>     
@@ -41,19 +46,30 @@
     <li><a href="/ver-doacoes">O que precisa?</a></li>
     <li><a href="/ver-locais">Locais de doação</a></li>
     <li><a href="/ver-abrigos"> Abrigos</a></li>     
-    <li><a href="/ver-abrigos-pets">Abrigos Pets</a></li>  
+    <li><a href="/ver-abrigos-pets">Abrigos Pets</a></li>
+    <li><a href="/ver-pessoas">Pessoas</a></li>
+    <li><a href="/ver-pets">Pets</a></li>
     <li><a href="/info">Informações</a></li> 
-    <li><a href="/ajude">Faça sua doação</a></li>   
+    <li><a href="/ajude">Faça sua doação</a></li>       
     <li><a href="/about">Sobre</a></li> 
 </ul>
 <div class="container">
     <div class="row">
-        <div class="col s6 m6">
+        <div class="col s6 l12">
+          <h4>Informações gerais</h4>
+          <div class="collection">
+            <a href="/ver-doacoes" class="collection-item"><span class="badge"><?= $this->view->infoTotal; ?></span>Total de itens para doação</a>
+            <a href="/ver-locais" class="collection-item"><span class="badge"><?= $this->view->infoTotalLocal; ?></span>Total de locais que recebem doações</a>
+            <a href="/ver-abrigos" class="collection-item"><span class="badge"><?= $this->view->infoTotalAbrigos; ?></span>Total de abrigos cadastrados</a>
+          </div>
+        </div>
+
+        <div class="col s6 m6 l4">
             <canvas id="myChart">
 
             </canvas>
         </div>
-        <div class="col s6 m6">
+        <div class="col s6 m6 l4">
             <canvas id="myChart2">
 
             </canvas>
@@ -68,6 +84,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <!-- Chart JS -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="/assets/js/inits.js"></script>
+<script src="/assets/js/functions.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var elems = document.querySelectorAll('.dropdown-trigger');
@@ -78,26 +97,11 @@
 
     $(".dropdown-trigger").dropdown();
 
-    document.addEventListener("DOMContentLoaded", function() {
-    // Obtém o caminho da URL atual
-    var path = window.location.pathname;
-
-    // Seleciona a lista da navbar
-    var navbarList = document.querySelector('.right');
-
-    // Seleciona todos os itens da lista da navbar
-    var links = navbarList.querySelectorAll('li');
-
-    // Itera sobre os links da navbar
-    links.forEach(function(link) {
-        var href = link.querySelector('a').getAttribute('href');
-        // Verifica se o atributo href do link corresponde ao caminho da URL atual
-        if (href === path) {
-            // Adiciona a classe 'active' ao link correspondente
-            link.classList.add('active');
-        }
-    });
+$(document).ready(function(){
+    $('.sidenav').sidenav();
 });
+
+$(".dropdown-trigger").dropdown();
 
 
 const ctx = document.getElementById('myChart');

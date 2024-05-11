@@ -30,9 +30,8 @@ class ItensDoacaoDao
     public function returnAllTypes()
     {
         $sql = "SELECT idtipo_doacao, nome FROM tipo_doacao";
-        if(isset($orderBy)){
-            $sql .= " ORDER BY nome ".$orderBy; 
-        }
+        $sql .= " ORDER BY nome ASC"; 
+        
         $this->connection->query($sql);
         $resultado = $this->connection->rs();
         return $resultado;
@@ -90,15 +89,6 @@ class ItensDoacaoDao
         $resultado = $this->connection->rs();
         return $resultado;
     }
-
-    /*public function softDelete(Carro $model) : bool
-    {
-        $sql = "UPDATE veiculo SET dt_deletado = :dtdeletado WHERE placa = :placa";
-        $this->connection->prepare($sql);
-        $this->connection->bind(':placa', $model->getPlaca());
-        $this->connection->bind(':dtdeletado', $model->getDtDeletado());
-        return $this->connection->execute();
-    }*/
 
     public function getTotalItens()
     {

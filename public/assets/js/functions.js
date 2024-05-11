@@ -1,9 +1,9 @@
 
-const button = initButons();
+let button = initButons();
 
 //Valida se componentes existem na tela
 //Se não existirem, as chamadas dos metodos não ocorrerão
-if(button.submitDoacao != undefined || button.submitLocal != undefined){
+if(button.submitDoacao != undefined){
 
   button.submitDoacao.addEventListener('click', (e)=>{
     e.preventDefault();
@@ -42,12 +42,45 @@ if(button.submitDoacao != undefined || button.submitLocal != undefined){
   });
 
 if(button.submitLocal != undefined){
-  button.submitLocal.addEventListener('click', (e)=>{
+    button.submitLocal.addEventListener('click', (e)=>{
+      e.preventDefault();
+
+      let inputs = initVarsLocalDoacao();
+
+      fetch("/novo/local-doacao", {
+          method: "POST",
+          body: JSON.stringify({ inputs }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => response.text())
+          .then((data) => {
+            var successModal = document.getElementById('successModal');
+            var instance = M.Modal.init(successModal);
+              instance.open();
+              setTimeout(()=>{
+                location.reload();
+              },5000)
+              
+            })
+          .catch((error) => {
+            console.error("Erro ao enviar dados para o servidor:", error);
+      });
+    });
+
+  }
+
+}
+
+if(button.submitLocalAbrigo != undefined){
+
+  button.submitLocalAbrigo.addEventListener('click', (e)=>{
     e.preventDefault();
 
-    let inputs = initVarsLocaoDoacao();
+    let inputs = initVarsLocalAbrigo();
 
-    fetch("/novo/local-doacao", {
+    fetch("/novo/abrigo", {
         method: "POST",
         body: JSON.stringify({ inputs }),
         headers: {
@@ -65,8 +98,6 @@ if(button.submitLocal != undefined){
           console.error("Erro ao enviar dados para o servidor:", error);
     });
   });
-
-}
 
 }
   
@@ -98,6 +129,26 @@ let telefone = document.getElementById('txt_telefone');
 
 if(telefone != undefined){
   telefone.addEventListener('keyup', (event)=>{
+    // Get the input value and remove non-digit characters
+    let input = event.target.value.replace(/\D/g, '');
+
+    // Check if the input length is less than 11 characters
+    if (input.length < 11) {
+        // Apply the mask for phone numbers with 10 digits (e.g., (11) 91234-5678)
+        input = input.replace(/^(\d{2})(\d{4,5})(\d{4})$/, '($1) $2-$3');
+    } else {
+        // Apply the mask for phone numbers with 11 digits (e.g., (11) 99123-4567)
+        input = input.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
+    }
+
+    // Set the formatted value back to the input field
+    event.target.value = input;
+  });
+}
+
+let telefoneAbrigo = document.getElementById('txt_telefone_abrigo');
+if(telefoneAbrigo != undefined){
+  telefoneAbrigo.addEventListener('keyup', (event)=>{
     // Get the input value and remove non-digit characters
     let input = event.target.value.replace(/\D/g, '');
 

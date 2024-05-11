@@ -3,75 +3,68 @@
 namespace App\Controller;
 
 use App\Helper\DateTimeHelper;
-use App\Helper\JsonHelper;
-use App\Model\ItensDoacao;
-use App\Repository\ItensDoacaoRepository;
-use App\Repository\LocalDoacaoRepository;
+use App\Model\LocalAbrigo;
+use App\Repository\LocalAbrigoRepository;
 use App\Router\Controller\Action;
-
+use App\Helper\JsonHelper;
 use Dompdf\Dompdf;
 use Dompdf\Options;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
-class ItensDoacaoController extends Action
+
+class LocalAbrigoController extends Action
 {
+
     public function create()
     {
 
         $data = json_decode(file_get_contents("php://input"), true);
+        $novoAbrigo = new LocalAbrigo();
 
-        $novoItem = new ItensDoacao();
+        $novoAbrigo->setNome(ucwords($data['inputs']['nome']));
+        $novoAbrigo->setLogradouro(ucwords($data['inputs']['logradouro']));
+        $novoAbrigo->setNumero($data['inputs']['numero']);
+        $novoAbrigo->setBairro(ucwords($data['inputs']['bairro']));
+        $novoAbrigo->setCidade(ucwords($data['inputs']['cidade']));
+        $novoAbrigo->setUf($data['inputs']['uf']);
+        $novoAbrigo->setVagas($data['inputs']['vaga']);
+        $novoAbrigo->setTelefone($data['inputs']['telefone']);
 
-        $novoItem->setNome(ucwords($data['inputs']['nome']));
-        $novoItem->setTipo($data['inputs']['select']);
-        $novoItem->setLocal($data['inputs']['selectLocal']);
-        $novoItem->setQuantidade(intval($data['inputs']['quantidade']));
+        $localDoacaoRepo = new LocalAbrigoRepository();
 
-        $registroItens = new ItensDoacaoRepository();
+        $localDoacaoRepo->insertAbrigo($novoAbrigo);
 
-        if($registroItens->create($novoItem)){
-            header('location: /ver-doacoes');
-        }
+        header('location: /');
     }
 
-    public function verDoacoes()
+    public function verAbrigos()
     {
+        $viewLocaisAbrigos = new LocalAbrigoRepository();
 
-        $repo = new ItensDoacaoRepository();
-        $localDoacaoRepo = new LocalDoacaoRepository();
-
-        //Traz os dados necessarios para os itens dos selects
-        $arrayTypes = $repo->returnAllTypes();
-        $arrayLocals = $localDoacaoRepo->returnAllLocal();
-        
         $total_registros = 10;
 
         $pagina = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
 
         $deslocamento = ($pagina-1) * $total_registros;
 
-        $itens = $repo->pegarItensPorPagina($total_registros, $deslocamento);
-        $totalItens = $repo->totalItens();
-        
-        $this->view->totalPaginas = ceil($totalItens/$total_registros);
+        $abrigos = $viewLocaisAbrigos->pegarAbrigoPorPagina($total_registros, $deslocamento);
+        $totalLocaisAbrigos = $viewLocaisAbrigos->totalAbrigo();
+        $this->view->totalPaginas = ceil($totalLocaisAbrigos/$total_registros);
         $this->view->paginaAtiva = $pagina;
         
-        $this->view->dataSelectLocalV = $arrayLocals;
-        $this->view->dataSelectV = $arrayTypes;
-
-        $this->view->itens = $itens;
-
-        $this->render('itens');
+        //$array = $viewItens->getAll();
+        $this->view->abrigos = $abrigos;
+        $this->render('local-abrigo');
     }
 
-    public function filtroDoacoes()
+    public function filtroAbrigo()
     {
-        $filtroDoacaoRepo = new ItensDoacaoRepository();
+        $filtroLocais = new LocalAbrigoRepository();
 
-        $filtro = filter_input(INPUT_POST, 'filtro');
+        $filtro = filter_input(INPUT_POST, 'filtro_abrigo');
 
-        $dados = $filtroDoacaoRepo->filtroPorNome($filtro);
+        $dados = $filtroLocais->filtroPorAbrigo($filtro);
         
         echo JsonHelper::toJson($dados);
     }
@@ -79,7 +72,7 @@ class ItensDoacaoController extends Action
     public function convertToExcel()
     {
 
-        $itens = new ItensDoacaoRepository();
+        $itens = new LocalAbrigoRepository();
         // Create new Spreadsheet object
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
@@ -100,10 +93,11 @@ class ItensDoacaoController extends Action
             ->setCellValue('D1', 'Bairro')
             ->setCellValue('E1', 'Cidade')
             ->setCellValue('F1', 'UF')
-            ->setCellValue('G1', 'TELEFONE')
-            ->setCellValue('H1', 'Cadastrado em');
+            ->setCellValue('G1', 'Vagas')
+            ->setCellValue('H1', 'TELEFONE')
+            ->setCellValue('I1', 'Cadastrado em');
 
-        $data = $itens->getAll();
+        $data = $itens->selectAll();
 
         $row = 2;
 
@@ -114,7 +108,7 @@ class ItensDoacaoController extends Action
 
         // Redirect output to a client’s web browser (Xls)
         header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="doacoes.xls"');
+        header('Content-Disposition: attachment;filename="abrigos.xls"');
         header('Cache-Control: max-age=0');
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
@@ -128,10 +122,8 @@ class ItensDoacaoController extends Action
         $writer = IOFactory::createWriter($spreadsheet, 'Xls');
         $writer->save('php://output');
 
-        header('location :/ver-locais');
+        header('location :/ver-abrigos');
         exit;
-
-
     }
 
     public function convertToPdf()
@@ -143,9 +135,9 @@ class ItensDoacaoController extends Action
         $options->set('isPhpEnabled', true);
 
         $dompdf = new Dompdf($options);
-        $itens = new ItensDoacaoRepository();
+        $itens = new LocalAbrigoRepository();
 
-        $data = $itens->getAll();
+        $data = $itens->selectAll();
         // Conteúdo HTML que você deseja converter em PDF
         $html = '
         <!DOCTYPE html>
@@ -188,8 +180,8 @@ class ItensDoacaoController extends Action
                 <div class="container">
                     <div class="wrapper">
                         <h1>SOS Enchente - RS </h1>
-                        <h3>Doações Necessárias</h3>
-                        <p>Listagem de doações e locais que estão precisando</p>
+                        <h3>Locais de abrigos</h3>
+                        <p>Listagem de abrigos e vagas disponíveis</p>
                     </div>
                     <div class="list-wrapper">
                     <ul>';
@@ -197,9 +189,13 @@ class ItensDoacaoController extends Action
                             $html .= sprintf(
                                 "<li>%s\t-\t%s\t-\t%s\t-\t%s\t-\t%s</li>", 
                                 $dataRow['nome'], 
-                                $dataRow['nome_tipo'],
-                                $dataRow['quantidade'], 
-                                $dataRow['nome_local'], 
+                                $dataRow['logradouro'],
+                                $dataRow['numero'], 
+                                $dataRow['bairro'], 
+                                $dataRow['cidade'], 
+                                $dataRow['uf'], 
+                                $dataRow['vagas'], 
+                                $dataRow['telefone'], 
                                 DateTimeHelper::toNormalFormat($dataRow['dtcadastro']
                             )); 
                         }
@@ -218,9 +214,9 @@ class ItensDoacaoController extends Action
         $dompdf->render();
 
         // Saída do PDF para o navegador
-        $dompdf->stream("doacoes".date("d-m-Y").".pdf", array('Attachment' => true));
+        $dompdf->stream("abrigos-".date("d-m-Y").".pdf", array('Attachment' => true));
 
-        header('location :/ver-locais');
+        header('location :/ver-abrigos');
         exit;
-    }
+    } 
 }

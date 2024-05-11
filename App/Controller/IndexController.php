@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Model\ItensDoacao;
 use App\Repository\ItensDoacaoRepository;
 use App\Repository\LocalDoacaoRepository;
+use App\Repository\LocalAbrigoRepository;
 use App\Router\Controller\Action;
 
 class IndexController extends Action
@@ -48,6 +49,19 @@ class IndexController extends Action
 
     public function info()
     {
+
+        $repo = new ItensDoacaoRepository();
+        $localDoacaoRepo = new LocalDoacaoRepository();
+        $localAbrigoRepo = new LocalAbrigoRepository();
+
+        $totalItens = $repo->totalItens();
+        $totalLocais = $localDoacaoRepo->totalLocal();
+        $totalAbrigos = $localAbrigoRepo->totalAbrigo();
+
+        $this->view->infoTotal = $totalItens;
+        $this->view->infoTotalLocal = $totalLocais;
+        $this->view->infoTotalAbrigos = $totalAbrigos;
+
         $this->render('informacoes');
     }
 }

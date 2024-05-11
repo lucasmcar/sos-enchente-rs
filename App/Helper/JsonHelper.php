@@ -17,7 +17,10 @@ class JsonHelper
 
     public static function toArray($data)
     {
-        return json_decode($data, true);
+        if(!empty($data)){
+            return json_decode($data, true);
+        }
+        throw new \Exception("Não há dados disponíveis ou válidos");
     }
 
 }

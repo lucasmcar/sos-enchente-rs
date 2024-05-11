@@ -7,7 +7,7 @@
  * Inicializa váriaveis de inputs
  * @returns {}
  */
-function initVarsLocaoDoacao(){
+function initVarsLocalDoacao(){
 
     let nome  = document.getElementById("txt_nome_local").value;
     let logradouro = document.getElementById("txt_logradouro").value;
@@ -27,6 +27,30 @@ function initVarsLocaoDoacao(){
       telefone,
   }
 }
+
+function initVarsLocalAbrigo(){
+
+  let nome  = document.getElementById("txt_nome_abrigo").value;
+  let logradouro = document.getElementById("txt_logradouro_abrigo").value;
+  let numero = document.getElementById("txt_numero_abrigo").value;
+  let bairro = document.getElementById("txt_bairro_abrigo").value;
+  let cidade = document.getElementById("txt_cidade_abrigo").value;
+  let uf = document.getElementById("txt_uf_abrigo").value;
+  let vaga = document.getElementById("txt_vagas_abrigo").value;
+  let telefone = document.getElementById("txt_telefone_abrigo").value;
+  
+return {
+    nome,
+    logradouro,
+    numero,
+    bairro,
+    cidade,
+    uf,
+    vaga,
+    telefone,
+}
+}
+
 
 function initVarsDoacao(){
 
@@ -49,9 +73,11 @@ function initButons()
 {
     let submitDoacao = document.getElementById("submitItens");
     let submitLocal = document.getElementById("submitLocal");
+    let submitLocalAbrigo = document.getElementById("submitLocalAbrigo");
 
     return{
         submitDoacao,
-        submitLocal
+        submitLocal,
+        submitLocalAbrigo
     }
 }

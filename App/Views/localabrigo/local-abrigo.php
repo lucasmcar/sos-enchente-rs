@@ -9,8 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-
-    <title>SOS Enchente - RS</title>
+    <title>SOS - RS</title>
 </head>
 <body>
 <ul id="drpDoacao" class="dropdown-content">
@@ -58,7 +57,7 @@
 </ul>
 <div class="container">
 
-<?php if(isset($this->view->locais['retorno']) && $this->view->locais['retorno'] == "Sem Resultado"){ ?>
+<?php if(isset($this->view->abrigos['retorno']) && $this->view->abrigos['retorno'] == "Sem Resultado"){ ?>
     <div class="col s12 m7">
         <h4 class="header">Sem dados</h4>
         <div class="card horizontal">
@@ -71,13 +70,13 @@
     </div>
 <?php exit;}?>
     <div class="col s12 m7">
-        <h2 class="header">Locais de doação</h2>
-        <p>Verifique aqui os locais que recebem doação</p>
+        <h2 class="header">Abrigos</h2>
+        <p>Verifique aqui os abrigos que ainda possuem vaga</p>
         <div class="card horizontal">
             <div class="card-stacked">
                 <div class="card-content">
                     <div id="data">
-                        <div id="preloader-local" class="preloader-wrapper big active" style="display: none;">
+                        <div id="preloader-abrigo" class="preloader-wrapper big active" style="display: none;">
                             <div class="spinner-layer spinner-blue-only">
                                 <div class="circle-clipper left">
                                     <div class="circle"></div>
@@ -92,12 +91,12 @@
                             <form class="col s12">
                             <div class="row">
                                 <div class="input-field col s12">
-                                    <input id="local" type="text" name="filtro_local" class="validate">
-                                    <label for="local">Buscar Locais</label>
+                                    <input id="abrigo" type="text" name="filtro_local" class="validate">
+                                    <label for="abrigo">Buscar Locais</label>
                                     <span class="helper-text" data-error="wrong" data-success="right"></span>
                                 </div>
                             </div>
-                            <div class="progress" id="preloader-search" style="display: none;">
+                            <div class="progress" id="preloader-abrigo-1" style="display: none;">
                                 <div class="indeterminate"></div>
                             </div>
                             <div class="row">
@@ -108,12 +107,12 @@
                                 <!-- Dropdown Structure -->
                                 <ul id='convert' class='dropdown-content'>
                                     <li>
-                                        <a href="/local/export-pdf">
+                                        <a href="/abrigo/export-pdf">
                                             PDF
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="/local/export-excel">
+                                        <a href="/abrigo/export-excel">
                                             EXCEL
                                         </a>
                                     </li>
@@ -121,7 +120,7 @@
                             </div>
                             </form>
                         </div>
-                        <table id="locais">
+                        <table id="abrigos">
                             <thead>
                                 <tr>
                                     <th>Nome</th>
@@ -130,13 +129,15 @@
                                     <th>Bairro</th>
                                     <th>Cidade</th>
                                     <th>UF</th>
+                                    <th>Vagas</th>
                                     <th>Telefone</th>
+                                    
                                     <th>Cadastrado Em</th>
                                 </tr>
                             </thead>
 
                             <tbody>
-                                <?php foreach($this->view->locais as $key => $value) { ?>
+                                <?php foreach($this->view->abrigos as $key => $value) { ?>
                                     <tr>
                                         <td><?= $value['nome'];?></td>
                                         <td><?= $value['logradouro'];?></td>
@@ -144,6 +145,7 @@
                                         <td><?= $value['bairro'];?></td>
                                         <td><?= $value['cidade'];?></td>
                                         <td><?= $value['uf'];?></td>
+                                        <td><?= $value['vagas'];?></td>
                                         <td><?= $value['telefone'];?></td>
                                         <td><?= DateTimeHelper::toNormalFormat($value['dtcadastro']);?></td>
                                     </tr>
@@ -190,15 +192,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
 document.addEventListener('DOMContentLoaded', function() {
     // Show preloader
-    var preloaderLocal = document.getElementById('preloader-local');
-    preloaderLocal.style.display='block';
+    var preloaderAbrigo = document.getElementById('preloader-abrigo');
+    preloaderAbrigo.style.display='block';
 
     // Make request to server
-    fetch('/ver-locais') 
+    fetch('/ver-abrigos') 
         .then((response) => response.json())
         .then(data => {
             // Hide preloader
-            preloaderLocal.style.display = 'none';
+            preloaderAbrigo.style.display = 'none';
             // Display data in the 'data' div
             var dataDiv = document.getElementById('data');
             dataDiv.innerHTML = JSON.stringify(data);
@@ -206,25 +208,24 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => {
             console.error('Error:', error);
             // Hide preloader in case of error
-            preloaderLocal.style.display = 'none';
+            preloaderAbrigo.style.display = 'none';
         });
 });
 
-let inputSearchLocal = document.getElementById("local");
+let inputSearchAbrigo = document.getElementById("abrigo");
 
-
-inputSearchLocal.addEventListener('keyup', ()=>{
-    let preloaderSearch = document.getElementById('preloader-search');
-    let filtro = inputSearchLocal.value.toLowerCase();
+inputSearchAbrigo.addEventListener('keyup', ()=>{
+    let preloaderSearchAbrigo = document.getElementById('preloader-abrigo-1');
+    let filtro = inputSearchAbrigo.value.toLowerCase();
         
-    preloaderSearch.style.display = 'block';
+    preloaderSearchAbrigo.style.display = 'block';
     
-    fetch('/local/filtro', {
+    fetch('/abrigo/filtro', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
-        body: `filtro_local=${filtro}`
+        body: `filtro_abrigo=${filtro}`
     })
     .then((resp) => resp.json())
     .then((data) => {
@@ -237,16 +238,16 @@ inputSearchLocal.addEventListener('keyup', ()=>{
                 aviso.style.color = "black";
                 aviso.innerHTML = `Resultados encontrados para "${filtro.length == 0 ? "todos" : filtro}": ${data.length}`;
             }
-            preloaderSearch.style.display = 'none';
-            let tabelaResultados = document.getElementById('locais');
+            preloaderSearchAbrigo.style.display = 'none';
+            let tabelaResultados = document.getElementById('abrigos');
             const tbody = tabelaResultados.querySelector('tbody');
 
             // Limpa o conteúdo anterior da tabela
             tbody.innerHTML = '';
-
+            console.log(data)
             // Renderiza as linhas da tabela de acordo com os resultados
             data.forEach(resultado => {
-
+                
                 var partes = resultado.dtcadastro.split(' ');
 
                 // Dividindo a parte da data em ano, mês e dia
@@ -267,8 +268,9 @@ inputSearchLocal.addEventListener('keyup', ()=>{
                 
                 const tr = document.createElement('tr');
                 Object.values(resultado).forEach(valor => {
-
+                    console.log(valor)
                     const td = document.createElement('td');
+                    
                     td.textContent = valor;
                     tr.appendChild(td);
                 });

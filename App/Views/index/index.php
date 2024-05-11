@@ -11,24 +11,29 @@
 </head>
 <body>
 <ul id="drpDoacao" class="dropdown-content">
-  <li><a href="/ver-doacoes">O que precisa?</a></li>
-  <li><a href="/ver-locais">Locais de doação</a></li>
+    <li><a href="/ver-doacoes">O que precisa?</a></li>
+    <li><a href="/ver-locais">Locais de doação</a></li>
+</ul>
+<ul id="drpAbrigos" class="dropdown-content">
+    <li><a href="/ver-abrigos">Ver Abrigos</a></li>
+    <li><a href="/ver-abrigos-pets">Ver Abrigos Pets</a></li>
 </ul>
 <ul id="drpPessoasPets" class="dropdown-content">
-    <li><a href="/ver-abrigos"> Abrigos</a></li>     
-    <li><a href="/ver-abrigos-pets">Abrigos Pets</a></li>  
+    <li><a href="/ver-pessoas">Pessoas</a></li>     
+    <li><a href="/ver-pets">Pets</a></li>  
 </ul>
 <nav>
     <div class="nav-wrapper  green darken-1">
         <div class="container">
-            <a href="/" class="brand-logo">SOS Enchente - RS</a>
+            <a href="/" class="brand-logo">SOS - RS</a>
             <a href="#" data-target="menu-mobile" class="sidenav-trigger">
                 <i class="material-icons">dehaze</i>
             </a>
             <ul class="right hide-on-med-and-down">
                 <li><a href="/">Inicio</a></li>
                 <li><a class="dropdown-trigger" href="#!" data-target="drpDoacao">Doações<i class="material-icons right">arrow_drop_down</i></a></li>
-                <li><a class="dropdown-trigger" href="#!" data-target="drpPessoasPets">Pessoas<i class="material-icons right">arrow_drop_down</i></a></li>
+                <li><a class="dropdown-trigger" href="#!" data-target="drpAbrigos">Abrigos<i class="material-icons right">arrow_drop_down</i></a></li>
+                <li><a class="dropdown-trigger" href="#!" data-target="drpPessoasPets">Pessoas/Pets<i class="material-icons right">arrow_drop_down</i></a></li>
                 <li><a href="/info">Informações</a></li>
                 <li><a href="/ajude">Faça sua doação</a></li>    
                 <li><a href="/about">Sobre</a></li>     
@@ -42,6 +47,8 @@
     <li><a href="/ver-locais">Locais de doação</a></li>
     <li><a href="/ver-abrigos"> Abrigos</a></li>     
     <li><a href="/ver-abrigos-pets">Abrigos Pets</a></li>
+    <li><a href="/ver-pessoas">Pessoas</a></li>
+    <li><a href="/ver-pets">Pets</a></li>
     <li><a href="/info">Informações</a></li> 
     <li><a href="/ajude">Faça sua doação</a></li>       
     <li><a href="/about">Sobre</a></li> 
@@ -280,17 +287,25 @@
                 </div>
                 <div class="row">
                 
-                    <div class="input-field col s6">
+                    <div class="input-field col s2">
                         <input id="txt_cidade_abrigo" name="cidade" type="text" class="validate">
                         <label for="txt_cidade_abrigo">Cidade:</label>
                     </div>
                     <div class="input-field col s2">
-                    <input id="txt_uf_abrigo" name="uf" type="text" class="validate">
-                    <label for="txt_uf_abrigo">UF:</label>
+                        <input id="txt_uf_abrigo" name="uf" type="text" class="validate">
+                        <label for="txt_uf_abrigo">UF:</label>
+                  </div>
+                  <div class="input-field col s4">
+                        <input id="txt_telefone_abrigo" name="telefone" type="text" class="validate">
+                        <label for="txt_telefone_abrigo">Telefone:</label>
+                  </div>
+                  <div class="input-field col s3">
+                        <input id="txt_vagas_abrigo" name="vagas" type="text" class="validate">
+                        <label for="txt_vagas_abrigo">Nº Vagas:</label>
                   </div>
                 </div>
                 <div class="row">
-                  <button class="btn light-green darken-2" id="submitLocalAbrigo" type="submit" name="">Cadastrar Abrigo
+                  <button class="btn light-green darken-2" id="submitLocalAbrigo" type="button" name="">Cadastrar Abrigo
                     <i class="material-icons right">send</i>
                   </button>
                 </div>

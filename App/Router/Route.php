@@ -37,6 +37,8 @@ class Route extends Bootstrap
                 'action' => 'verDoacoes'
             ],
 
+            
+
             'filtro' => [
                 'route' => '/doacoes/filtro',
                 'controller' => 'itensDoacaoController',
@@ -47,6 +49,12 @@ class Route extends Bootstrap
                 'route' => '/local/filtro',
                 'controller' => 'localDoacaoController',
                 'action' => 'filtroLocal'
+            ],
+
+            'filtroAbrigo' => [
+                'route' => '/abrigo/filtro',
+                'controller' => 'localAbrigoController',
+                'action' => 'filtroAbrigo'
             ],
 
             
@@ -70,10 +78,22 @@ class Route extends Bootstrap
                 'action' => 'create'
             ],
 
+            'cadastroLocalAbrigo' => [
+                'route' => '/novo/abrigo',
+                'controller' => 'localAbrigoController',
+                'action' => 'create'
+            ],
+
             'verLocalDoacao' => [
                 'route' => '/ver-locais',
                 'controller' => 'localDoacaoController',
                 'action' => 'verLocais'
+            ],
+
+            'verLocalAbrigo' => [
+                'route' => '/ver-abrigos',
+                'controller' => 'localAbrigoController',
+                'action' => 'verAbrigos'
             ],
 
             'contact' => [
@@ -105,6 +125,18 @@ class Route extends Bootstrap
             'convertToPdfDoacao' => [
                 'route' => '/doacao/export-pdf',
                 'controller' => 'itensDoacaoController',
+                'action' => 'convertToPdf'
+            ],
+
+            'convertToExcelAbrigo' => [
+                'route' => '/abrigo/export-excel',
+                'controller' => 'localAbrigoController',
+                'action' => 'convertToExcel'
+            ],
+
+            'convertToPdfAbrigo' => [
+                'route' => '/abrigo/export-pdf',
+                'controller' => 'localAbrigoController',
                 'action' => 'convertToPdf'
             ],
         ];
