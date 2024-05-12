@@ -10,35 +10,18 @@ if(button.submitDoacao != undefined){
 
     let inputs = initVarsDoacao();
 
-    fetch("/nova/doacao", {
-        method: "POST",
-        body: JSON.stringify({ inputs }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-        .then((response) => response.text())
-        .then((data) => {
-          var successModal = document.getElementById('successModal');
-          var successModalItem = document.getElementById('successModalItens');
-          if(successModalItem != undefined){
-            let instance = M.Modal.init(successModalItem);
-            instance.open()
-            
-            
-          }
-          if(successModal != undefined){
-            let instance1 = M.Modal.init(successModal);
-            instance1.open();
-           
-          }
+    const fetch = new Fetch("http://localhost:8000");
+
+      fetch.post('/nova/doacao', { inputs }, {"Content-Type": "application/json",})
+      .then( (data) => {
+        var successModal = document.getElementById('successModal');
+        var instance = M.Modal.init(successModal);
+          instance.open();
           setTimeout(()=>{
             location.reload();
           },5000)
-        })
-        .catch((error) => {
-          console.error("Erro ao enviar dados para o servidor:", error);
-    });
+      })
+      .catch((error) => console.log(error))
   });
 
 if(button.submitLocal != undefined){
@@ -47,26 +30,18 @@ if(button.submitLocal != undefined){
 
       let inputs = initVarsLocalDoacao();
 
-      fetch("/novo/local-doacao", {
-          method: "POST",
-          body: JSON.stringify({ inputs }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-          .then((response) => response.text())
-          .then((data) => {
-            var successModal = document.getElementById('successModal');
-            var instance = M.Modal.init(successModal);
-              instance.open();
-              setTimeout(()=>{
-                location.reload();
-              },5000)
-              
-            })
-          .catch((error) => {
-            console.error("Erro ao enviar dados para o servidor:", error);
-      });
+      const fetch = new Fetch("http://localhost:8000");
+
+      fetch.post('/novo/local-doacao', { inputs }, {"Content-Type": "application/json",})
+      .then( (data) => {
+        var successModal = document.getElementById('successModal');
+        var instance = M.Modal.init(successModal);
+          instance.open();
+          setTimeout(()=>{
+            location.reload();
+          },5000)
+      })
+      .catch((error) => console.log(error))
     });
 
   }
@@ -80,27 +55,21 @@ if(button.submitLocalAbrigo != undefined){
 
     let inputs = initVarsLocalAbrigo();
 
-    fetch("/novo/abrigo", {
-        method: "POST",
-        body: JSON.stringify({ inputs }),
-        headers: {
-          "Content-Type": "application/json",
-        },
+    const fetch = new Fetch("http://localhost:8000");
+
+    fetch.post('/novo/abrigo', { inputs }, {"Content-Type": "application/json",})
+      .then( (data) => {
+        var successModal = document.getElementById('successModal');
+        var instance = M.Modal.init(successModal);
+          instance.open();
+          setTimeout(()=>{
+            location.reload();
+          },5000)
       })
-        .then((response) => response.text())
-        .then((data) => {
-          var successModal = document.getElementById('successModal');
-          var instance = M.Modal.init(successModal);
-            instance.open();
-            
-          })
-        .catch((error) => {
-          console.error("Erro ao enviar dados para o servidor:", error);
-    });
+      .catch((error) => console.log(error))
   });
 
 }
-  
 
 //Links ativos
 document.addEventListener("DOMContentLoaded", function() {

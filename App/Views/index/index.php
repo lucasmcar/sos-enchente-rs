@@ -21,6 +21,7 @@
 <ul id="drpPessoasPets" class="dropdown-content">
     <li><a href="/ver-pessoas">Pessoas</a></li>     
     <li><a href="/ver-pets">Pets</a></li>  
+    <li><a href="/ver-desaparecidos">Desaparecidos</a></li>  
 </ul>
 <nav>
     <div class="nav-wrapper  green darken-1">
@@ -49,6 +50,7 @@
     <li><a href="/ver-abrigos-pets">Abrigos Pets</a></li>
     <li><a href="/ver-pessoas">Pessoas</a></li>
     <li><a href="/ver-pets">Pets</a></li>
+    <li><a href="/ver-desaparecidos">Desaparecidos</a></li>
     <li><a href="/info">Informações</a></li> 
     <li><a href="/ajude">Faça sua doação</a></li>       
     <li><a href="/about">Sobre</a></li> 
@@ -57,10 +59,10 @@
     <div class="container">
         <div class="row">
             <div class="col s12">
-                <h3>Vamos ajudar?</h3>
+                <h3>SOS - RS</h3>
                 <p>
                     Devido as grandes enchentes que assolaram o RS, por conta do grande volume de chuva no final 
-                    do mês de abril e inicio de maio 
+                    do mês de abril e ínicio de maio 
                     muita gente perdeu suas casas, entes queridos e muitos bens.
                 </p>
                 <p>
@@ -68,16 +70,21 @@
                     e quem quer doar sabem onde e/ou o que é mais urgente, mais necessário.
                 </p>
                 <p>
-                    Estamos aqui pra ser o ponto de encontro 
-                    entre as pessoas que querem doar alimentos, roupas entre outros itens e locais para doação.
-                </p>
-                <p>
-                    Vamos juntos tornar essa corrente de solidariedade maior e ajudar.
+                    Com o intuito de ser mais uma ferramenta de apoio aos voluntários.
+                    Ela visa  ser o ponto de encontro entre as pessoas que querem doar alimentos, 
+                    roupas entre outros itens e gostariam de saber onde e o que estão precisando.
+
+                    Também, se você estiver oferencendo abrigo ou conheça um lugar oficial do governo, 
+                    que possua vaga ou local para recolher doações.
                 </p>
                 <p>
                     Todos os locais cadastrados serão revisados, para que não haja nenhum problema.
                 </p>
-
+                <p>
+                    Esse sistema também ajuda a cadastrar pessoas desaparecidas.
+                    Se essa pessoa estiver em algum abrigo registrado no sistema, impedirá o cadastro e 
+                    mostrará um aviso indicando onde essa pessoa está
+                </p>
                 <ul class="collection">
                     <li class="collection-item avatar">
                         <img src="/assets/imgs/add-location.png" alt="" class="circle">
@@ -91,6 +98,14 @@
                         <span class="title">2. Doações e pessoas</span>
                         <p>Após cadastro do local, <br>
                             cadastre os itens necessários e as pessoas desabrigadas .
+                        </p>
+                    </li>
+                    <li class="collection-item avatar">
+                        <img src="/assets/imgs/missing.png" alt="" class="circle">
+                        <span class="title">3 . Pessoas desaparecidas</span>
+                        <p>Antes de cadastrar, <br>
+                            o sistema fará uma busca, se encontrar, vai mostrar o local e endereço
+                            dessa pessoa.
                         </p>
                     </li>
                 </ul>
@@ -269,7 +284,7 @@
             <form method="post" action="#">
                 <div class="row">
                     <div class="input-field col s12">
-                        <input id="txt_nome_abrigo" name="nome_abrigo" type="text" class="validate">
+                        <input id="txt_nome_abrigo" name="nome" type="text" class="validate">
                         <label for="txt_nome_abrigo">Nome:</label>
                     </div>
                     <div class="input-field col s4">
@@ -312,9 +327,6 @@
             </form>
 
             
-        </div>
-        <div class="modal-footer">
-            <a href="/novo/abrigo" class="modal-close waves-effect waves-green">Cadastrar Abrigo</a>
         </div>
     </div>
 
@@ -393,6 +405,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
     <script src="/assets/js/inits.js"></script>
+    <script src="/assets/js/fetch.js"></script>
     <script src="/assets/js/functions.js"></script>
     <script>
     $(document).ready(function(){

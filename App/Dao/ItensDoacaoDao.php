@@ -12,7 +12,7 @@ class ItensDoacaoDao
 
     public function __construct()
     {   
-        $this->connection = new Connection;
+        $this->connection = new Connection();
     }
 
     public function insert(ItensDoacao $model) : int

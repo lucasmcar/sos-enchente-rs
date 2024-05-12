@@ -1,3 +1,17 @@
+<?php 
+
+  $labels = [];
+  $values = [];
+  foreach($this->view->itensPorCidade as $key => $value){
+    $labels[] = $value['cidade'];
+    $values[] = $value['total'];
+  }
+
+  $labels_str = json_encode($labels);
+  $values_str = json_encode($values);
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,6 +35,7 @@
 <ul id="drpPessoasPets" class="dropdown-content">
     <li><a href="/ver-pessoas">Pessoas</a></li>     
     <li><a href="/ver-pets">Pets</a></li>  
+    <li><a href="/ver-desaparecidos">Desaparecidos</a></li>  
 </ul>
 <nav>
     <div class="nav-wrapper  green darken-1">
@@ -64,12 +79,12 @@
           </div>
         </div>
 
-        <div class="col s6 m6 l4">
+        <div class="col s4 m6 l6">
             <canvas id="myChart">
 
             </canvas>
         </div>
-        <div class="col s6 m6 l4">
+        <div class="col s4 m6 l6">
             <canvas id="myChart2">
 
             </canvas>
@@ -106,13 +121,18 @@ $(".dropdown-trigger").dropdown();
 
 const ctx = document.getElementById('myChart');
 
+  const labels = <?php echo $labels_str; ?>;
+  const values = <?php echo $values_str; ?>;
+
   new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+      labels: labels,
       datasets: [{
-        label: '# of Votes',
-        data: [12, 19, 3, 5, 2, 3],
+        label: '# Total de itens por cidade',
+        data: values,
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        borderColor: 'rgba(54, 162, 235, 1)',
         borderWidth: 1
       }]
     },

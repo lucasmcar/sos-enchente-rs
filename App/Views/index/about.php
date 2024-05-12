@@ -13,9 +13,14 @@
     <li><a href="/ver-doacoes">O que precisa?</a></li>
     <li><a href="/ver-locais">Locais de doação</a></li>
 </ul>
-<ul id="drpPessoasPets" class="dropdown-content">
+<ul id="drpAbrigos" class="dropdown-content">
     <li><a href="/ver-abrigos"> Abrigos</a></li>     
     <li><a href="/ver-abrigos-pets">Abrigos Pets</a></li>  
+</ul>
+<ul id="drpPessoasPets" class="dropdown-content">
+    <li><a href="/ver-pessoas">Pessoas</a></li>     
+    <li><a href="/ver-pets">Pets</a></li>
+    <li><a href="/ver-desaparecidos">Desaparecidos</a></li>
 </ul>
 <nav>
     <div class="nav-wrapper  green darken-1">
@@ -27,6 +32,7 @@
             <ul class="right hide-on-med-and-down">
                 <li><a href="/">Inicio</a></li>
                 <li><a class="dropdown-trigger" href="#!" data-target="drpDoacao">Doações<i class="material-icons right">arrow_drop_down</i></a></li>
+                <li><a class="dropdown-trigger" href="#!" data-target="drpAbrigos">Abrigos<i class="material-icons right">arrow_drop_down</i></a></li>
                 <li><a class="dropdown-trigger" href="#!" data-target="drpPessoasPets">Pessoas<i class="material-icons right">arrow_drop_down</i></a></li>
                 <li><a href="/ajude">Faça sua doação</a></li>    
                 <li><a href="/about">Sobre</a></li>     
@@ -39,7 +45,11 @@
     <li><a href="/ver-doacoes">O que precisa?</a></li>
     <li><a href="/ver-locais">Locais de doação</a></li>
     <li><a href="/ver-abrigos"> Abrigos</a></li>     
-    <li><a href="/ver-abrigos-pets">Abrigos Pets</a></li>  
+    <li><a href="/ver-abrigos-pets">Abrigos Pets</a></li>
+    <li><a href="/ver-pessoas">Pessoas</a></li>
+    <li><a href="/ver-pets">Pets</a></li>
+    <li><a href="/ver-desaparecidos">Desaparecidos</a></li>
+    <li><a href="/info">Informações</a></li> 
     <li><a href="/ajude">Faça sua doação</a></li>       
     <li><a href="/about">Sobre</a></li> 
 </ul>

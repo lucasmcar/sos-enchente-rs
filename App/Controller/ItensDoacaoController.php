@@ -69,7 +69,7 @@ class ItensDoacaoController extends Action
     {
         $filtroDoacaoRepo = new ItensDoacaoRepository();
 
-        $filtro = filter_input(INPUT_POST, 'filtro');
+        $filtro = filter_input(INPUT_GET, 'filtro');
 
         $dados = $filtroDoacaoRepo->filtroPorNome($filtro);
         

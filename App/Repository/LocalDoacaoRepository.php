@@ -43,4 +43,9 @@ class LocalDoacaoRepository
     {
         return $this->dao->returnAll();
     }
+
+    public function itensPorCidade()
+    {
+        return $this->dao->getItensPorCidade();
+    }
 }

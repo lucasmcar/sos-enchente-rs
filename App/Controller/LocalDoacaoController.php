@@ -59,7 +59,7 @@ class LocalDoacaoController extends Action
     {
         $filtroLocais = new LocalDoacaoRepository();
 
-        $filtro = filter_input(INPUT_POST, 'filtro_local');
+        $filtro = filter_input(INPUT_GET, 'filtro_local');
 
         $dados = $filtroLocais->filtroPorLocal($filtro);
         

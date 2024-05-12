@@ -24,7 +24,8 @@ use App\Helper\DateTimeHelper;
 </ul>
 <ul id="drpPessoasPets" class="dropdown-content">
     <li><a href="/ver-pessoas">Pessoas</a></li>     
-    <li><a href="/ver-pets">Pets</a></li>  
+    <li><a href="/ver-pets">Pets</a></li>
+    <li><a href="/ver-desaparecidos">Desaparecidos</a></li>  
 </ul>
 <nav>
     <div class="nav-wrapper  green darken-1">
@@ -53,6 +54,7 @@ use App\Helper\DateTimeHelper;
     <li><a href="/ver-abrigos-pets">Abrigos Pets</a></li>
     <li><a href="/ver-pessoas">Pessoas</a></li>
     <li><a href="/ver-pets">Pets</a></li>
+    <li><a href="/ver-desaparecidos">Desaparecidos</a></li>
     <li><a href="/info">Informações</a></li> 
     <li><a href="/ajude">Faça sua doação</a></li>       
     <li><a href="/about">Sobre</a></li> 
@@ -236,6 +238,7 @@ use App\Helper\DateTimeHelper;
 <!-- Materializa -->                        
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
+<script src="/assets/js/fetch.js"></script>
 <script src="/assets/js/inits.js"></script>
 <script src="/assets/js/functions.js"></script>
 <script>
@@ -275,9 +278,9 @@ document.addEventListener('DOMContentLoaded', function() {
     var preloader = document.getElementById('preloader');
         preloader.style.display= 'block';
 
+        let fetch = new Fetch("https://localhost:8000");
         // Make request to server
-        fetch('/ver-doacoes')
-        .then((response) => response.json())
+        fetch.get('/ver-doacoes', {"Content-Type" : "application/json"})
         .then(data => {
 
             // Hide preloader
@@ -302,20 +305,14 @@ if(inputSearch != undefined){
 
     inputSearch.addEventListener('keyup', ()=>{
 
-var preloaderSearchItem = document.getElementById('preloader-search-item');
-preloaderSearchItem.style.display = 'block';
+    var preloaderSearchItem = document.getElementById('preloader-search-item');
+    preloaderSearchItem.style.display = 'block';
 
-let filtro = inputSearch.value.toLowerCase();
-
-fetch('/doacoes/filtro', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-    },
-    body: `filtro=${filtro}`
-})
-.then((resp) =>resp.json())
-.then((data) => {
+    let filtro = inputSearch.value.toLowerCase();
+    let fetch = new Fetch("http://localhost:8000")
+        
+    fetch.get(`/doacoes/filtro?filtro=${filtro}`, {'Content-Type': 'application/json'})
+    .then((data) => {
     let aviso = document.querySelector(".helper-text");
     if(data.retorno == "Sem Resultado"){
         aviso.style.color = "red";

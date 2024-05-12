@@ -62,7 +62,8 @@ class LocalAbrigoController extends Action
     {
         $filtroLocais = new LocalAbrigoRepository();
 
-        $filtro = filter_input(INPUT_POST, 'filtro_abrigo');
+        $filtro = filter_input(INPUT_GET, 'filtro_abrigo');
+        //$filtro = json_decode(file_get_contents("php://input"), true);
 
         $dados = $filtroLocais->filtroPorAbrigo($filtro);
         

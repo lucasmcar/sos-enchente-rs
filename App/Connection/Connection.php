@@ -5,7 +5,7 @@ namespace App\Connection;
 use PDO;
 use PDOStatement;
 
-class Connection
+class Connection implements IConnection
 {
     private $user;
     private $db;

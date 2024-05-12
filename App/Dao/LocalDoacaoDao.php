@@ -80,4 +80,12 @@ class LocalDoacaoDao
         $resultado = $this->connection->rs();
         return $resultado[0]['total'];
     }
+
+    public function getItensPorCidade()
+    {
+        $sql = "SELECT l.cidade, sum(d.quantidade) as total from local_doacao l join itens_doacao d on l.idlocaldoacao = d.idlocaldoacao group by l.cidade";
+        $this->connection->query($sql);
+        $resultado = $this->connection->rs();
+        return $resultado;
+    }
 }

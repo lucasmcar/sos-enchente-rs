@@ -22,7 +22,8 @@
 </ul>
 <ul id="drpPessoasPets" class="dropdown-content">
     <li><a href="/ver-pessoas">Pessoas</a></li>     
-    <li><a href="/ver-pets">Pets</a></li>  
+    <li><a href="/ver-pets">Pets</a></li>
+    <li><a href="/ver-desaparecidos">Desaparecidos</a></li>  
 </ul>
 <nav>
     <div class="nav-wrapper  green darken-1">
@@ -51,6 +52,7 @@
     <li><a href="/ver-abrigos-pets">Abrigos Pets</a></li>
     <li><a href="/ver-pessoas">Pessoas</a></li>
     <li><a href="/ver-pets">Pets</a></li>
+    <li><a href="/ver-desaparecidos">Desaparecidos</a></li>
     <li><a href="/info">Informações</a></li> 
     <li><a href="/ajude">Faça sua doação</a></li>       
     <li><a href="/about">Sobre</a></li> 
@@ -171,10 +173,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <!-- Materializa -->                        
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
 <!-- Inicialização de váriaveis -->
 <script src="/assets/js/inits.js"></script>
+<script src="/assets/js/fetch.js"></script>
 <script src="/assets/js/functions.js"></script>
-    
 <script>
 
 $(document).ready(function(){
@@ -195,19 +198,18 @@ document.addEventListener('DOMContentLoaded', function() {
     var preloaderAbrigo = document.getElementById('preloader-abrigo');
     preloaderAbrigo.style.display='block';
 
-    // Make request to server
-    fetch('/ver-abrigos') 
-        .then((response) => response.json())
-        .then(data => {
+    let fetch = new Fetch('http://localhost:8000');
+
+    fetch.get('/ver-abrigos')
+    .then(data => {
             // Hide preloader
             preloaderAbrigo.style.display = 'none';
-            // Display data in the 'data' div
             var dataDiv = document.getElementById('data');
             dataDiv.innerHTML = JSON.stringify(data);
+            return dataDiv.innerHTML;
         })
         .catch(error => {
             console.error('Error:', error);
-            // Hide preloader in case of error
             preloaderAbrigo.style.display = 'none';
         });
 });
@@ -220,14 +222,9 @@ inputSearchAbrigo.addEventListener('keyup', ()=>{
         
     preloaderSearchAbrigo.style.display = 'block';
     
-    fetch('/abrigo/filtro', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: `filtro_abrigo=${filtro}`
-    })
-    .then((resp) => resp.json())
+    let fetch = new Fetch("http://localhost:8000")
+    let uri = decodeURI(`/abrigo/filtro?filtro_abrigo=${filtro}`)
+    fetch.get(uri,{'Content-Type': 'application/json'})
     .then((data) => {
         if(data != undefined || data != null){
             let aviso = document.querySelector(".helper-text");
@@ -244,7 +241,6 @@ inputSearchAbrigo.addEventListener('keyup', ()=>{
 
             // Limpa o conteúdo anterior da tabela
             tbody.innerHTML = '';
-            console.log(data)
             // Renderiza as linhas da tabela de acordo com os resultados
             data.forEach(resultado => {
                 
@@ -268,7 +264,6 @@ inputSearchAbrigo.addEventListener('keyup', ()=>{
                 
                 const tr = document.createElement('tr');
                 Object.values(resultado).forEach(valor => {
-                    console.log(valor)
                     const td = document.createElement('td');
                     
                     td.textContent = valor;

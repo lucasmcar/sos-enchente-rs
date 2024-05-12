@@ -24,6 +24,7 @@
 <ul id="drpPessoasPets" class="dropdown-content">
     <li><a href="/ver-pessoas">Pessoas</a></li>     
     <li><a href="/ver-pets">Pets</a></li>  
+    <li><a href="/ver-desaparecidos">Desaparecidos</a></li>
 </ul>
 <nav>
     <div class="nav-wrapper  green darken-1">
@@ -52,6 +53,7 @@
     <li><a href="/ver-abrigos-pets">Abrigos Pets</a></li>
     <li><a href="/ver-pessoas">Pessoas</a></li>
     <li><a href="/ver-pets">Pets</a></li>
+    <li><a href="/ver-desaparecidos">Desaparecidos</a></li>
     <li><a href="/info">Informações</a></li> 
     <li><a href="/ajude">Faça sua doação</a></li>       
     <li><a href="/about">Sobre</a></li> 
@@ -171,6 +173,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <!-- Inicialização de váriaveis -->
 <script src="/assets/js/inits.js"></script>
+<script src="/assets/js/fetch.js"></script>
 <script src="/assets/js/functions.js"></script>
     
 <script>
@@ -193,9 +196,8 @@ document.addEventListener('DOMContentLoaded', function() {
     var preloaderLocal = document.getElementById('preloader-local');
     preloaderLocal.style.display='block';
 
-    // Make request to server
-    fetch('/ver-locais') 
-        .then((response) => response.json())
+    let fetch = new Fetch('http://localhost:8000');
+    fetch.get('/ver-locais') 
         .then(data => {
             // Hide preloader
             preloaderLocal.style.display = 'none';
@@ -212,21 +214,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
 let inputSearchLocal = document.getElementById("local");
 
-
 inputSearchLocal.addEventListener('keyup', ()=>{
     let preloaderSearch = document.getElementById('preloader-search');
     let filtro = inputSearchLocal.value.toLowerCase();
         
     preloaderSearch.style.display = 'block';
+
+    let fetch = new Fetch('http://localhost:8000');
     
-    fetch('/local/filtro', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: `filtro_local=${filtro}`
-    })
-    .then((resp) => resp.json())
+    fetch.get(`/local/filtro?filtro_local=${filtro}`, {'Content-Type': 'application/json'})
     .then((data) => {
         if(data != undefined || data != null){
             let aviso = document.querySelector(".helper-text");

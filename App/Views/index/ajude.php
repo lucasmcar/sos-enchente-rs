@@ -19,7 +19,8 @@
 </ul>
 <ul id="drpPessoasPets" class="dropdown-content">
     <li><a href="/ver-pessoas">Pessoas</a></li>     
-    <li><a href="/ver-pets">Pets</a></li>  
+    <li><a href="/ver-pets">Pets</a></li>
+    <li><a href="/ver-desaparecidos">Desaparecidos</a></li>
 </ul>
 <nav>
     <div class="nav-wrapper  green darken-1">
@@ -48,6 +49,7 @@
     <li><a href="/ver-abrigos-pets">Abrigos Pets</a></li>
     <li><a href="/ver-pessoas">Pessoas</a></li>
     <li><a href="/ver-pets">Pets</a></li>
+    <li><a href="/ver-desaparecidos">Desaparecidos</a></li>
     <li><a href="/info">Informações</a></li> 
     <li><a href="/ajude">Faça sua doação</a></li>       
     <li><a href="/about">Sobre</a></li> 
