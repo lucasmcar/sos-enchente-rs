@@ -78,17 +78,6 @@
             <div class="card-stacked">
                 <div class="card-content">
                     <div id="data">
-                        <div id="preloader-abrigo" class="preloader-wrapper big active" style="display: none;">
-                            <div class="spinner-layer spinner-blue-only">
-                                <div class="circle-clipper left">
-                                    <div class="circle"></div>
-                                    </div><div class="gap-patch">
-                                        <div class="circle"></div>
-                                    </div><div class="circle-clipper right">
-                                    <div class="circle"></div>
-                                </div>
-                            </div>
-                        </div>
                         <div class="row">
                             <form class="col s12">
                             <div class="row">
@@ -131,6 +120,7 @@
                                     <th>Bairro</th>
                                     <th>Cidade</th>
                                     <th>UF</th>
+                                    <th>Tipo</th>
                                     <th>Vagas</th>
                                     <th>Telefone</th>
                                     
@@ -147,6 +137,7 @@
                                         <td><?= $value['bairro'];?></td>
                                         <td><?= $value['cidade'];?></td>
                                         <td><?= $value['uf'];?></td>
+                                        <td><?= $value['tipo'];?></td>
                                         <td><?= $value['vagas'];?></td>
                                         <td><?= $value['telefone'];?></td>
                                         <td><?= DateTimeHelper::toNormalFormat($value['dtcadastro']);?></td>
@@ -155,20 +146,38 @@
                             </tbody>
                         </table>
                     <ul class="pagination">
-                        <li class="<?php echo $pagina <= 1 ? 'disabled' : ''; ?>"><a href="?pagina=1">Primeira</a></li>
+                        <li class="<?php echo $pagina <= 1 ? 'disabled' : ''; ?>"><a href="ver-abrigo/pagina/1">Primeira</a></li>
                         <?php for ($i = 1; $i <= $this->view->totalPaginas; $i++): ?>
-                        <li class="<?php echo $this->view->paginaAtiva  == $i? 'active green darken-1' : ''; ?>"><a href="?pagina=<?php echo $i; ?>"><?php echo $i; ?></a></li>
+                        <li class="<?php echo $this->view->paginaAtiva  == $i? 'active green darken-1' : ''; ?>"><a href="ver-abrigo/pagina/<?php echo $i; ?>"><?php echo $i; ?></a></li>
                         <?php endfor; ?>
-                        <li class="<?php echo $pagina >= $this->view->totalPaginas ? 'disabled' : ''; ?>"><a href="?pagina=<?php echo $this->view->totalPaginas; ?>">Última</a></li>
+                        <li class="<?php echo $pagina >= $this->view->totalPaginas ? 'disabled' : ''; ?>"><a href="ver-abrigo/pagina/<?php echo $this->view->totalPaginas; ?>">Última</a></li>
                     </ul>
 
                 </div>      
-                    </div>
                 </div>
             </div>
         </div>
-        
+    </div>
 </div>
+<!--modal carregar dados -->
+<div id="modalLoading" class="modal">
+    <div class="modal-content">
+        <div id="preloader-abrigo" class="preloader-wrapper big active" style="display: none;">
+            <div class="spinner-layer spinner-blue-only">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+         
 <!-- Importando jQuery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <!-- Materializa -->                        
@@ -196,21 +205,27 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', function() {
     // Show preloader
     var preloaderAbrigo = document.getElementById('preloader-abrigo');
-    preloaderAbrigo.style.display='block';
+    var modalLoading = document.getElementById('modalLoading');
+    var instance = M.Modal.init(modalLoading, {
+        dismissible: false, // Impede que o modal seja fechado clicando fora dele
+        opacity: 0.5, // Define a opacidade do modal
+        startingTop: '10%', // Define a posição inicial do modal
+        endingTop: '20%' // Define a posição final do modal
+    });
 
+     // Exibe a modal
+    instance.open();
+    preloaderAbrigo.style.display = "block";
     let fetch = new Fetch('http://localhost:8000');
 
-    fetch.get('/ver-abrigos')
+    fetch.get('/ver-abrigos', {"Content-Type" : "application/json"} , "json")
     .then(data => {
-            // Hide preloader
-            preloaderAbrigo.style.display = 'none';
-            var dataDiv = document.getElementById('data');
-            dataDiv.innerHTML = JSON.stringify(data);
-            return dataDiv.innerHTML;
+            instance.close();
+            preloaderAbrigo.style.display = "none";
         })
         .catch(error => {
             console.error('Error:', error);
-            preloaderAbrigo.style.display = 'none';
+            instance.close();
         });
 });
 
@@ -223,7 +238,7 @@ inputSearchAbrigo.addEventListener('keyup', ()=>{
     preloaderSearchAbrigo.style.display = 'block';
     
     let fetch = new Fetch("http://localhost:8000")
-    let uri = decodeURI(`/abrigo/filtro?filtro_abrigo=${filtro}`)
+    let uri = decodeURI(`/abrigo/filtro/${filtro}`)
     fetch.get(uri,{'Content-Type': 'application/json'})
     .then((data) => {
         if(data != undefined || data != null){

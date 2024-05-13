@@ -145,14 +145,14 @@ class Route extends Bootstrap
             'route' => '/',
             'controller' => 'indexController',
             'action' => 'index'
-        ];
+        ];*/
 
-        $routes['about'] = [
+        /*$routes['about'] = [
             'route' => '/about',
             'controller' => 'indexController',
             'action' => 'about'
         ];*/
 
-        $this->setRoutes($routes);
+        //$this->setRoutes($routes);
     }
 }

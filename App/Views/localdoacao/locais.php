@@ -1,18 +1,7 @@
 <?php 
     use App\Helper\DateTimeHelper;
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
-    <title>SOS Enchente - RS</title>
-</head>
-<body>
 <ul id="drpDoacao" class="dropdown-content">
     <li><a href="/ver-doacoes">O que precisa?</a></li>
     <li><a href="/ver-locais">Locais de doação</a></li>
@@ -73,23 +62,12 @@
     </div>
 <?php exit;}?>
     <div class="col s12 m7">
-        <h2 class="header">Locais de doação</h2>
+        <h4 class="header">Locais de doação</h4>
         <p>Verifique aqui os locais que recebem doação</p>
         <div class="card horizontal">
             <div class="card-stacked">
                 <div class="card-content">
                     <div id="data">
-                        <div id="preloader-local" class="preloader-wrapper big active" style="display: none;">
-                            <div class="spinner-layer spinner-blue-only">
-                                <div class="circle-clipper left">
-                                    <div class="circle"></div>
-                                    </div><div class="gap-patch">
-                                        <div class="circle"></div>
-                                    </div><div class="circle-clipper right">
-                                    <div class="circle"></div>
-                                </div>
-                            </div>
-                        </div>
                         <div class="row">
                             <form class="col s12">
                             <div class="row">
@@ -153,9 +131,9 @@
                             </tbody>
                         </table>
                     <ul class="pagination">
-                        <li class="<?php echo $pagina <= 1 ? 'disabled' : ''; ?>"><a href="?pagina=1">Primeira</a></li>
+                        <li class="<?php echo $pagina <= 1 ? 'disabled' : ''; ?>"><a href="/ver-locais/pagina/1">Primeira</a></li>
                         <?php for ($i = 1; $i <= $this->view->totalPaginas; $i++): ?>
-                        <li class="<?php echo $this->view->paginaAtiva  == $i? 'active green darken-1' : ''; ?>"><a href="?pagina=<?php echo $i; ?>"><?php echo $i; ?></a></li>
+                        <li class="<?php echo $this->view->paginaAtiva  == $i? 'active green darken-1' : ''; ?>"><a href="/ver-locais/pagina/<?php echo $i; ?>"><?php echo $i; ?></a></li>
                         <?php endfor; ?>
                         <li class="<?php echo $pagina >= $this->view->totalPaginas ? 'disabled' : ''; ?>"><a href="?pagina=<?php echo $this->view->totalPaginas; ?>">Última</a></li>
                     </ul>
@@ -167,6 +145,27 @@
         </div>
         
 </div>
+
+<div id="modalLoadingLocais" class="modal">
+    <div class="modal-content">
+        <div id="preloader-local" class="preloader-wrapper big active" style="display: none;">
+            <div class="spinner-layer spinner-blue-only">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 <!-- Importando jQuery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <!-- Materializa -->                        
@@ -194,21 +193,31 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', function() {
     // Show preloader
     var preloaderLocal = document.getElementById('preloader-local');
+    var modalLoadingLocais = document.getElementById('modalLoadingLocais');
+
+    var instance = M.Modal.init(modalLoadingLocais, {
+        dismissible: false, // Impede que o modal seja fechado clicando fora dele
+        opacity: 0.5, // Define a opacidade do modal
+        startingTop: '10%', // Define a posição inicial do modal
+        endingTop: '20%' // Define a posição final do modal
+    });
+
+    instance.open();
     preloaderLocal.style.display='block';
 
     let fetch = new Fetch('http://localhost:8000');
     fetch.get('/ver-locais') 
-        .then(data => {
+        .then((data) => {
             // Hide preloader
             preloaderLocal.style.display = 'none';
             // Display data in the 'data' div
-            var dataDiv = document.getElementById('data');
-            dataDiv.innerHTML = JSON.stringify(data);
+            instance.close();
         })
         .catch(error => {
             console.error('Error:', error);
             // Hide preloader in case of error
             preloaderLocal.style.display = 'none';
+            instance.close();
         });
 });
 
@@ -222,7 +231,7 @@ inputSearchLocal.addEventListener('keyup', ()=>{
 
     let fetch = new Fetch('http://localhost:8000');
     
-    fetch.get(`/local/filtro?filtro_local=${filtro}`, {'Content-Type': 'application/json'})
+    fetch.get(`/local/filtro/${filtro}`, {'Content-Type': 'application/json'}, "json")
     .then((data) => {
         if(data != undefined || data != null){
             let aviso = document.querySelector(".helper-text");
@@ -274,5 +283,3 @@ inputSearchLocal.addEventListener('keyup', ()=>{
     }).catch( e => console.log(e) );
 });
 </script>
-</body>
-</html>

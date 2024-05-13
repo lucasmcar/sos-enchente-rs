@@ -14,14 +14,15 @@ if(button.submitDoacao != undefined){
 
       fetch.post('/nova/doacao', { inputs }, {"Content-Type": "application/json",})
       .then( (data) => {
-        var successModal = document.getElementById('successModal');
-        var instance = M.Modal.init(successModal);
-          instance.open();
-          setTimeout(()=>{
-            location.reload();
-          },5000)
-      })
-      .catch((error) => console.log(error))
+        if(data != undefined){
+          var successModal = document.getElementById('successModal');
+          var instance = M.Modal.init(successModal);
+            instance.open();
+            setTimeout(()=>{
+              location.reload();
+            },5000)
+        }
+      }).catch((error) => console.log(error))
   });
 
 if(button.submitLocal != undefined){
@@ -54,6 +55,8 @@ if(button.submitLocalAbrigo != undefined){
     e.preventDefault();
 
     let inputs = initVarsLocalAbrigo();
+
+    console.log(inputs.selected);
 
     const fetch = new Fetch("http://localhost:8000");
 

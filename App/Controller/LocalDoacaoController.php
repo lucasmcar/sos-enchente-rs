@@ -13,6 +13,8 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class LocalDoacaoController extends Action
 {
+    private $locais;
+    
     public function create()
     {
         $data = json_decode(file_get_contents("php://input"), true);
@@ -34,13 +36,13 @@ class LocalDoacaoController extends Action
         header('location: /');
     }
 
-    public function verLocais()
+    public function verLocais($filtro)
     {
         $viewLocais = new LocalDoacaoRepository();
 
         $total_registros = 10;
 
-        $pagina = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
+        $pagina = isset($filtro) ? $filtro : 1;
 
         $deslocamento = ($pagina-1) * $total_registros;
 
@@ -55,11 +57,9 @@ class LocalDoacaoController extends Action
         $this->render('locais');
     }
 
-    public function filtroLocal()
+    public function filtroLocal($filtro)
     {
         $filtroLocais = new LocalDoacaoRepository();
-
-        $filtro = filter_input(INPUT_GET, 'filtro_local');
 
         $dados = $filtroLocais->filtroPorLocal($filtro);
         

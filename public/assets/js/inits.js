@@ -36,8 +36,16 @@ function initVarsLocalAbrigo(){
   let bairro = document.getElementById("txt_bairro_abrigo").value;
   let cidade = document.getElementById("txt_cidade_abrigo").value;
   let uf = document.getElementById("txt_uf_abrigo").value;
+  let tipo = document.getElementsByName("tipo");
   let vaga = document.getElementById("txt_vagas_abrigo").value;
   let telefone = document.getElementById("txt_telefone_abrigo").value;
+  
+
+  selected = "";
+  for(var i = 0; i <= tipo.length; i++){
+    selected = tipo[i].checked ? tipo[i].value : "";
+  }
+ 
   
 return {
     nome,
@@ -46,6 +54,7 @@ return {
     bairro,
     cidade,
     uf,
+    selected,
     vaga,
     telefone,
 }

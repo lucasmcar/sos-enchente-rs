@@ -28,6 +28,7 @@ class LocalAbrigoController extends Action
         $novoAbrigo->setBairro(ucwords($data['inputs']['bairro']));
         $novoAbrigo->setCidade(ucwords($data['inputs']['cidade']));
         $novoAbrigo->setUf($data['inputs']['uf']);
+        $novoAbrigo->setUf($data['inputs']['tipo']);
         $novoAbrigo->setVagas($data['inputs']['vaga']);
         $novoAbrigo->setTelefone($data['inputs']['telefone']);
 
@@ -38,13 +39,13 @@ class LocalAbrigoController extends Action
         header('location: /');
     }
 
-    public function verAbrigos()
+    public function verAbrigos($pagina)
     {
         $viewLocaisAbrigos = new LocalAbrigoRepository();
 
         $total_registros = 10;
 
-        $pagina = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
+        $pagina = isset($pagina) ? $pagina : 1;
 
         $deslocamento = ($pagina-1) * $total_registros;
 
@@ -58,11 +59,10 @@ class LocalAbrigoController extends Action
         $this->render('local-abrigo');
     }
 
-    public function filtroAbrigo()
+    public function filtroAbrigo($filtro)
     {
         $filtroLocais = new LocalAbrigoRepository();
-
-        $filtro = filter_input(INPUT_GET, 'filtro_abrigo');
+        
         //$filtro = json_decode(file_get_contents("php://input"), true);
 
         $dados = $filtroLocais->filtroPorAbrigo($filtro);
@@ -94,9 +94,10 @@ class LocalAbrigoController extends Action
             ->setCellValue('D1', 'Bairro')
             ->setCellValue('E1', 'Cidade')
             ->setCellValue('F1', 'UF')
-            ->setCellValue('G1', 'Vagas')
-            ->setCellValue('H1', 'TELEFONE')
-            ->setCellValue('I1', 'Cadastrado em');
+            ->setCellValue('G1', 'TIPO')
+            ->setCellValue('H1', 'Vagas')
+            ->setCellValue('I1', 'TELEFONE')
+            ->setCellValue('J1', 'Cadastrado em');
 
         $data = $itens->selectAll();
 
@@ -123,7 +124,7 @@ class LocalAbrigoController extends Action
         $writer = IOFactory::createWriter($spreadsheet, 'Xls');
         $writer->save('php://output');
 
-        header('location :/ver-abrigos');
+        header('location: /ver-abrigos');
         exit;
     }
 
@@ -195,6 +196,7 @@ class LocalAbrigoController extends Action
                                 $dataRow['bairro'], 
                                 $dataRow['cidade'], 
                                 $dataRow['uf'], 
+                                $dataRow['tipo'], 
                                 $dataRow['vagas'], 
                                 $dataRow['telefone'], 
                                 DateTimeHelper::toNormalFormat($dataRow['dtcadastro']

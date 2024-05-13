@@ -6,7 +6,7 @@
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"/>
     <title>SOS RS</title>
 </head>
 <body>
@@ -283,7 +283,28 @@
 
             <form method="post" action="#">
                 <div class="row">
-                    <div class="input-field col s12">
+                    <div class="input-field col s3">
+                        <label>
+                            <input name="tipo" value="civil" type="radio" />
+                            <span>Para Civil</span>
+                        </label>
+        
+                    </div>
+                    <div class="input-field col s3">
+                        <label>
+                            <input name="tipo" value="pet" type="radio" />
+                            <span>Para Pet</span>
+                        </label>
+                    </div>
+                    <div class="input-field col s3">
+                        <label>
+                            <input name="tipo" value="ambos" type="radio" />
+                            <span>Ambos</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
                         <input id="txt_nome_abrigo" name="nome" type="text" class="validate">
                         <label for="txt_nome_abrigo">Nome:</label>
                     </div>

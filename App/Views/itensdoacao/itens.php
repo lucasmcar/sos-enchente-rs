@@ -79,19 +79,6 @@ use App\Helper\DateTimeHelper;
     <div class="card horizontal">
         <div class="card-stacked">
             <div class="card-content">
-                <div id="preloader" class="preloader-wrapper big active" style="display: none;">
-                    <div class="spinner-layer spinner-blue-only">
-                        <div class="circle-clipper left">
-                            <div class="circle"></div>
-                        </div>
-                        <div class="gap-patch">
-                            <div class="circle"></div>
-                        </div>
-                        <div class="circle-clipper right">
-                            <div class="circle"></div>
-                        </div>
-                    </div>
-                </div>
                 <div id="data">
                     <div class="row">
                         <form class="col s12">
@@ -151,11 +138,11 @@ use App\Helper\DateTimeHelper;
                         </tbody>
                     </table>
                     <ul class="pagination">
-                        <li class="<?php echo $pagina <= 1 ? 'disabled' : ''; ?>"><a href="?pagina=1">Primeira</a></li>
+                        <li class="<?php echo $pagina <= 1 ? 'disabled' : ''; ?>"><a href="ver-doacoes/pagina/1">Primeira</a></li>
                         <?php for ($i = 1; $i <= $this->view->totalPaginas; $i++): ?>
-                        <li class="<?php echo $this->view->paginaAtiva  == $i? 'active green darken-1' : ''; ?>"><a href="?pagina=<?php echo $i; ?>"><?php echo $i; ?></a></li>
+                        <li class="<?php echo $this->view->paginaAtiva  == $i? 'active green darken-1' : ''; ?>"><a href="/ver-doacoes/pagina/<?php echo $i; ?>"><?php echo $i; ?></a></li>
                         <?php endfor; ?>
-                        <li class="<?php echo $pagina >= $this->view->totalPaginas ? 'disabled' : ''; ?>"><a href="?pagina=<?php echo $this->view->totalPaginas; ?>">Última</a></li>
+                        <li class="<?php echo $pagina >= $this->view->totalPaginas ? 'disabled' : ''; ?>"><a href="/ver-doacoes/pagina/<?php echo $this->view->totalPaginas; ?>">Última</a></li>
                     </ul>
 
                 </div>      
@@ -224,14 +211,32 @@ use App\Helper\DateTimeHelper;
 
 <!--modal sucesso-->
 <div id="successModalItens" class="modal">
-        <div class="modal-content">
-            <h4>Sucesso!</h4>
-            <p>Dados inseridos com sucesso.</p>
-        </div>
-        <div class="modal-footer">
-            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Fechar</a>
+    <div class="modal-content">
+        <h4>Sucesso!</h4>
+        <p>Dados inseridos com sucesso.</p>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Fechar</a>
+    </div>
+</div>
+
+<div id="modalLoadingItens" class="modal">
+    <div class="modal-content valign-wrapper center-align">
+        <div id="preloader" class="preloader-wrapper big active valign" style="display: none;">
+            <div class="spinner-layer spinner-blue-only">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
         </div>
     </div>
+</div>
 
 <!-- Importando jQuery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -275,26 +280,38 @@ $(".dropdown-trigger").dropdown();
 
 document.addEventListener('DOMContentLoaded', function() {
     // Show preloader
+    var modalLoading = document.getElementById('modalLoadingItens');
     var preloader = document.getElementById('preloader');
-        preloader.style.display= 'block';
+    var instance = M.Modal.init(modalLoading, {
+        dismissible: false, // Impede que o modal seja fechado clicando fora dele
+        opacity: 0.5, // Define a opacidade do modal
+        startingTop: '10%', // Define a posição inicial do modal
+        endingTop: '20%' // Define a posição final do modal
+    });
 
-        let fetch = new Fetch("https://localhost:8000");
-        // Make request to server
-        fetch.get('/ver-doacoes', {"Content-Type" : "application/json"})
-        .then(data => {
 
-            // Hide preloader
-            preloader.style.display = 'none';
+    let fetch = new Fetch("http://localhost:8000");
+    preloader.style.display = 'block';
+    modalLoading.style.alignItems= "center"
+    instance.open()
+    
+    fetch.get('/ver-doacoes', {"Content-Type" : "application/json"}, "json")
+    .then(data => {
 
-            // Display data in the 'data' div
-            var dataDiv = document.getElementById('data');
-            dataDiv.innerHTML = JSON.stringify(data);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            // Hide preloader in case of error
-            preloader.style.display = 'none';
-        });
+        // Hide preloader
+        preloader.style.display = 'none';
+
+        // Display data in the 'data' div
+        var dataDiv = document.getElementById('data');
+        dataDiv.innerHTML = JSON.stringify(data);
+        instance.close();
+
+    }).catch(error => {
+        console.error('Error:', error);
+        // Hide preloader in case of error
+        preloader.style.display = 'none';
+        instance.close();
+    });
     
    
 });
@@ -310,11 +327,12 @@ if(inputSearch != undefined){
 
     let filtro = inputSearch.value.toLowerCase();
     let fetch = new Fetch("http://localhost:8000")
-        
-    fetch.get(`/doacoes/filtro?filtro=${filtro}`, {'Content-Type': 'application/json'})
+    
+    fetch.get(`/doacoes/filtro/${filtro}`, {'Content-Type': 'application/json'}, "json")
     .then((data) => {
+        
     let aviso = document.querySelector(".helper-text");
-    if(data.retorno == "Sem Resultado"){
+    if(typeof data.retorno != "undefined" || data.retorno == "Sem Resultado"){
         aviso.style.color = "red";
         aviso.innerHTML = `Sem resultados para "${filtro}"`;
     } else if(data.length >= 1) {

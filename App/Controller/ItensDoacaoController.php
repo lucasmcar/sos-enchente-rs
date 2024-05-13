@@ -30,12 +30,12 @@ class ItensDoacaoController extends Action
 
         $registroItens = new ItensDoacaoRepository();
 
-        if($registroItens->create($novoItem)){
-            header('location: /ver-doacoes');
-        }
+       
+        header('location: /');
+        
     }
 
-    public function verDoacoes()
+    public function verDoacoes($pagina)
     {
 
         $repo = new ItensDoacaoRepository();
@@ -47,7 +47,7 @@ class ItensDoacaoController extends Action
         
         $total_registros = 10;
 
-        $pagina = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
+        $pagina = isset($pagina) ? $pagina : 1;
 
         $deslocamento = ($pagina-1) * $total_registros;
 
@@ -65,11 +65,9 @@ class ItensDoacaoController extends Action
         $this->render('itens');
     }
 
-    public function filtroDoacoes()
+    public function filtroDoacoes($filtro)
     {
         $filtroDoacaoRepo = new ItensDoacaoRepository();
-
-        $filtro = filter_input(INPUT_GET, 'filtro');
 
         $dados = $filtroDoacaoRepo->filtroPorNome($filtro);
         
