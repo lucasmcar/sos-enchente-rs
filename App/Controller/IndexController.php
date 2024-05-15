@@ -27,11 +27,16 @@ class IndexController extends Action
         $repo = new ItensDoacaoRepository();
         $localDoacaoRepo = new LocalDoacaoRepository();
 
+        $localAbrigo = new LocalAbrigoRepository();
+
+
         $arrayTypes = $repo->returnAllTypes();
         $arrayLocals = $localDoacaoRepo->returnAllLocal();
-        
+        $arrayLocalAbrigo = $localAbrigo->returnAllAbrigo();
+
         @$this->view->dataSelectLocal = $arrayLocals;
         @$this->view->dataSelect = $arrayTypes;
+        @$this->view->dataSelectAbrigo = $arrayLocalAbrigo;
 
         $this->render('inicio');
     }

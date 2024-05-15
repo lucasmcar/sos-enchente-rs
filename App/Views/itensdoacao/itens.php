@@ -3,107 +3,109 @@ use App\Helper\DateTimeHelper;
 ?>
 
 <div class="container">
-
-<?php if(isset($this->view->itens['retorno']) && $this->view->itens['retorno'] == "Sem Resultado"){ ?>
-<div class="col s12 m7">
-    <h2 class="header">Resultado</h2>
-    <div class="card horizontal">
-        <div class="card-stacked">
-            <div class="card-content">
-                <p>Não há itens cadastrados</p>
+    <div class="row">
+    <?php if(isset($this->view->itens['retorno']) && $this->view->itens['retorno'] == "Sem Resultado"){ ?>
+    <div class="col s12 l12 m7">
+        <h2 class="header">Resultado</h2>
+        <div class="card horizontal">
+            <div class="card-stacked">
+                <div class="card-content">
+                    <p>Não há itens cadastrados</p>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<?php } else { ?>
-<div class="col s12 m7">
-    <h4 class="header">Itens necessários</h4>
-    <p>Verifique aqui os itens necessários para serem doados</p>
-    <div class="card">
-        <div class="card-content">
-            <div id="data-items">
-                    <div class="row">
-                        <form class="col s12">
-                            <div class="row">
-                                <div class="input-field col s10 l12 m12">
-                                    <input id="search" type="text" name="filtro" class="validate">
-                                    <label for="search">Buscar Itens</label>
-                                    <span class="helper-text" data-error="wrong" data-success="right"></span>
-                                </div>
-                                <div class="col s10 m12 l12">
-                                    <div class="progress" id="preloader-search-item" style="display: none;">
-                                        <div class="indeterminate"></div>
+    <?php } else { ?>
+    <div class="col s12 l12 m7">
+        <h4 class="header">Itens necessários</h4>
+        <p>Verifique aqui os itens necessários para serem doados</p>
+        <div class="card">
+            <div class="card-content">
+                <div id="data-items">
+                        <div class="row">
+                            <form class="col s12">
+                                <div class="row">
+                                    <div class="input-field col s10 l12 m12">
+                                        <input id="search" type="text" name="filtro" class="validate">
+                                        <label for="search">Buscar Itens</label>
+                                        <span class="helper-text" data-error="wrong" data-success="right"></span>
+                                    </div>
+                                    <div class="col s10 m12 l12">
+                                        <div class="progress" id="preloader-search-item" style="display: none;">
+                                            <div class="indeterminate"></div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <a class='dropdown-trigger btn' href='#' data-target='convert'>
-                                    Exportar para...
-                                </a>
+                                <div class="row">
+                                    <a class='dropdown-trigger btn' href='#' data-target='convert'>
+                                        Exportar para...
+                                    </a>
 
-                                <!-- Dropdown Structure -->
-                                <ul id='convert' class='dropdown-content'>
-                                    <li>
-                                        <a href="/doacao/export-pdf">
-                                            PDF
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/doacao/export-excel">
-                                            EXCEL
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </form>
-                    </div>
-
-                    <div class="row">
-                        <div class="col s12 l12">
-                            <table id="itens" class="responsive-table highlight">
-                            <thead>
-                                <tr>
-                                    <th>Nome</th>
-                                    <th>Quantidade</th>
-                                    <th>Tipo</th>
-                                    <th>Local</th>
-                                    <th>Telefone</th>
-                                    <th>Data de Cadastro</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach($this->view->itens as $key => $value) { ?>
-                                    <tr>
-                                        <td><?= $value['nome'];?></td>
-                                        <td><?= $value['quantidade'];?></td>
-                                        <td><?= $value['nome_tipo'];?></td>
-                                        <td><?= $value['nome_local'];?></td>
-                                        <td><?= $value['telefone'];?></td>
-                                        <td><?= DateTimeHelper::toNormalFormat($value['dtcadastro']);?></td>
-                                    </tr>
-                                <?php } ?>
-                            </tbody>
-                        </table>
+                                    <!-- Dropdown Structure -->
+                                    <ul id='convert' class='dropdown-content'>
+                                        <li>
+                                            <a href="/doacao/export-pdf">
+                                                PDF
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/doacao/export-excel">
+                                                EXCEL
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </form>
                         </div>
+
+                        <div class="row">
+                            <div class="col s12 l12">
+                                <table id="itens" class="responsive-table highlight">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>Quantidade</th>
+                                        <th>Tipo</th>
+                                        <th>Local</th>
+                                        <th>Telefone</th>
+                                        <th>Data de Cadastro</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach($this->view->itens as $key => $value) { ?>
+                                        <tr>
+                                            <td><?= $value['nome'];?></td>
+                                            <td><?= $value['quantidade'];?></td>
+                                            <td><?= $value['nome_tipo'];?></td>
+                                            <td><?= $value['nome_local'];?></td>
+                                            <td><?= $value['telefone'];?></td>
+                                            <td><?= DateTimeHelper::toNormalFormat($value['dtcadastro']);?></td>
+                                        </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
+                            </div>
+                        </div>
+
+                        
+                        <ul class="pagination">
+                            <li class="<?php echo $pagina <= 1 ? 'disabled' : ''; ?>"><a href="ver-doacoes/pagina/1">Primeira</a></li>
+                            <?php for ($i = 1; $i <= $this->view->totalPaginas; $i++): ?>
+                            <li class="<?php echo $this->view->paginaAtiva  == $i? 'active green darken-1' : ''; ?>"><a href="/ver-doacoes/pagina/<?php echo $i; ?>"><?php echo $i; ?></a></li>
+                            <?php endfor; ?>
+                            <li class="<?php echo $pagina >= $this->view->totalPaginas ? 'disabled' : ''; ?>"><a href="/ver-doacoes/pagina/<?php echo $this->view->totalPaginas; ?>">Última</a></li>
+                        </ul>
+
+                    </div>      
                     </div>
-
-                    
-                    <ul class="pagination">
-                        <li class="<?php echo $pagina <= 1 ? 'disabled' : ''; ?>"><a href="ver-doacoes/pagina/1">Primeira</a></li>
-                        <?php for ($i = 1; $i <= $this->view->totalPaginas; $i++): ?>
-                        <li class="<?php echo $this->view->paginaAtiva  == $i? 'active green darken-1' : ''; ?>"><a href="/ver-doacoes/pagina/<?php echo $i; ?>"><?php echo $i; ?></a></li>
-                        <?php endfor; ?>
-                        <li class="<?php echo $pagina >= $this->view->totalPaginas ? 'disabled' : ''; ?>"><a href="/ver-doacoes/pagina/<?php echo $this->view->totalPaginas; ?>">Última</a></li>
-                    </ul>
-
-                </div>      
                 </div>
-            </div>
-        
+            
+        </div>
+            
     </div>
-        
+    <?php } ?>
+    </div>
 </div>
-<?php } ?>
 
 <div class="fixed-action-btn">
     <a href="#mdlDoacaoV" class="btn modal-trigger btn-floating btn-large green">

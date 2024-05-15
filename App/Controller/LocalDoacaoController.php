@@ -13,8 +13,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class LocalDoacaoController extends Action
 {
-    private $locais;
-    
+  
     public function create()
     {
         $data = json_decode(file_get_contents("php://input"), true);

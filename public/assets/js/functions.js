@@ -1,3 +1,7 @@
+/**
+ * Arquivo para definir os eventos dos botoes de submit
+ */
+
 
 let button = initButons();
 
@@ -5,6 +9,7 @@ let button = initButons();
 //Se não existirem, as chamadas dos metodos não ocorrerão
 if(button.submitDoacao != undefined){
 
+  //Ação do botão que envia os itens para adoção
   button.submitDoacao.addEventListener('click', (e)=>{
     e.preventDefault();
 
@@ -50,7 +55,7 @@ if(button.submitLocal != undefined){
 }
 
 if(button.submitLocalAbrigo != undefined){
-
+  //Ação do botão que cadastra os locais de abrigo
   button.submitLocalAbrigo.addEventListener('click', (e)=>{
     e.preventDefault();
 
@@ -73,6 +78,7 @@ if(button.submitLocalAbrigo != undefined){
 }
 
 if(button.submitUserLogin != undefined){
+  //Ação do botão que realiza login
   button.submitUserLogin.addEventListener('click', function(e){
     e.preventDefault();
 
@@ -115,6 +121,60 @@ if(button.submitUserLogin != undefined){
   });
 }
 
+if(button.submitCadastroCilvil != undefined){
+  //Ação do botão para cadastro de civil ou pet
+  button.submitCadastroCilvil.addEventListener('click', function(e){
+    e.preventDefault();
+
+    let inputs = initVarsCivil();
+
+    let fetch = new Fetch('http://localhost:8000');
+
+    if(inputs.selectCP == "Pet"){
+
+      fetch.post('/novo/pet', {inputs}, {"Content-Type" : "application/json"}, "json")
+      .then(data => {
+        if(data.status == "sucesso"){
+          var successModal = document.getElementById('successModal');
+          var instance = M.Modal.init(successModal);
+            instance.open();
+        }
+        
+          setTimeout(()=>{
+            location.reload();
+          },5000)
+      })
+      .catch(error => console.log(error))
+
+    }
+
+    if(inputs.selectCP == "Civil"){
+
+      fetch.post('/novo/civil', {inputs}, {"Content-Type" : "application/json"}, "json")
+      .then(data => {
+        if(data.status == "sucesso"){
+          var successModal = document.getElementById('successModalPessoaPet');
+          var instance = M.Modal.init(successModal);
+          instance.open();
+        }
+        setTimeout(()=>{
+          location.reload();
+        },8000)
+        
+      })
+      .catch(error => console.log(error))
+    }
+  });
+}
+
+/**
+ * Renderiza o gráfico com chartJs
+ * @param {*} label Labels que terão relação com os valores
+ * @param {*} value Valores a serem mostrados no gráfico 
+ * @param {*} idCanvas O elemento onde o gráfico será renderizado,
+ * @param {*} type Tipo de gráfico
+ * @param {*} title Título que aparece gráfico
+ */
 function getChart(label, value, idCanvas, type = 'bar', title = ""){
 
   let ct = initVarCanvas(idCanvas);
@@ -231,10 +291,12 @@ if(telefoneAbrigo != undefined){
   });
 }
 
+//Gera cores aleatórias
 function randomColor() {
   return '#' + Math.floor(Math.random()*16777215).toString(16);
 }
 
+//Retorno das cores para o gráfico renderizar com cores aleatórias
 function returnColors(nData)
 {
   var count = nData;

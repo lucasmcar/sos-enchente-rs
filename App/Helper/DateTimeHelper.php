@@ -20,8 +20,11 @@ class DateTimeHelper
      * @param string $date
      * @return string | null
      */
-    public static function toNormalFormat(string $date) : string 
+    public static function toNormalFormat(string $date, $hasTime = true) : string 
     {
+        if(!$hasTime){
+            return \DateTime::createFromFormat('Y-m-d', $date)->format("d/m/Y");
+        }
         return \DateTime::createFromFormat('Y-m-d H:i:s', $date)->format("d/m/Y H:i:s");
     }
 

@@ -1,7 +1,7 @@
 
-<section>
+<main>
     <div class="container">
-        <div class="row">
+        <div class="row hide-on-small-only">
             <div class="col s12">
                 <h3>SOS - RS</h3>
                 <p>
@@ -57,6 +57,7 @@
             </div>
         </div>
         <div class="row">
+            <h4 class="show-on-small hide-on-large-only">Menus de cadastro</h4>
             <!--Card local doação -->
             <div class="col s6 m6">
                 <div class="card green darken-2">
@@ -139,7 +140,7 @@
             
         </div>
     </div>
-</section>
+</main>
 
     <!-- Modal Doação -->
     <div id="mdlDoacao" class="modal">
@@ -318,8 +319,13 @@
     <div id="mdlPessoaPet" class="modal">
         <div class="modal-content">
             <h4>Cadastro de pessoas ou pets</h4>
-
+            
             <form>
+                <div class="row">
+                    <div class="col s12 l12">
+                    <img id="pessoaPreview" width="200" height="auto" src="#" class="responsive-img" style="display: none;">
+                    </div>
+                </div>
                 <div class="row">
                     <div class="input-field col s12 l6">
                         <input id="txt_nome_civil" name="nome_civil" type="text" class="validate">
@@ -336,15 +342,43 @@
                                 <option value="Civil">Civil</option>
                         </select>
                     </div>
+                    <div class="row" id="hiddenFields" style="display: none;">
+                        <div class="input-field col s6">
+                            <input id="txt_raca" name="raca" type="text" class="validate">
+                            <label for="txt_raca">Raça:</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input id="txt_especie" name="especie" type="text" class="validate">
+                            <label for="txt_especie">Espécie:</label>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="input-field col s6 l6">
                             <select id="slc_local_civil_pet" name="pet_civil">
-                                <option value="">Selecione...</option>
+                                <option value="">Escolha</option>
+                                <?php if(!empty($this->view->dataSelectAbrigo) && !isset($this->view->dataSelectAbrigo['retorno'])) { ?>
+                                    <?php foreach($this->view->dataSelectAbrigo as $key => $value) { ?>
+                                        <option value="<?= $value['idabrigo'];?>"><?=$value['nome']; ?></option>
+                                    <?php }?>
+                                <?php } ?>
                             </select>
                         </div>
                         <div class="input-field col s6 l6">
                             <textarea id="txt_area_info" class="materialize-textarea"></textarea>
                             <label for="txt_area_info">Info Adicional</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 l6">
+                            <div class="file-field input-field">
+                                <div class="btn">
+                                    <span>Foto</span>
+                                    <input type="file" id="foto" onchange="previewImage(event)">
+                                </div>
+                                <div class="file-path-wrapper">
+                                    <input class="file-path validate" type="text">
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
@@ -359,6 +393,17 @@
 
     <!--modal sucesso-->
     <div id="successModal" class="modal">
+        <div class="modal-content">
+            <h4>Sucesso!</h4>
+            <p>Dados inseridos com sucesso.</p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Fechar</a>
+        </div>
+    </div>
+
+    <!--modal sucesso cadastro pet pessoa-->
+    <div id="successModalPessoaPet" class="modal">
         <div class="modal-content">
             <h4>Sucesso!</h4>
             <p>Dados inseridos com sucesso.</p>
@@ -385,6 +430,13 @@
     $(".dropdown-trigger").dropdown();
 
     document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.dropdown-trigger');
+        var instances = M.Dropdown.init(elems, {
+            hover : true
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
         var elems = document.querySelectorAll('.modal');
         var instances = M.Modal.init(elems, {
             opacity: 0.7
@@ -401,6 +453,39 @@
     document.addEventListener('DOMContentLoaded', function() {
       var elems = document.querySelectorAll('select');
       var instances = M.FormSelect.init(elems, {});
+
+      document.getElementById("slc_civil_pet").addEventListener("change", function(){
+         var selected = this.value;
+
+         // Verifica se o valor selecionado é '1', se sim, mostra os campos ocultos
+        if (selected === 'Pet') {
+          document.getElementById('hiddenFields').style.display = 'block';
+        } else {
+          // Se não, esconde os campos ocultos
+          document.getElementById('hiddenFields').style.display = 'none';
+        }
+
+      })
     });
+
+    function previewImage(event) {
+        const preview = document.getElementById('pessoaPreview');
+        let file = event.target.files[0];
+        
+        if (file) {
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            }
+
+            reader.readAsDataURL(file);
+        } else {
+            preview.src = '#';
+            preview.style.display = 'none';
+        }
+    }
+
 
     </script>

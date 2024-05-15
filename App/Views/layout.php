@@ -42,7 +42,7 @@
                     <li id="info"><a href="/info">Informações</a></li>
                     <li id="ajuda"><a href="/ajude">Faça sua doação</a></li>    
                     <li id="about"><a href="/about">Sobre</a></li>     
-                    <li id="logout"><a href="/logout">Sair</a></li>     
+                    <!--<li id="logout"><a href="/logout">Sair</a></li>-->     
                 </ul>
             </div>
            
@@ -61,14 +61,14 @@
     <li id="infomb"><a href="/info">Informações</a></li> 
     <li id="ajudamb"><a href="/ajude">Faça sua doação</a></li>       
     <li id=""><a href="/about">Sobre</a></li> 
-  	<li id="logoutmb"><a href='/login'>Sair</a></li>
+  	<!--<li id="logoutmb"><a href='/logout'>Sair</a></li>-->
 	
 </ul>
 <main>
     <?= $this->content() ?>
 </main>		
 
-<footer class="page-footer  green darken-1">
+<footer class="page-footer fixed-bottom  green darken-1">
 	<div class="container">
 		<div class="row">
 			<div class="col l12 s6">

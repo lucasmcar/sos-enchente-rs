@@ -31,9 +31,13 @@ $router->get('/doacao/export-pdf', 'ItensDoacaoController', 'convertToPdf');
 
 //rotas de civis/pets e abrigos
 $router->post('/novo/abrigo', 'LocalAbrigoController', 'create');
+$router->post('/novo/civil', 'CivilController', 'create');
+$router->post('/novo/pet', 'CivilController', 'create');
+$router->get('/ver-pessoas', 'CivilController', 'verPessoas');
+$router->get('/ver-pets', 'CivilController', 'verPets');
 $router->get('/ver-abrigos', 'LocalAbrigoController', 'verAbrigos');
 $router->get('/ver-abrigos/pagina/{pagina}', 'LocalAbrigoController', 'verAbrigos');
-$router->get('/ver-pessoas', 'LocalAbrigoController', 'verPessoas');
+
 //$router->post('/novo', 'LocalAbrigoController', 'verAbrigos');
 $router->get('/abrigo/filtro/{filtro}', 'LocalAbrigoController', 'filtroAbrigo');
 

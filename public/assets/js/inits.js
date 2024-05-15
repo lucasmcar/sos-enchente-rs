@@ -94,16 +94,30 @@ function initVarsDoacao(){
 
 function initVarsCivil()
 {
-    let nome = document.getElementById('txt_nome_civil').value
-    let idade = document.getElementById('txt_idade_civil').value
-    let local = document.getElementById('local').value
-    let info = document.getElementById('txt_area_info').value
+    let nome = document.getElementById('txt_nome_civil').value;
+    let idade = document.getElementById('txt_idade_civil').value;
+
+    let local = document.getElementById('slc_local_civil_pet');
+    let selectLocalCivilPet = local.options[local.selectedIndex].value;
+
+    let selectCivilPet = document.getElementById("slc_civil_pet");
+    let selectCP = selectCivilPet.options[selectCivilPet.selectedIndex].value;
+
+    let info = document.getElementById('txt_area_info').value;
+    let raca = document.getElementById('txt_raca').value;
+    let especie = document.getElementById('txt_especie').value;
+   
+    especie != undefined ? especie : null;
+    raca != undefined ? raca : null;
 
     return {
       nome,
       idade,
-      local,
-      info
+      selectLocalCivilPet,
+      especie,
+      raca,
+      info,
+      selectCP
     }
 
 }
@@ -114,6 +128,7 @@ function initButons()
     let submitLocal = document.getElementById("submitLocal");
     let submitLocalAbrigo = document.getElementById("submitLocalAbrigo");
     let submitUserLogin = document.getElementById("submitUserLogin");
+    let submitCadastroCilvil = document.getElementById("submitCadastroCivil");
 
     submitUserLogin != undefined ? submitUserLogin : null;
 
@@ -121,7 +136,8 @@ function initButons()
         submitDoacao,
         submitLocal,
         submitLocalAbrigo,
-        submitUserLogin
+        submitUserLogin,
+        submitCadastroCilvil
     }
 }
 

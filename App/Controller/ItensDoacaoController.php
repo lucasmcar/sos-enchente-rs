@@ -30,6 +30,7 @@ class ItensDoacaoController extends Action
 
         $registroItens = new ItensDoacaoRepository();
 
+        $registroItens->create($novoItem);
        
         header('location: /');
         
@@ -39,11 +40,11 @@ class ItensDoacaoController extends Action
     {
 
         $repo = new ItensDoacaoRepository();
-        $localDoacaoRepo = new LocalDoacaoRepository();
+        //$localDoacaoRepo = new LocalDoacaoRepository();
 
         //Traz os dados necessarios para os itens dos selects
-        $arrayTypes = $repo->returnAllTypes();
-        $arrayLocals = $localDoacaoRepo->returnAllLocal();
+        /*$arrayTypes = $repo->returnAllTypes();
+        $arrayLocals = $localDoacaoRepo->returnAllLocal();*/
         
         $total_registros = 10;
 
@@ -57,8 +58,8 @@ class ItensDoacaoController extends Action
         $this->view->totalPaginas = ceil($totalItens/$total_registros);
         $this->view->paginaAtiva = $pagina;
         
-        $this->view->dataSelectLocalV = $arrayLocals;
-        $this->view->dataSelectV = $arrayTypes;
+        /*$this->view->dataSelectLocalV = $arrayLocals;
+        $this->view->dataSelectV = $arrayTypes;*/
 
         $this->view->itens = $itens;
 
