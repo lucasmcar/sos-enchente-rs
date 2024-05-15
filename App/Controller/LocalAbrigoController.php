@@ -70,6 +70,11 @@ class LocalAbrigoController extends Action
         echo JsonHelper::toJson($dados);
     }
 
+    public function verPessoas()
+    {
+        $this->render('ver-pessoas');
+    }
+
     public function convertToExcel()
     {
 

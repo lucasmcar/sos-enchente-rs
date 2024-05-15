@@ -1,64 +1,7 @@
 <?php 
 use App\Helper\DateTimeHelper;
-
-
-
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <title>SOS RS</title>
-</head>
-<body>
-<ul id="drpDoacao" class="dropdown-content">
-    <li><a href="/ver-doacoes">O que precisa?</a></li>
-    <li><a href="/ver-locais">Locais de doação</a></li>
-</ul>
-<ul id="drpAbrigos" class="dropdown-content">
-    <li><a href="/ver-abrigos">Ver Abrigos</a></li>
-    <li><a href="/ver-abrigos-pets">Ver Abrigos Pets</a></li>
-</ul>
-<ul id="drpPessoasPets" class="dropdown-content">
-    <li><a href="/ver-pessoas">Pessoas</a></li>     
-    <li><a href="/ver-pets">Pets</a></li>
-    <li><a href="/ver-desaparecidos">Desaparecidos</a></li>  
-</ul>
-<nav>
-    <div class="nav-wrapper  green darken-1">
-        <div class="container">
-            <a href="/" class="brand-logo">SOS - RS</a>
-            <a href="#" data-target="menu-mobile" class="sidenav-trigger">
-                <i class="material-icons">dehaze</i>
-            </a>
-            <ul class="right hide-on-med-and-down">
-                <li><a href="/">Inicio</a></li>
-                <li><a class="dropdown-trigger" href="#!" data-target="drpDoacao">Doações<i class="material-icons right">arrow_drop_down</i></a></li>
-                <li><a class="dropdown-trigger" href="#!" data-target="drpAbrigos">Abrigos<i class="material-icons right">arrow_drop_down</i></a></li>
-                <li><a class="dropdown-trigger" href="#!" data-target="drpPessoasPets">Pessoas/Pets<i class="material-icons right">arrow_drop_down</i></a></li>
-                <li><a href="/info">Informações</a></li>
-                <li><a href="/ajude">Faça sua doação</a></li>    
-                <li><a href="/about">Sobre</a></li>     
-            </ul>
-        </div>
-    </div>
-</nav>
-<ul class="sidenav" id="menu-mobile">
-    <li><a href="/">Inicio</a></li>
-    <li><a href="/ver-doacoes">O que precisa?</a></li>
-    <li><a href="/ver-locais">Locais de doação</a></li>
-    <li><a href="/ver-abrigos"> Abrigos</a></li>     
-    <li><a href="/ver-abrigos-pets">Abrigos Pets</a></li>
-    <li><a href="/ver-pessoas">Pessoas</a></li>
-    <li><a href="/ver-pets">Pets</a></li>
-    <li><a href="/ver-desaparecidos">Desaparecidos</a></li>
-    <li><a href="/info">Informações</a></li> 
-    <li><a href="/ajude">Faça sua doação</a></li>       
-    <li><a href="/about">Sobre</a></li> 
-</ul>
+
 <div class="container">
 
 <?php if(isset($this->view->itens['retorno']) && $this->view->itens['retorno'] == "Sem Resultado"){ ?>
@@ -76,20 +19,21 @@ use App\Helper\DateTimeHelper;
 <div class="col s12 m7">
     <h4 class="header">Itens necessários</h4>
     <p>Verifique aqui os itens necessários para serem doados</p>
-    <div class="card horizontal">
-        <div class="card-stacked">
-            <div class="card-content">
-                <div id="data">
+    <div class="card">
+        <div class="card-content">
+            <div id="data-items">
                     <div class="row">
                         <form class="col s12">
                             <div class="row">
-                                <div class="input-field col s12">
+                                <div class="input-field col s10 l12 m12">
                                     <input id="search" type="text" name="filtro" class="validate">
                                     <label for="search">Buscar Itens</label>
                                     <span class="helper-text" data-error="wrong" data-success="right"></span>
                                 </div>
-                                <div class="progress" id="preloader-search-item" style="display: none;">
-                                    <div class="indeterminate"></div>
+                                <div class="col s10 m12 l12">
+                                    <div class="progress" id="preloader-search-item" style="display: none;">
+                                        <div class="indeterminate"></div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="row">
@@ -113,30 +57,37 @@ use App\Helper\DateTimeHelper;
                             </div>
                         </form>
                     </div>
-                    <table id="itens">
-                        <thead>
-                            <tr>
-                                <th>Nome</th>
-                                <th>Quantidade</th>
-                                <th>Tipo</th>
-                                <th>Local</th>
-                                <th>Telefone</th>
-                                <th>Data de Cadastro</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach($this->view->itens as $key => $value) { ?>
+
+                    <div class="row">
+                        <div class="col s12 l12">
+                            <table id="itens" class="responsive-table highlight">
+                            <thead>
                                 <tr>
-                                    <td><?= $value['nome'];?></td>
-                                    <td><?= $value['quantidade'];?></td>
-                                    <td><?= $value['nome_tipo'];?></td>
-                                    <td><?= $value['nome_local'];?></td>
-                                    <td><?= $value['telefone'];?></td>
-                                    <td><?= DateTimeHelper::toNormalFormat($value['dtcadastro']);?></td>
+                                    <th>Nome</th>
+                                    <th>Quantidade</th>
+                                    <th>Tipo</th>
+                                    <th>Local</th>
+                                    <th>Telefone</th>
+                                    <th>Data de Cadastro</th>
                                 </tr>
-                            <?php } ?>
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                <?php foreach($this->view->itens as $key => $value) { ?>
+                                    <tr>
+                                        <td><?= $value['nome'];?></td>
+                                        <td><?= $value['quantidade'];?></td>
+                                        <td><?= $value['nome_tipo'];?></td>
+                                        <td><?= $value['nome_local'];?></td>
+                                        <td><?= $value['telefone'];?></td>
+                                        <td><?= DateTimeHelper::toNormalFormat($value['dtcadastro']);?></td>
+                                    </tr>
+                                <?php } ?>
+                            </tbody>
+                        </table>
+                        </div>
+                    </div>
+
+                    
                     <ul class="pagination">
                         <li class="<?php echo $pagina <= 1 ? 'disabled' : ''; ?>"><a href="ver-doacoes/pagina/1">Primeira</a></li>
                         <?php for ($i = 1; $i <= $this->view->totalPaginas; $i++): ?>
@@ -148,7 +99,7 @@ use App\Helper\DateTimeHelper;
                 </div>      
                 </div>
             </div>
-        </div>
+        
     </div>
         
 </div>
@@ -281,6 +232,7 @@ $(".dropdown-trigger").dropdown();
 document.addEventListener('DOMContentLoaded', function() {
     // Show preloader
     var modalLoading = document.getElementById('modalLoadingItens');
+    var dataItens = document.getElementById('data-items');
     var preloader = document.getElementById('preloader');
     var instance = M.Modal.init(modalLoading, {
         dismissible: false, // Impede que o modal seja fechado clicando fora dele
@@ -289,22 +241,23 @@ document.addEventListener('DOMContentLoaded', function() {
         endingTop: '20%' // Define a posição final do modal
     });
 
-
+    dataItens.style.display = "none";
     let fetch = new Fetch("http://localhost:8000");
     preloader.style.display = 'block';
     modalLoading.style.alignItems= "center"
     instance.open()
     
-    fetch.get('/ver-doacoes', {"Content-Type" : "application/json"}, "json")
+    fetch.get('/ver-doacoes', {"Content-Type" : "application/json"})
     .then(data => {
 
         // Hide preloader
         preloader.style.display = 'none';
 
         // Display data in the 'data' div
-        var dataDiv = document.getElementById('data');
-        dataDiv.innerHTML = JSON.stringify(data);
+        //var dataDiv = document.getElementById('data');
+        //dataDiv.innerHTML = JSON.stringify(data);
         instance.close();
+        dataItens.style.display = "block";
 
     }).catch(error => {
         console.error('Error:', error);

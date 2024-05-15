@@ -18,19 +18,19 @@ class Router implements IRouter
     }
     
     // Adiciona uma rota para o método POST
-    public function post($path, $controller, $action) 
+    public function post($path, $controller, $action = '') 
     {
         $this->addRoute('POST', $path, $controller, $action);
     }
     
         // Adiciona uma rota para o método PUT
-    public function put($path, $controller, $action) 
+    public function put($path, $controller, $action = '') 
     {
         $this->addRoute('PUT', $path, $controller, $action);
     }
     
     // Adiciona uma rota para o método DELETE
-    public function delete($path, $controller, $action) 
+    public function delete($path, $controller, $action = '') 
     {
         $this->addRoute('DELETE', $path, $controller, $action);
     }
@@ -81,8 +81,8 @@ class Router implements IRouter
                 $class = "App\\Controller\\".ucfirst($route['controller']);
                 $action = $route['action'];
                 // Instancia o controlador e chama a ação
-                $controllerInstance = new $class();
-                $controllerInstance->$action($filtro);
+                $controller = new $class();
+                $controller->$action($filtro);
                 return;
             }
         }

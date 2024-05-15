@@ -1,62 +1,6 @@
 <?php 
     use App\Helper\DateTimeHelper;
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-    <title>SOS - RS</title>
-</head>
-<body>
-<ul id="drpDoacao" class="dropdown-content">
-    <li><a href="/ver-doacoes">O que precisa?</a></li>
-    <li><a href="/ver-locais">Locais de doação</a></li>
-</ul>
-<ul id="drpAbrigos" class="dropdown-content">
-    <li><a href="/ver-abrigos">Ver Abrigos</a></li>
-    <li><a href="/ver-abrigos-pets">Ver Abrigos Pets</a></li>
-</ul>
-<ul id="drpPessoasPets" class="dropdown-content">
-    <li><a href="/ver-pessoas">Pessoas</a></li>     
-    <li><a href="/ver-pets">Pets</a></li>
-    <li><a href="/ver-desaparecidos">Desaparecidos</a></li>  
-</ul>
-<nav>
-    <div class="nav-wrapper  green darken-1">
-        <div class="container">
-            <a href="/" class="brand-logo">SOS - RS</a>
-            <a href="#" data-target="menu-mobile" class="sidenav-trigger">
-                <i class="material-icons">dehaze</i>
-            </a>
-            <ul class="right hide-on-med-and-down">
-                <li><a href="/">Inicio</a></li>
-                <li><a class="dropdown-trigger" href="#!" data-target="drpDoacao">Doações<i class="material-icons right">arrow_drop_down</i></a></li>
-                <li><a class="dropdown-trigger" href="#!" data-target="drpAbrigos">Abrigos<i class="material-icons right">arrow_drop_down</i></a></li>
-                <li><a class="dropdown-trigger" href="#!" data-target="drpPessoasPets">Pessoas/Pets<i class="material-icons right">arrow_drop_down</i></a></li>
-                <li><a href="/info">Informações</a></li>
-                <li><a href="/ajude">Faça sua doação</a></li>    
-                <li><a href="/about">Sobre</a></li>     
-            </ul>
-        </div>
-    </div>
-</nav>
-<ul class="sidenav" id="menu-mobile">
-    <li><a href="/">Inicio</a></li>
-    <li><a href="/ver-doacoes">O que precisa?</a></li>
-    <li><a href="/ver-locais">Locais de doação</a></li>
-    <li><a href="/ver-abrigos"> Abrigos</a></li>     
-    <li><a href="/ver-abrigos-pets">Abrigos Pets</a></li>
-    <li><a href="/ver-pessoas">Pessoas</a></li>
-    <li><a href="/ver-pets">Pets</a></li>
-    <li><a href="/ver-desaparecidos">Desaparecidos</a></li>
-    <li><a href="/info">Informações</a></li> 
-    <li><a href="/ajude">Faça sua doação</a></li>       
-    <li><a href="/about">Sobre</a></li> 
-</ul>
 <div class="container">
 
 <?php if(isset($this->view->abrigos['retorno']) && $this->view->abrigos['retorno'] == "Sem Resultado"){ ?>
@@ -74,22 +18,26 @@
     <div class="col s12 m7">
         <h2 class="header">Abrigos</h2>
         <p>Verifique aqui os abrigos que ainda possuem vaga</p>
-        <div class="card horizontal">
-            <div class="card-stacked">
-                <div class="card-content">
-                    <div id="data">
-                        <div class="row">
-                            <form class="col s12">
+        <div class="card">
+            <div class="card-content">
+                <div id="data-abrigo">
+                    <div class="row">
+                        <form class="col s12">
                             <div class="row">
-                                <div class="input-field col s12">
+                                <div class="input-field col s12 l12">
                                     <input id="abrigo" type="text" name="filtro_local" class="validate">
                                     <label for="abrigo">Buscar Locais</label>
                                     <span class="helper-text" data-error="wrong" data-success="right"></span>
                                 </div>
                             </div>
-                            <div class="progress" id="preloader-abrigo-1" style="display: none;">
-                                <div class="indeterminate"></div>
+                            <div class="row">
+                                <div class="col s10 l12">
+                                    <div class="progress" id="preloader-abrigo-1" style="display: none;">
+                                        <div class="indeterminate"></div>
+                                    </div>
+                                </div>
                             </div>
+                            
                             <div class="row">
                                 <a class='dropdown-trigger btn' href='#' data-target='convert'>
                                     Exportar para...
@@ -111,40 +59,51 @@
                             </div>
                             </form>
                         </div>
-                        <table id="abrigos">
-                            <thead>
-                                <tr>
-                                    <th>Nome</th>
-                                    <th>Logradouro</th>
-                                    <th>Numero</th>
-                                    <th>Bairro</th>
-                                    <th>Cidade</th>
-                                    <th>UF</th>
-                                    <th>Tipo</th>
-                                    <th>Vagas</th>
-                                    <th>Telefone</th>
-                                    
-                                    <th>Cadastrado Em</th>
-                                </tr>
-                            </thead>
 
-                            <tbody>
-                                <?php foreach($this->view->abrigos as $key => $value) { ?>
+                        <div class="row">
+                            <div class="col s12 l12">
+
+                                <table id="abrigos" class="responsive-table highlight">
+                                <thead>
                                     <tr>
-                                        <td><?= $value['nome'];?></td>
-                                        <td><?= $value['logradouro'];?></td>
-                                        <td><?= $value['numero'];?></td>
-                                        <td><?= $value['bairro'];?></td>
-                                        <td><?= $value['cidade'];?></td>
-                                        <td><?= $value['uf'];?></td>
-                                        <td><?= $value['tipo'];?></td>
-                                        <td><?= $value['vagas'];?></td>
-                                        <td><?= $value['telefone'];?></td>
-                                        <td><?= DateTimeHelper::toNormalFormat($value['dtcadastro']);?></td>
+                                        <th>Nome</th>
+                                        <th>Logradouro</th>
+                                        <th>Numero</th>
+                                        <th>Bairro</th>
+                                        <th>Cidade</th>
+                                        <th>UF</th>
+                                        <th>Tipo</th>
+                                        <th>Vagas</th>
+                                        <th>Telefone</th>
+                                        
+                                        <th>Cadastrado Em</th>
                                     </tr>
-                                <?php } ?>
-                            </tbody>
-                        </table>
+                                </thead>
+
+                                <tbody>
+                                    <?php foreach($this->view->abrigos as $key => $value) { ?>
+                                        <tr>
+                                            <td><?= $value['nome'];?></td>
+                                            <td><?= $value['logradouro'];?></td>
+                                            <td><?= $value['numero'];?></td>
+                                            <td><?= $value['bairro'];?></td>
+                                            <td><?= $value['cidade'];?></td>
+                                            <td><?= $value['uf'];?></td>
+                                            <td><?= isset($value['tipo']) ? $value['tipo'] : "Desconhecido";?></td>
+                                            <td><?= $value['vagas'];?></td>
+                                            <td><?= $value['telefone'];?></td>
+                                            <td><?= DateTimeHelper::toNormalFormat($value['dtcadastro']);?></td>
+                                        </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
+
+                            </div>
+                        </div>
+
+
+
+                        
                     <ul class="pagination">
                         <li class="<?php echo $pagina <= 1 ? 'disabled' : ''; ?>"><a href="ver-abrigo/pagina/1">Primeira</a></li>
                         <?php for ($i = 1; $i <= $this->view->totalPaginas; $i++): ?>
@@ -155,7 +114,7 @@
 
                 </div>      
                 </div>
-            </div>
+            
         </div>
     </div>
 </div>
@@ -204,6 +163,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 document.addEventListener('DOMContentLoaded', function() {
     // Show preloader
+    var dataAbrigo = document.getElementById('data-abrigo');
     var preloaderAbrigo = document.getElementById('preloader-abrigo');
     var modalLoading = document.getElementById('modalLoading');
     var instance = M.Modal.init(modalLoading, {
@@ -213,15 +173,18 @@ document.addEventListener('DOMContentLoaded', function() {
         endingTop: '20%' // Define a posição final do modal
     });
 
+    
      // Exibe a modal
     instance.open();
+    dataAbrigo.style.display = "none";
     preloaderAbrigo.style.display = "block";
     let fetch = new Fetch('http://localhost:8000');
 
-    fetch.get('/ver-abrigos', {"Content-Type" : "application/json"} , "json")
+    fetch.get('/ver-abrigos')
     .then(data => {
             instance.close();
             preloaderAbrigo.style.display = "none";
+            dataAbrigo.style.display = "block";
         })
         .catch(error => {
             console.error('Error:', error);
@@ -239,7 +202,7 @@ inputSearchAbrigo.addEventListener('keyup', ()=>{
     
     let fetch = new Fetch("http://localhost:8000")
     let uri = decodeURI(`/abrigo/filtro/${filtro}`)
-    fetch.get(uri,{'Content-Type': 'application/json'})
+    fetch.get(uri,{'Content-Type': 'application/json'}, "json")
     .then((data) => {
         if(data != undefined || data != null){
             let aviso = document.querySelector(".helper-text");
@@ -290,5 +253,3 @@ inputSearchAbrigo.addEventListener('keyup', ()=>{
     }).catch( e => console.log(e) );
 });
 </script>
-</body>
-</html>

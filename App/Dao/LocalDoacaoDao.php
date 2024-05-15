@@ -88,4 +88,12 @@ class LocalDoacaoDao
         $resultado = $this->connection->rs();
         return $resultado;
     }
+
+    public function getItensPorLocal()
+    {
+        $sql = "SELECT l.nome, sum(d.quantidade) as total from local_doacao l join itens_doacao d on l.idlocaldoacao = d.idlocaldoacao group by l.nome";
+        $this->connection->query($sql);
+        $resultado = $this->connection->rs();
+        return $resultado;
+    }
 }

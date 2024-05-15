@@ -1,7 +1,9 @@
 <?php 
 
   $labels = [];
+  $labelsLocal = [];
   $values = [];
+  $valuesLocal = [];
   foreach($this->view->itensPorCidade as $key => $value){
     $labels[] = $value['cidade'];
     $values[] = $value['total'];
@@ -9,87 +11,47 @@
 
   $labels_str = json_encode($labels);
   $values_str = json_encode($values);
+
+  foreach($this->view->itensPorLocal as $key => $value ){
+    $labelsLocal[] = $value['nome'];
+    $valuesLocal[] = $value['total'];
+  }
+
+  $labels_local = json_encode($labelsLocal);
+  $values_local = json_encode($valuesLocal);
 ?>
 
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-
-    <title>SOS Enchente - RS</title>
-</head>
-<body>
-<ul id="drpDoacao" class="dropdown-content">
-    <li><a href="/ver-doacoes">O que precisa?</a></li>
-    <li><a href="/ver-locais">Locais de doação</a></li>
-</ul>
-<ul id="drpAbrigos" class="dropdown-content">
-    <li><a href="/ver-abrigos">Ver Abrigos</a></li>
-    <li><a href="/ver-abrigos-pets">Ver Abrigos Pets</a></li>
-</ul>
-<ul id="drpPessoasPets" class="dropdown-content">
-    <li><a href="/ver-pessoas">Pessoas</a></li>     
-    <li><a href="/ver-pets">Pets</a></li>  
-    <li><a href="/ver-desaparecidos">Desaparecidos</a></li>  
-</ul>
-<nav>
-    <div class="nav-wrapper  green darken-1">
-        <div class="container">
-            <a href="/" class="brand-logo">SOS - RS</a>
-            <a href="#" data-target="menu-mobile" class="sidenav-trigger">
-                <i class="material-icons">dehaze</i>
-            </a>
-            <ul class="right hide-on-med-and-down">
-                <li><a href="/">Inicio</a></li>
-                <li><a class="dropdown-trigger" href="#!" data-target="drpDoacao">Doações<i class="material-icons right">arrow_drop_down</i></a></li>
-                <li><a class="dropdown-trigger" href="#!" data-target="drpAbrigos">Abrigos<i class="material-icons right">arrow_drop_down</i></a></li>
-                <li><a class="dropdown-trigger" href="#!" data-target="drpPessoasPets">Pessoas/Pets<i class="material-icons right">arrow_drop_down</i></a></li>
-                <li><a href="/info">Informações</a></li>
-                <li><a href="/ajude">Faça sua doação</a></li>    
-                <li><a href="/about">Sobre</a></li>     
-            </ul>
-        </div>
-    </div>
-</nav>
-<ul class="sidenav" id="menu-mobile">
-    <li><a href="/">Inicio</a></li>
-    <li><a href="/ver-doacoes">O que precisa?</a></li>
-    <li><a href="/ver-locais">Locais de doação</a></li>
-    <li><a href="/ver-abrigos"> Abrigos</a></li>     
-    <li><a href="/ver-abrigos-pets">Abrigos Pets</a></li>
-    <li><a href="/ver-pessoas">Pessoas</a></li>
-    <li><a href="/ver-pets">Pets</a></li>
-    <li><a href="/info">Informações</a></li> 
-    <li><a href="/ajude">Faça sua doação</a></li>       
-    <li><a href="/about">Sobre</a></li> 
-</ul>
 <div class="container">
-    <div class="row">
-        <div class="col s6 l12">
-          <h4>Informações gerais</h4>
-          <div class="collection">
-            <a href="/ver-doacoes" class="collection-item"><span class="badge"><?= $this->view->infoTotal; ?></span>Total de itens para doação</a>
-            <a href="/ver-locais" class="collection-item"><span class="badge"><?= $this->view->infoTotalLocal; ?></span>Total de locais que recebem doações</a>
-            <a href="/ver-abrigos" class="collection-item"><span class="badge"><?= $this->view->infoTotalAbrigos; ?></span>Total de abrigos cadastrados</a>
-          </div>
-        </div>
-
-        <div class="col s4 m6 l6">
-            <canvas id="myChart">
-
-            </canvas>
-        </div>
-        <div class="col s4 m6 l6">
-            <canvas id="myChart2">
-
-            </canvas>
-        </div>
+  <div class="row">
+    <div class="col s12 m12 l12">
+      <h4>Informações gerais</h4>
+      <div class="collection">
+        <a href="/ver-doacoes" class="collection-item"><span class="badge"><?= $this->view->infoTotal; ?></span>Total de itens para doação</a>
+        <a href="/ver-locais" class="collection-item"><span class="badge"><?= $this->view->infoTotalLocal; ?></span>Total de locais que recebem doações</a>
+        <a href="/ver-abrigos" class="collection-item"><span class="badge"><?= $this->view->infoTotalAbrigos; ?></span>Total de abrigos cadastrados</a>
+      </div>
     </div>
+  </div>
+  <div class="row">
+    <div class="col s12 m6 l6">
+      <h4>Itens Por Cidade</h4>
+        <canvas id="myChart"> </canvas>
+    </div>
+    <div class="col s12 m6 l6">
+      <h4>Itens Por Local</h4>
+      <canvas id="myChart2"></canvas>
+    </div>
+  </div>
+  <div class="row">
+  <div class="col s12 m6 l6">
+      <h4>Abrigo por Cidade</h4>
+        <canvas id="abrigoCidade"> </canvas>
+    </div>
+    <div class="col s12 m6 l6">
+      <h4>Pessoas Por Abrigo</h4>
+      <canvas id="pessoasAbrigo"></canvas>
+    </div>
+  </div>
 </div>
 
 
@@ -119,52 +81,11 @@ $(document).ready(function(){
 $(".dropdown-trigger").dropdown();
 
 
-const ctx = document.getElementById('myChart');
+getChart(<?php echo $labels_str; ?>, <?php echo $values_str; ?> ,'myChart', 'bar', "#Total de itens por cidade");
+getChart(<?php echo $labels_local; ?>, <?php echo $values_local; ?>, "myChart2", "pie", "#Itens por local");
+getChart([], [], "abrigoCidade", "bar", "#Abrigos por Cidade");
+getChart([], [], "pessoasAbrigo", "bar", "#Pessoas por Abrigo");
 
-  const labels = <?php echo $labels_str; ?>;
-  const values = <?php echo $values_str; ?>;
-
-  new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: labels,
-      datasets: [{
-        label: '# Total de itens por cidade',
-        data: values,
-        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-        borderColor: 'rgba(54, 162, 235, 1)',
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
-    }
-  });
-
-  const ctx2 = document.getElementById('myChart2');
-
-  new Chart(ctx2, {
-    type: 'bar',
-    data: {
-      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-      datasets: [{
-        label: '# Tipos de doações',
-        data: [12, 25, 3, 7, 2, 3],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
-    }
-  });
 </script>
 </body>
 </html>

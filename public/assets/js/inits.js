@@ -47,19 +47,33 @@ function initVarsLocalAbrigo(){
   }
  
   
-return {
-    nome,
-    logradouro,
-    numero,
-    bairro,
-    cidade,
-    uf,
-    selected,
-    vaga,
-    telefone,
-}
+  return {
+      nome,
+      logradouro,
+      numero,
+      bairro,
+      cidade,
+      uf,
+      selected,
+      vaga,
+      telefone,
+  }
 }
 
+function initVarsUserLogin()
+{
+  let usuario  = document.getElementById("txt_username").value;
+  let senha  = document.getElementById("txt_senha").value;
+  let slcTipo  = document.getElementById("slc_user");
+  let slcUser = slcTipo.options[slcTipo.selectedIndex].value;
+
+  return{
+    usuario,
+    senha,
+    slcUser
+  }
+
+}
 
 function initVarsDoacao(){
 
@@ -78,15 +92,42 @@ function initVarsDoacao(){
   }
 }
 
+function initVarsCivil()
+{
+    let nome = document.getElementById('txt_nome_civil').value
+    let idade = document.getElementById('txt_idade_civil').value
+    let local = document.getElementById('local').value
+    let info = document.getElementById('txt_area_info').value
+
+    return {
+      nome,
+      idade,
+      local,
+      info
+    }
+
+}
+
 function initButons()
 {
     let submitDoacao = document.getElementById("submitItens");
     let submitLocal = document.getElementById("submitLocal");
     let submitLocalAbrigo = document.getElementById("submitLocalAbrigo");
+    let submitUserLogin = document.getElementById("submitUserLogin");
+
+    submitUserLogin != undefined ? submitUserLogin : null;
 
     return{
         submitDoacao,
         submitLocal,
-        submitLocalAbrigo
+        submitLocalAbrigo,
+        submitUserLogin
     }
+}
+
+function initVarCanvas(idCanvas)
+{
+    let ctx = document.getElementById(idCanvas);
+
+    return { ctx }
 }

@@ -1,62 +1,14 @@
 <?php 
     use App\Helper\DateTimeHelper;
 ?>
-
-<ul id="drpDoacao" class="dropdown-content">
-    <li><a href="/ver-doacoes">O que precisa?</a></li>
-    <li><a href="/ver-locais">Locais de doação</a></li>
-</ul>
-<ul id="drpAbrigos" class="dropdown-content">
-    <li><a href="/ver-abrigos">Ver Abrigos</a></li>
-    <li><a href="/ver-abrigos-pets">Ver Abrigos Pets</a></li>
-</ul>
-<ul id="drpPessoasPets" class="dropdown-content">
-    <li><a href="/ver-pessoas">Pessoas</a></li>     
-    <li><a href="/ver-pets">Pets</a></li>  
-    <li><a href="/ver-desaparecidos">Desaparecidos</a></li>
-</ul>
-<nav>
-    <div class="nav-wrapper  green darken-1">
-        <div class="container">
-            <a href="/" class="brand-logo">SOS - RS</a>
-            <a href="#" data-target="menu-mobile" class="sidenav-trigger">
-                <i class="material-icons">dehaze</i>
-            </a>
-            <ul class="right hide-on-med-and-down">
-                <li><a href="/">Inicio</a></li>
-                <li><a class="dropdown-trigger" href="#!" data-target="drpDoacao">Doações<i class="material-icons right">arrow_drop_down</i></a></li>
-                <li><a class="dropdown-trigger" href="#!" data-target="drpAbrigos">Abrigos<i class="material-icons right">arrow_drop_down</i></a></li>
-                <li><a class="dropdown-trigger" href="#!" data-target="drpPessoasPets">Pessoas/Pets<i class="material-icons right">arrow_drop_down</i></a></li>
-                <li><a href="/info">Informações</a></li>
-                <li><a href="/ajude">Faça sua doação</a></li>    
-                <li><a href="/about">Sobre</a></li>     
-            </ul>
-        </div>
-    </div>
-</nav>
-<ul class="sidenav" id="menu-mobile">
-    <li><a href="/">Inicio</a></li>
-    <li><a href="/ver-doacoes">O que precisa?</a></li>
-    <li><a href="/ver-locais">Locais de doação</a></li>
-    <li><a href="/ver-abrigos"> Abrigos</a></li>     
-    <li><a href="/ver-abrigos-pets">Abrigos Pets</a></li>
-    <li><a href="/ver-pessoas">Pessoas</a></li>
-    <li><a href="/ver-pets">Pets</a></li>
-    <li><a href="/ver-desaparecidos">Desaparecidos</a></li>
-    <li><a href="/info">Informações</a></li> 
-    <li><a href="/ajude">Faça sua doação</a></li>       
-    <li><a href="/about">Sobre</a></li> 
-</ul>
 <div class="container">
 
 <?php if(isset($this->view->locais['retorno']) && $this->view->locais['retorno'] == "Sem Resultado"){ ?>
     <div class="col s12 m7">
         <h4 class="header">Sem dados</h4>
-        <div class="card horizontal">
-            <div class="card-stacked">
-                <div class="card-content">
-                    <p>Não há itens cadastrados</p>
-                </div>
+        <div class="card">
+            <div class="card-content">
+                <p>Não há itens cadastrados</p>
             </div>
         </div>
     </div>
@@ -64,72 +16,82 @@
     <div class="col s12 m7">
         <h4 class="header">Locais de doação</h4>
         <p>Verifique aqui os locais que recebem doação</p>
-        <div class="card horizontal">
-            <div class="card-stacked">
+        <div class="card">
+            
                 <div class="card-content">
-                    <div id="data">
+                    <div id="data-locais">
                         <div class="row">
                             <form class="col s12">
-                            <div class="row">
-                                <div class="input-field col s12">
-                                    <input id="local" type="text" name="filtro_local" class="validate">
-                                    <label for="local">Buscar Locais</label>
-                                    <span class="helper-text" data-error="wrong" data-success="right"></span>
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <input id="local" type="text" name="filtro_local" class="validate">
+                                        <label for="local">Buscar Locais</label>
+                                        <span class="helper-text" data-error="wrong" data-success="right"></span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="progress" id="preloader-search" style="display: none;">
-                                <div class="indeterminate"></div>
-                            </div>
-                            <div class="row">
-                                <a class='dropdown-trigger btn' href='#' data-target='convert'>
-                                    Exportar para...
-                                </a>
+                                <div class="row">
+                                    <div class="col s12 l12">
+                                        <div class="progress" id="preloader-search" style="display: none;">
+                                            <div class="indeterminate"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <a class='dropdown-trigger btn' href='#' data-target='convert'>
+                                        Exportar para...
+                                    </a>
 
-                                <!-- Dropdown Structure -->
-                                <ul id='convert' class='dropdown-content'>
-                                    <li>
-                                        <a href="/local/export-pdf">
-                                            PDF
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="/local/export-excel">
-                                            EXCEL
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
+                                    <!-- Dropdown Structure -->
+                                    <ul id='convert' class='dropdown-content'>
+                                        <li>
+                                            <a href="/local/export-pdf">
+                                                PDF
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/local/export-excel">
+                                                EXCEL
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </form>
                         </div>
-                        <table id="locais">
-                            <thead>
-                                <tr>
-                                    <th>Nome</th>
-                                    <th>Logradouro</th>
-                                    <th>Numero</th>
-                                    <th>Bairro</th>
-                                    <th>Cidade</th>
-                                    <th>UF</th>
-                                    <th>Telefone</th>
-                                    <th>Cadastrado Em</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                <?php foreach($this->view->locais as $key => $value) { ?>
+                        <div class="row">
+                            <div class="col s12 l12">
+                                <table id="locais" class="responsive-table highlight">
+                                <thead>
                                     <tr>
-                                        <td><?= $value['nome'];?></td>
-                                        <td><?= $value['logradouro'];?></td>
-                                        <td><?= $value['numero'];?></td>
-                                        <td><?= $value['bairro'];?></td>
-                                        <td><?= $value['cidade'];?></td>
-                                        <td><?= $value['uf'];?></td>
-                                        <td><?= $value['telefone'];?></td>
-                                        <td><?= DateTimeHelper::toNormalFormat($value['dtcadastro']);?></td>
+                                        <th>Nome</th>
+                                        <th>Logradouro</th>
+                                        <th>Numero</th>
+                                        <th>Bairro</th>
+                                        <th>Cidade</th>
+                                        <th>UF</th>
+                                        <th>Telefone</th>
+                                        <th>Cadastrado Em</th>
                                     </tr>
-                                <?php } ?>
-                            </tbody>
-                        </table>
+                                </thead>
+
+                                <tbody>
+                                    <?php foreach($this->view->locais as $key => $value) { ?>
+                                        <tr>
+                                            <td><?= $value['nome'];?></td>
+                                            <td><?= $value['logradouro'];?></td>
+                                            <td><?= $value['numero'];?></td>
+                                            <td><?= $value['bairro'];?></td>
+                                            <td><?= $value['cidade'];?></td>
+                                            <td><?= $value['uf'];?></td>
+                                            <td><?= $value['telefone'];?></td>
+                                            <td><?= DateTimeHelper::toNormalFormat($value['dtcadastro']);?></td>
+                                        </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
+                            </div>
+                        </div>
+                        
                     <ul class="pagination">
                         <li class="<?php echo $pagina <= 1 ? 'disabled' : ''; ?>"><a href="/ver-locais/pagina/1">Primeira</a></li>
                         <?php for ($i = 1; $i <= $this->view->totalPaginas; $i++): ?>
@@ -141,7 +103,7 @@
                 </div>      
                     </div>
                 </div>
-            </div>
+            
         </div>
         
 </div>
@@ -192,26 +154,29 @@ document.addEventListener('DOMContentLoaded', function() {
 
 document.addEventListener('DOMContentLoaded', function() {
     // Show preloader
+    var dataDiv = document.getElementById('data-locais');
     var preloaderLocal = document.getElementById('preloader-local');
     var modalLoadingLocais = document.getElementById('modalLoadingLocais');
 
+    
     var instance = M.Modal.init(modalLoadingLocais, {
         dismissible: false, // Impede que o modal seja fechado clicando fora dele
         opacity: 0.5, // Define a opacidade do modal
         startingTop: '10%', // Define a posição inicial do modal
         endingTop: '20%' // Define a posição final do modal
     });
-
+    dataDiv.style.display = "none";
     instance.open();
     preloaderLocal.style.display='block';
 
-    let fetch = new Fetch('http://localhost:8000');
+    let fetch = new Fetch('http://localhost:8000', {"Content-Type": "application/json"}, "json");
     fetch.get('/ver-locais') 
         .then((data) => {
             // Hide preloader
             preloaderLocal.style.display = 'none';
             // Display data in the 'data' div
             instance.close();
+            dataDiv.style.display = "block"
         })
         .catch(error => {
             console.error('Error:', error);

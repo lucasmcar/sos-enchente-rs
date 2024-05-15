@@ -56,8 +56,6 @@ if(button.submitLocalAbrigo != undefined){
 
     let inputs = initVarsLocalAbrigo();
 
-    console.log(inputs.selected);
-
     const fetch = new Fetch("http://localhost:8000");
 
     fetch.post('/novo/abrigo', { inputs }, {"Content-Type": "application/json",})
@@ -74,10 +72,105 @@ if(button.submitLocalAbrigo != undefined){
 
 }
 
+if(button.submitUserLogin != undefined){
+  button.submitUserLogin.addEventListener('click', function(e){
+    e.preventDefault();
+
+    let inputs = initVarsUserLogin();
+
+    var modalAuth = document.getElementById('modal-auth');
+    var preloader = document.getElementById('preloader-auth');
+    var instance = M.Modal.init(modalAuth, {
+        dismissible: false, // Impede que o modal seja fechado clicando fora dele
+        opacity: 0.5, // Define a opacidade do modal
+        startingTop: '10%', // Define a posição inicial do modal
+        endingTop: '20%' // Define a posição final do modal
+    });
+
+
+    let fetch = new Fetch("http://localhost:8000");
+    preloader.style.display = 'block';
+    modalAuth.style.alignItems= "center"
+    instance.open()
+    
+    fetch.post('/autenticacao', {inputs}, {"Content-Type" : "application/json"}, "json")
+    .then(data => {
+        console.log(data);
+        if(data != null){
+          // Hide preloader
+          preloader.style.display = 'none';
+          // Display data in the 'data' div
+          instance.close();
+
+            window.location.href = data.redirect_url;
+        }
+
+    }).catch(error => {
+        console.error('Error:', error);
+        // Hide preloader in case of error
+        preloader.style.display = 'none';
+        instance.close();
+    });
+
+  });
+}
+
+function getChart(label, value, idCanvas, type = 'bar', title = ""){
+
+  let ct = initVarCanvas(idCanvas);
+
+  const labels = label;
+  const values = value;
+
+  var cores = returnColors(values.length);
+
+  new Chart(ct.ctx, {
+    type,
+    data: {
+      labels: labels,
+      datasets: [{
+        label: title,
+        data: values,
+        backgroundColor: cores,
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+
+}
+
 //Links ativos
 document.addEventListener("DOMContentLoaded", function() {
   // Obtém o caminho da URL atual
   var path = window.location.pathname;
+
+
+  if(path == "/login"){
+
+    var listaItens = document.querySelectorAll('.sidenav li');
+
+    document.querySelector(".sidenav-trigger").setAttribute("hidden", "hidden");
+    document.getElementById("logout").setAttribute("hidden", "hidden");
+    document.getElementById("ajuda").setAttribute("hidden", "hidden");
+    document.getElementById("info").setAttribute("hidden", "hidden");
+    document.getElementById("drPessoa").setAttribute("hidden", "hidden");
+    document.getElementById("drDoacao").setAttribute("hidden", "hidden");
+    document.getElementById("principal").setAttribute("hidden", "hidden");
+    document.getElementById("drAbrigo").setAttribute("hidden", "hidden");
+
+    // Iterar sobre cada elemento e escondê-lo
+    listaItens.forEach(function(item) {
+      item.classList.add('hide');
+  });
+  }
 
   // Seleciona a lista da navbar
   var navbarList = document.querySelector('.right');
@@ -136,4 +229,21 @@ if(telefoneAbrigo != undefined){
     // Set the formatted value back to the input field
     event.target.value = input;
   });
+}
+
+function randomColor() {
+  return '#' + Math.floor(Math.random()*16777215).toString(16);
+}
+
+function returnColors(nData)
+{
+  var count = nData;
+  var cores = [];
+
+  for (var i = 0; i < count; i++) {
+    cores.push(randomColor());
+  }
+
+  return cores;
+
 }

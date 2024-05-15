@@ -1,12 +1,18 @@
 <?php
 
 //básicas
-$router->get('/', 'IndexController@index');
+$router->get('/', 'IndexController', 'inicio');
 $router->get('/about', 'IndexController@about');
 $router->get('/info', 'IndexController@info');
 $router->get('/ajude', 'IndexController@doar');
 
-
+//Login e cadastro
+/*$router->get('/login', 'LoginController@login');
+$router->post('/autenticacao', 'LoginController','autenticacao');
+$router->get('/cadastro', 'LoginController@novoCadastro');
+$router->post('/novo/usuario', 'LoginController@create');
+$router->get('/logout', 'LoginController','logout');
+*/
 //Rotas das doações e locais
 $router->post('/nova/doacao', 'ItensDoacaoController', 'create');
 $router->get('/ver-doacoes', 'ItensDoacaoController', 'verDoacoes');
@@ -27,6 +33,7 @@ $router->get('/doacao/export-pdf', 'ItensDoacaoController', 'convertToPdf');
 $router->post('/novo/abrigo', 'LocalAbrigoController', 'create');
 $router->get('/ver-abrigos', 'LocalAbrigoController', 'verAbrigos');
 $router->get('/ver-abrigos/pagina/{pagina}', 'LocalAbrigoController', 'verAbrigos');
+$router->get('/ver-pessoas', 'LocalAbrigoController', 'verPessoas');
 //$router->post('/novo', 'LocalAbrigoController', 'verAbrigos');
 $router->get('/abrigo/filtro/{filtro}', 'LocalAbrigoController', 'filtroAbrigo');
 

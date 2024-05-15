@@ -20,8 +20,9 @@ class IndexController extends Action
         $this->render('locais');
     }
 
-    public function index()
+    public function inicio()
     {
+
 
         $repo = new ItensDoacaoRepository();
         $localDoacaoRepo = new LocalDoacaoRepository();
@@ -29,12 +30,10 @@ class IndexController extends Action
         $arrayTypes = $repo->returnAllTypes();
         $arrayLocals = $localDoacaoRepo->returnAllLocal();
         
-
-
         @$this->view->dataSelectLocal = $arrayLocals;
         @$this->view->dataSelect = $arrayTypes;
 
-        $this->render('index', 'index');
+        $this->render('inicio');
     }
 
     public function about()
@@ -58,11 +57,13 @@ class IndexController extends Action
         $totalLocais = $localDoacaoRepo->totalLocal();
         $totalAbrigos = $localAbrigoRepo->totalAbrigo();
         $totalItensPorCidade = $localDoacaoRepo->itensPorCidade();
+        $totalItensPorLocal = $localDoacaoRepo->itensPorLocal();
 
         $this->view->infoTotal = $totalItens;
         $this->view->infoTotalLocal = $totalLocais;
         $this->view->infoTotalAbrigos = $totalAbrigos;
         $this->view->itensPorCidade = $totalItensPorCidade;
+        $this->view->itensPorLocal = $totalItensPorLocal;
 
         $this->render('informacoes');
     }

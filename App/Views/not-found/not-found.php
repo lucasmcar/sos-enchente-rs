@@ -8,9 +8,6 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <title>SOS RS</title>
-    <style>
-        .error{width: calc(100% - 16px); height: calc(75% - 16px);}
-    </style>
 </head>
 <body>
 <nav>
@@ -30,13 +27,17 @@
 <ul class="sidenav" id="menu-mobile">
     <li><a href="/">Inicio</a></li>
 </ul>
-<div class="container">
-    <div class="row">
-        <div class="col s6 l12">
-               <img class="error" src="/assets/imgs/error_404.png">
-        </div>   
+<main>
+    <div class="container">
+        <div class="row">
+            <div class="col s6 l12">
+                <img class="responsive-img" src="/assets/imgs/error.png">
+                
+            </div>   
+        </div>
     </div>
-</div>
+</main>
+
 
 <footer class="page-footer  green darken-1">
     <div class="container">
