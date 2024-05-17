@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Helper\InputFilterHelper;
 use App\Helper\JsonHelper;
 use App\Model\LocalDoacao;
 use App\Repository\LocalDoacaoRepository;
@@ -16,17 +17,19 @@ class LocalDoacaoController extends Action
   
     public function create()
     {
-        $data = json_decode(file_get_contents("php://input"), true);
+        $data = InputFilterHelper::filterInputs(INPUT_POST, [
+            'nome', 'logradouro', 'numero', 'bairro', 'cidade', 'uf', 'telefone'
+        ]);
 
         $novoLocal = new LocalDoacao();
 
-        $novoLocal->setNome(ucwords($data['inputs']['nome']));
-        $novoLocal->setLogradouro(ucwords($data['inputs']['logradouro']));
-        $novoLocal->setNumero($data['inputs']['numero']);
-        $novoLocal->setBairro(ucwords($data['inputs']['bairro']));
-        $novoLocal->setCidade(ucwords($data['inputs']['cidade']));
-        $novoLocal->setUf($data['inputs']['uf']);
-        $novoLocal->setTelefone($data['inputs']['telefone']);
+        $novoLocal->setNome(ucwords($data['nome']));
+        $novoLocal->setLogradouro(ucwords($data['logradouro']));
+        $novoLocal->setNumero($data['numero']);
+        $novoLocal->setBairro(ucwords($data['bairro']));
+        $novoLocal->setCidade(ucwords($data['cidade']));
+        $novoLocal->setUf($data['uf']);
+        $novoLocal->setTelefone($data['telefone']);
 
         $localDoacaoRepo = new LocalDoacaoRepository();
 

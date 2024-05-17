@@ -36,15 +36,26 @@ function initVarsLocalAbrigo(){
   let bairro = document.getElementById("txt_bairro_abrigo").value;
   let cidade = document.getElementById("txt_cidade_abrigo").value;
   let uf = document.getElementById("txt_uf_abrigo").value;
-  let tipo = document.getElementsByName("tipo");
+  let tipo = document.getElementsByName("opt_tipo");
   let vaga = document.getElementById("txt_vagas_abrigo").value;
   let telefone = document.getElementById("txt_telefone_abrigo").value;
+  //let opts = document.getElementsByTagName('input');;
   
 
   selected = "";
-  for(var i = 0; i <= tipo.length; i++){
-    selected = tipo[i].checked ? tipo[i].value : "";
+  for(var i = 0; i < tipo.length; i++){
+    if(tipo[i].type === 'radio' && tipo[i].checked){
+      selected = tipo[i].value;
+    }
+    
   }
+ 
+  /*for (var i = 0; i < opts.length; i++) {
+      if (opts[i].type === 'radio' && opts[i].checked) {
+          // get value, set checked flag or do whatever you need to
+          optSelected = opts[i].value;       
+      }
+}*/
  
   
   return {
@@ -94,30 +105,34 @@ function initVarsDoacao(){
 
 function initVarsCivil()
 {
-    let nome = document.getElementById('txt_nome_civil').value;
-    let idade = document.getElementById('txt_idade_civil').value;
+    let nome_civil = document.getElementById('txt_nome_civil').value;
+    let idade_civil = document.getElementById('txt_idade_civil').value;
 
     let local = document.getElementById('slc_local_civil_pet');
-    let selectLocalCivilPet = local.options[local.selectedIndex].value;
+    let local_pet_civil= local.options[local.selectedIndex].value;
 
     let selectCivilPet = document.getElementById("slc_civil_pet");
-    let selectCP = selectCivilPet.options[selectCivilPet.selectedIndex].value;
+    let pet_civil = selectCivilPet.options[selectCivilPet.selectedIndex].value;
 
-    let info = document.getElementById('txt_area_info').value;
-    let raca = document.getElementById('txt_raca').value;
-    let especie = document.getElementById('txt_especie').value;
+    let area_info = document.getElementById('txt_area_info').value;
+    let raca = document.getElementById('txt_raca');
+
+    let foto = document.querySelector('input[type=file]').files[0];
+
+    let especie = document.getElementById('txt_especie');
    
-    especie != undefined ? especie : null;
-    raca != undefined ? raca : null;
+    especie= especie != undefined ? especie.value : null;
+    raca  = raca != undefined ? raca.value : null;
 
     return {
-      nome,
-      idade,
-      selectLocalCivilPet,
+      nome_civil,
+      idade_civil,
+      pet_civil,
       especie,
       raca,
-      info,
-      selectCP
+      area_info,
+      foto,
+      local_pet_civil
     }
 
 }
@@ -130,7 +145,7 @@ function initButons()
     let submitUserLogin = document.getElementById("submitUserLogin");
     let submitCadastroCilvil = document.getElementById("submitCadastroCivil");
 
-    submitUserLogin != undefined ? submitUserLogin : null;
+    submitUserLogin = submitUserLogin != undefined ? submitUserLogin : null;
 
     return{
         submitDoacao,

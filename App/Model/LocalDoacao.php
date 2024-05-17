@@ -70,10 +70,22 @@ class LocalDoacao extends LocalBaseModel
     {
         $this->telefone = $telefone;
     }
+    
 
     public function getTelefone(): string
     {
         return $this->telefone;
+    }
+
+    public function setTipo(string $tipo) : void
+    {
+        $this->tipo = $tipo;
+    }
+    
+
+    public function getTipo(): string
+    {
+        return $this->tipo;
     }
 
 } 

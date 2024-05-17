@@ -19,18 +19,18 @@
                 <div class="row">
                     <div class="col s12 l12">
                         <div id="data-pessoas">
-                            <h4>Pessoas cadastradas (<?= $this->view->totalPessoas; ?>)</h4>
+                            <h4>Pessoas cadastradas</h4>
+                            <h5>Total de registros encontrados: (<?= $this->view->totalPessoas; ?>)</h5>
                             <ul class="collapsible">
                                 <?php foreach($this->view->pessoas as $key => $value) { ?>
                                 <li>
                                     <div class="collapsible-header">
-                                        <i class="material-symbols-outlined">
-                                            person
-                                        </i>
+                                        <i><img src="<?= $value['imagem'] ?>" alt="Imagem de perfil" width="36" height="36" class="circle"></i>
                                         <?= $value['nome']; ?>
                                     </div>
                                     <div class="collapsible-body">
                                         <span>
+                                            <img width="180" height="100" src="<?= $value['imagem']?>">
                                             <p><b>Idade:</b> <?= $value['idade']; ?></p>
                                             <p><b>Informações:</b> <?= $value['info_adicional']; ?></p>
                                             <p><b>Nome do Abrigo:</b> <?= $value['nome_abrigo']; ?></p>
@@ -50,6 +50,15 @@
 
             <?php } ?>
 
+    </div>
+    <div class="row">
+        <ul class="pagination">
+            <li class="<?php echo $pagina <= 1 ? 'disabled' : ''; ?>"><a href="ver-peessoas/pagina/1">Primeira</a></li>
+            <?php for ($i = 1; $i <= $this->view->totalPaginas; $i++): ?>
+            <li class="<?php echo $this->view->paginaAtiva  == $i? 'active green darken-1' : ''; ?>"><a href="/ver-pessoas/pagina/<?php echo $i; ?>"><?php echo $i; ?></a></li>
+            <?php endfor; ?>
+            <li class="<?php echo $pagina >= $this->view->totalPaginas ? 'disabled' : ''; ?>"><a href="/ver-pessoas/pagina/<?php echo $this->view->totalPaginas; ?>">Última</a></li>
+        </ul>                            
     </div>
 </div>
 </main>
@@ -72,6 +81,83 @@
     </div>
 </div>
 
+<!-- FAB -->
+<div class="fixed-action-btn">
+    <a href="#mdlFabPessoa" class="btn modal-trigger btn-floating btn-large green">
+        <i class="large material-icons">create</i>
+    </a>
+</div>
+
+<!-- FAB MODaL -->
+<div id="mdlFabPessoa" class="modal">
+    <div class="modal-content">
+        <h5>Adicionar Pets?</h5>
+        <small>Adicione mais pets.</small>
+        <form method="POST" enctype="multipart/form-data" id="civilPet">
+            <div class="row">
+                <div class="col s12 l12">
+                    <img id="pessoaPreview" width="200" height="auto" src="#" class="responsive-img" style="display: none;">
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12 l6">
+                    <input id="txt_nome_civil" name="nome_civil" type="text" class="validate">
+                    <label for="txt_nome_civil">Nome Completo:</label>
+                </div>
+                <div class="input-field col s3 l2">
+                    <input id="txt_idade_civil" name="idade_civil" type="text" class="validate">
+                    <label for="txt_idade_civil">Idade:</label>
+                </div>
+                <div class="input-field col s3 l4">
+                    <select readonly="readonly" id="slc_civil_pet" name="pet_civil">
+                        <option value="">Selecione...</option>
+                        <option value="Pet">Pet</option>
+                        <option value="Civil" selected>Civil</option>
+                    </select>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6 l6">
+                        <select id="slc_local_civil_pet" name="local_pet_civil">
+                            <option value="">Escolha</option>
+                            <?php if(!empty($this->view->dataSelectAbrigo) && !isset($this->view->dataSelectAbrigo['retorno'])) { ?>
+                                <?php foreach($this->view->dataSelectAbrigo as $key => $value) { ?>
+                                    <?php if($value['vagas'] > 0) { ?>
+                                        <option value="<?= $value['idlocal_abrigo'];?>"><?=$value['nome']; ?></option>
+                                    <?php } ?>
+                                <?php }?>
+                            <?php } ?>
+                        </select>
+                    </div>
+                    <div class="input-field col s6 l6">
+                        <textarea id="txt_area_info" name="area_info" class="materialize-textarea"></textarea>
+                        <label for="txt_area_info">Info Adicional</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12 l6">
+                        <div class="file-field input-field">
+                            <div class="btn">
+                                <span>Foto</span>
+                                <input type="file" id="foto" name="foto" accept="image/*" onchange="previewImage(event)">
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input class="file-path validate" type="text">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row"> 
+                    <button class="btn light-green darken-2" id="submitCadastroCivil" type="submit" name="">Cadastrar Civil/Pet
+                        <i class="material-icons right">send</i>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--//Fab Modal-->
+
 
 <!-- Importando jQuery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -83,7 +169,8 @@
 <script src="/assets/js/fetch.js"></script>
 <script src="/assets/js/functions.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+
+document.addEventListener('DOMContentLoaded', function() {
   // Inicialize o componente Collapsible
   var elems = document.querySelectorAll('.collapsible');
   var instances = M.Collapsible.init(elems, {});
@@ -94,6 +181,36 @@ document.addEventListener('DOMContentLoaded', function() {
     var instances = M.Dropdown.init(elems, {
         hover : true
     });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.fixed-action-btn');
+    var instances = M.FloatingActionButton.init(elems, {});
+  });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.modal');
+    var instances = M.Modal.init(elems, {
+        opacity: 0.7
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('select');
+    var instances = M.FormSelect.init(elems, {});
+
+     /*document.getElementById("slc_civil_pet").addEventListener("change", function(){
+         var selected = this.value;
+        console.log(selected)
+         // Verifica se o valor selecionado é '1', se sim, mostra os campos ocultos
+        if (selected === 'Pet') {
+          document.getElementById('hiddenFields').style.display = 'block';
+        } else {
+          // Se não, esconde os campos ocultos
+          document.getElementById('hiddenFields').style.display = 'none';
+        }
+
+      })*/
 });
 
 $(".dropdown-trigger").dropdown();
@@ -134,7 +251,25 @@ document.addEventListener('DOMContentLoaded', function() {
         preloaderPessoas.style.display = 'none';
         instance.close();
     });
-    
-   
 });
+
+function previewImage(event) {
+        const preview = document.getElementById('pessoaPreview');
+        let file = event.target.files[0];
+        
+        if (file) {
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            }
+
+            reader.readAsDataURL(file);
+        } else {
+            preview.src = '#';
+            preview.style.display = 'none';
+        }
+    }
+
 </script>

@@ -61,12 +61,14 @@ class IndexController extends Action
         $totalItens = $repo->totalItens();
         $totalLocais = $localDoacaoRepo->totalLocal();
         $totalAbrigos = $localAbrigoRepo->totalAbrigo();
+        $totalAbrigosPets = $localAbrigoRepo->totalAbrigoPets();
         $totalItensPorCidade = $localDoacaoRepo->itensPorCidade();
         $totalItensPorLocal = $localDoacaoRepo->itensPorLocal();
 
         $this->view->infoTotal = $totalItens;
         $this->view->infoTotalLocal = $totalLocais;
         $this->view->infoTotalAbrigos = $totalAbrigos;
+        $this->view->infoTotalAbrigosPets = $totalAbrigosPets;
         $this->view->itensPorCidade = $totalItensPorCidade;
         $this->view->itensPorLocal = $totalItensPorLocal;
 

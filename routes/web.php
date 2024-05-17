@@ -34,12 +34,16 @@ $router->post('/novo/abrigo', 'LocalAbrigoController', 'create');
 $router->post('/novo/civil', 'CivilController', 'create');
 $router->post('/novo/pet', 'CivilController', 'create');
 $router->get('/ver-pessoas', 'CivilController', 'verPessoas');
+$router->get('/ver-pessoas/pagina/{pagina}', 'CivilController', 'verPessoas');
 $router->get('/ver-pets', 'CivilController', 'verPets');
+$router->get('/ver-pets/pagina/{paginas}', 'CivilController', 'verPets');
 $router->get('/ver-abrigos', 'LocalAbrigoController', 'verAbrigos');
+$router->get('/ver-abrigos-pets', 'LocalAbrigoController', 'verAbrigosPets');
 $router->get('/ver-abrigos/pagina/{pagina}', 'LocalAbrigoController', 'verAbrigos');
 
 //$router->post('/novo', 'LocalAbrigoController', 'verAbrigos');
 $router->get('/abrigo/filtro/{filtro}', 'LocalAbrigoController', 'filtroAbrigo');
+$router->get('/abrigo-pet/filtro/{filtro}', 'LocalAbrigoController', 'filtroPetAbrigo');
 
 $router->notFound(function(){
     include '../App/Views/not-found/not-found.php';

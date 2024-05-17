@@ -8,6 +8,7 @@ class Pessoa
     private $nome;
     private $idade;
     private $infoAdicional;
+    private $pathImagem;
     private $dtCadastro;
     private $idLocalAbrigo;
 
@@ -55,6 +56,16 @@ class Pessoa
     {
         return $this->infoAdicional;
     }
+
+    public function setImagemPath($path) : void
+    {
+        $this->pathImagem = $path;
+    }
+
+    public function getImagemPath() : string
+    {
+        return $this->pathImagem;
+    }
     
     public function setDtCadastro(string $dtCadastro)
     {
@@ -70,7 +81,7 @@ class Pessoa
     {
         $this->idLocalAbrigo = $idLocalAbrigo;
     }
-    
+
     public function getIdLocalAbrigo() : int
     {
         return $this->idLocalAbrigo;

@@ -48,7 +48,7 @@
                         <img src="/assets/imgs/missing.png" alt="" class="circle">
                         <span class="title">3 . Pessoas desaparecidas</span>
                         <p>Antes de cadastrar, <br>
-                            o sistema fará uma busca, se encontrar, 
+                            o sistema fará uma busca dessas pessoas em abrigos, se encontrar, 
                             vai mostrar o local e endereço
                             onde essa pessoa está.
                         </p>
@@ -123,7 +123,7 @@
             <!--/Card cadastro  pessoas e pets-->
 
             <!--Card cadastro de pessoas e pets desaparecidos -->
-            <div class="col s6 m6">
+            <!--<div class="col s6 m6">
                 <div class="card green darken-2">
                     <div class="card-content white-text">
                         <span class="card-title">Desaparecidos</span>
@@ -135,7 +135,7 @@
                         <a href="#mdlPessoaPetDesaparecido" class="btn modal-trigger green lighten-2">Cadastrar</a>
                     </div>
                 </div>
-            </div>
+            </div>-->
             <!--/Card cadastro  pessoas e pets-->
             
         </div>
@@ -168,14 +168,14 @@
                 <div class="row">
                     <div class="input-field col s6">
                         <input id="txt_qtd" name="quantidade" type="text" class="validate">
-                        <label for="txt_qtd">Quantidade:</label>
+                        <label for="txt_qtd">Quantidade necessária:</label>
                     </div>
                     <div class="input-field col s6">
                         <select id="slc_local" name="local">
                             <option value="">Escolha</option>
                             <?php if(!empty($this->view->dataSelectLocal) && !isset($this->view->dataSelectLocal['retorno'])) { ?>
                               <?php foreach($this->view->dataSelectLocal as $key => $value) { ?>
-                                <option value="<?= $value['idlocaldoacao'];?>"><?=$value['nome']; ?></option>
+                                <option value="<?= $value['idlocal_doacao'];?>"><?=$value['nome']; ?></option>
                               <?php }?>
                             <?php } ?>
                         </select>
@@ -200,20 +200,20 @@
                 <div class="row">
                     <div class="input-field col s3">
                         <label>
-                            <input name="tipo" value="civil" type="radio" />
+                            <input name="opt_tipo" value="civil" type="radio" />
                             <span>Para Civil</span>
                         </label>
         
                     </div>
                     <div class="input-field col s3">
                         <label>
-                            <input name="tipo" value="pet" type="radio" />
+                            <input name="opt_tipo" value="pet" type="radio" />
                             <span>Para Pet</span>
                         </label>
                     </div>
                     <div class="input-field col s3">
                         <label>
-                            <input name="tipo" value="ambos" type="radio" />
+                            <input name="opt_tipo" value="ambos" type="radio" />
                             <span>Ambos</span>
                         </label>
                     </div>
@@ -320,7 +320,7 @@
         <div class="modal-content">
             <h4>Cadastro de pessoas ou pets</h4>
             
-            <form>
+            <form method="POST" enctype="multipart/form-data" id="civilPet">
                 <div class="row">
                     <div class="col s12 l12">
                     <img id="pessoaPreview" width="200" height="auto" src="#" class="responsive-img" style="display: none;">
@@ -354,17 +354,17 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s6 l6">
-                            <select id="slc_local_civil_pet" name="pet_civil">
+                            <select id="slc_local_civil_pet" name="local_pet_civil">
                                 <option value="">Escolha</option>
                                 <?php if(!empty($this->view->dataSelectAbrigo) && !isset($this->view->dataSelectAbrigo['retorno'])) { ?>
                                     <?php foreach($this->view->dataSelectAbrigo as $key => $value) { ?>
-                                        <option value="<?= $value['idabrigo'];?>"><?=$value['nome']; ?></option>
+                                        <option value="<?= $value['idlocal_abrigo'];?>"><?=$value['nome']; ?></option>
                                     <?php }?>
                                 <?php } ?>
                             </select>
                         </div>
                         <div class="input-field col s6 l6">
-                            <textarea id="txt_area_info" class="materialize-textarea"></textarea>
+                            <textarea id="txt_area_info" name="area_info" class="materialize-textarea"></textarea>
                             <label for="txt_area_info">Info Adicional</label>
                         </div>
                     </div>
@@ -373,7 +373,7 @@
                             <div class="file-field input-field">
                                 <div class="btn">
                                     <span>Foto</span>
-                                    <input type="file" id="foto" onchange="previewImage(event)">
+                                    <input type="file" id="foto" name="foto" accept="image/*" onchange="previewImage(event)">
                                 </div>
                                 <div class="file-path-wrapper">
                                     <input class="file-path validate" type="text">
@@ -381,7 +381,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row"> 
                         <button class="btn light-green darken-2" id="submitCadastroCivil" type="submit" name="">Cadastrar Civil/Pet
                             <i class="material-icons right">send</i>
                         </button>

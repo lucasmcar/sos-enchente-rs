@@ -10,6 +10,7 @@ class Pet
     private $especie;
     private $idade;
     private $infoAdicional;
+    private $imagemPath;
     private $idLocalAbrigo;
     private $dtCadastro;
 
@@ -76,6 +77,16 @@ class Pet
     {
         return $this->infoAdicional;
     }
+
+    public function setImagemPath($path) : void
+    {
+        $this->imagemPath = $path;
+    }
+
+    public function getImagemPath() : string
+    {
+        return $this->imagemPath;
+    } 
     
     public function setDtCadastro(string $dtCadastro)
     {

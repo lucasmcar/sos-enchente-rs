@@ -93,4 +93,14 @@ class LocalAbrigo extends LocalBaseModel
     {
         return $this->telefone;
     }
+
+    public function setTipo(string $tipo) : void
+    {
+        $this->tipo = $tipo;
+    }
+
+    public function getTipo(): string
+    {
+        return $this->tipo;
+    }
 }

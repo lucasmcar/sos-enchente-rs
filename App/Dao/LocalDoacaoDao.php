@@ -55,7 +55,7 @@ class LocalDoacaoDao
 
     public function returnAllLocal()
     {
-        $sql = "SELECT idlocaldoacao, nome, telefone FROM local_doacao";
+        $sql = "SELECT idlocal_doacao, nome, telefone FROM local_doacao";
         if(isset($orderBy)){
             $sql .= " GROUP BY nome "; 
         }
@@ -83,7 +83,7 @@ class LocalDoacaoDao
 
     public function getItensPorCidade()
     {
-        $sql = "SELECT l.cidade, sum(d.quantidade) as total from local_doacao l join itens_doacao d on l.idlocaldoacao = d.idlocaldoacao group by l.cidade";
+        $sql = "SELECT l.cidade, sum(d.quantidade) as total from local_doacao l join item_doacao d on l.idlocal_doacao = d.idlocal_doacao group by l.cidade";
         $this->connection->query($sql);
         $resultado = $this->connection->rs();
         return $resultado;
@@ -91,7 +91,7 @@ class LocalDoacaoDao
 
     public function getItensPorLocal()
     {
-        $sql = "SELECT l.nome, sum(d.quantidade) as total from local_doacao l join itens_doacao d on l.idlocaldoacao = d.idlocaldoacao group by l.nome";
+        $sql = "SELECT l.nome, sum(d.quantidade) as total from local_doacao l join item_doacao d on l.idlocal_doacao = d.idlocal_doacao group by l.nome";
         $this->connection->query($sql);
         $resultado = $this->connection->rs();
         return $resultado;

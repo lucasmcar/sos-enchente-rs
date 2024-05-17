@@ -17,7 +17,7 @@ class ItensDoacaoDao
 
     public function insert(ItensDoacao $model) : int
     {
-        $sql = "INSERT INTO itens_doacao (nome, quantidade, idlocaldoacao, dtcadastro, idtipo_doacao) VALUES (:nome, :quantidade, :idlocal_doacao, NOW(), :idtipo_doacao)";
+        $sql = "INSERT INTO item_doacao (nome, quantidade, idlocal_doacao, dtcadastro, idtipo_doacao) VALUES (:nome, :quantidade, :idlocal_doacao, NOW(), :idtipo_doacao)";
         $this->connection->prepare($sql);
         $this->connection->bind(':nome', $model->getNome());
         $this->connection->bind(':idtipo_doacao', $model->getTipo());
@@ -40,9 +40,9 @@ class ItensDoacaoDao
     public function selectAll(string $orderBy = "ASC") : array | string
     {
         $sql = "SELECT d.nome, d.idtipo_doacao, d.quantidade, d.dtcadastro , t.nome as nome_tipo, l.nome as nome_local 
-        FROM itens_doacao d 
+        FROM item_doacao d 
         INNER JOIN tipo_doacao t ON d.idtipo_doacao = t.idtipo_doacao
-        INNER JOIN local_doacao l ON d.idlocaldoacao = l.idlocaldoacao
+        INNER JOIN local_doacao l ON d.idlocal_doacao = l.idlocal_doacao
         ";
         if(isset($orderBy)){
             $sql .= " ORDER BY quantidade ".$orderBy; 
@@ -56,9 +56,9 @@ class ItensDoacaoDao
     public function filtroPorNome(string $nome)
     {
         $sql = "SELECT d.nome, d.quantidade,  t.nome as nome_tipo, l.nome as nome_local, l.telefone, d.dtcadastro
-        FROM itens_doacao d 
+        FROM item_doacao d 
         INNER JOIN tipo_doacao t ON d.idtipo_doacao = t.idtipo_doacao 
-        INNER JOIN local_doacao l ON d.idlocaldoacao = l.idlocaldoacao";
+        INNER JOIN local_doacao l ON d.idlocal_doacao = l.idlocal_doacao";
         $sql .= " WHERE d.nome LIKE :nome OR l.nome LIKE :nome";
         $this->connection->prepare($sql);
         $this->connection->bind(':nome', '%'.$nome.'%');
@@ -78,10 +78,10 @@ class ItensDoacaoDao
     public function getItemPorPagina($limite, $offset)
     {
         $sql = "
-            SELECT d.nome, d.quantidade, t.nome as nome_tipo, l.nome as nome_local, l.telefone, d.dtcadastro, d.idtipo_doacao, d.idlocaldoacao 
-            FROM itens_doacao d 
+            SELECT d.nome, d.quantidade, t.nome as nome_tipo, l.nome as nome_local, l.telefone, d.dtcadastro, d.idtipo_doacao, d.idlocal_doacao 
+            FROM item_doacao d 
             INNER JOIN tipo_doacao t ON d.idtipo_doacao = t.idtipo_doacao 
-            INNER JOIN local_doacao l ON d.idlocaldoacao = l.idlocaldoacao 
+            INNER JOIN local_doacao l ON d.idlocal_doacao = l.idlocal_doacao 
             ORDER BY d.dtcadastro DESC
             LIMIT $limite 
             OFFSET $offset";
@@ -92,7 +92,7 @@ class ItensDoacaoDao
 
     public function getTotalItens()
     {
-        $sql = "SELECT COUNT(*) as total FROM itens_doacao";
+        $sql = "SELECT COUNT(*) as total FROM item_doacao";
         $this->connection->query($sql);
         $resultado = $this->connection->rs();
         return $resultado[0]['total'];

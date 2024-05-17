@@ -3,20 +3,20 @@
     <h4>Por que?</h4>
     <p>
         A ideia desse projeto foi pensada para ajudar a população do RS, população da Grande Porto Alegre
-        que sofreu com as terriveis enchentes do final do mês de abril e ínicio de maio.
+        que sofreu com as terríveis enchentes do final do mês de abril e ínicio de maio.
     </p>
     <p>
         Com a colaboraçao do meu amigo e também desenvolvedor Éberson, esperamos entregar esse projeto o quanto antes para 
         que mais pessoas tenham o acesso
     </p>
     <p>
-        Como não poderia ajudar com dinheiro eu resolvi usar os meus conhecimentos com desenvolvimento de sistemas para desenvolver esse projeto de forma totalmente gratuita, 
-        inclusive sua hospedagem, para que se possam registrar dados como:
+        Nesse sistema estão inclusos
         <ul>
-            <li>O que estão precisando?</li>
-            <li>Onde há abrigos e quantas vagas?</li>
-            <li>Onde há postos para recolher doações?</li>
+            <li>Cadastro de doações necessárias</li>
+            <li>Locais de abrigos e quantas vagas?</li>
+            <li>Locais para recolher doações?</li>
             <li>Encontrar familiares em abrigos de forma mais organizada</li>
+            
         </ul>
     </p>
     <h4>Responsabilidades</h4>
@@ -29,11 +29,11 @@
 
     <h4>Que dados esse site coleta?</h4>
     <p>
-        Esse site coleta apenas informações básicas sobre localização de abrigos, 
+        Esse sistema coleta apenas informações básicas sobre localização de abrigos, 
         pessoas e itens necessários para doação e pessoas desaparecidas.
     </p>
     <p>
-        Nós não coletamos dados sensíveis como CPF, RG, email e outras informações consideradas sensíveis.
+        Nós não coletamos dados sensíveis como CPF, RG e outras informações consideradas sensíveis.
     </p>
     <p>
         Esse sistema também não coleta ou envia emails para seus usuários. 
@@ -42,7 +42,7 @@
         Nós apenas estamos oferencendo uma ferramente como forma de registro e pesquisa de informações
     </p>
     <p>
-    Para qualquer dúvida, ou sugestão, por favor, enviar e-mail para <a href="mailto:codexpertssoftware@gmail.com">Code Experts</a>
+        Para qualquer dúvida, ou sugestão, por favor, enviar e-mail para <a href="mailto:codexpertssoftware@gmail.com">Code Experts</a>
     </p>
 </div>
 

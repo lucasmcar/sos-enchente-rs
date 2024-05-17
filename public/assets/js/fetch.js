@@ -55,7 +55,7 @@ var Fetch = (function(){
         const requestOptions = {
             method: method,
             headers: headers,
-            body: body ? JSON.stringify(body) : null
+            body
         };
 
         const response = await fetch(this.baseURL + url, requestOptions);

@@ -12,100 +12,95 @@
             </div>
         </div>
     </div>
-<?php exit;}?>
+<?php } else { ?>
     <div class="col s12 m7">
         <h4 class="header">Locais de doação</h4>
         <p>Verifique aqui os locais que recebem doação</p>
         <div class="card">
-            
-                <div class="card-content">
-                    <div id="data-locais">
-                        <div class="row">
-                            <form class="col s12">
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <input id="local" type="text" name="filtro_local" class="validate">
-                                        <label for="local">Buscar Locais</label>
-                                        <span class="helper-text" data-error="wrong" data-success="right"></span>
-                                    </div>
+            <div class="card-content">
+                <div id="data-locais">
+                    <div class="row">
+                        <form class="col s12">
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <input id="local" type="text" name="filtro_local" class="validate">
+                                    <label for="local">Buscar Locais</label>
+                                    <span class="helper-text" data-error="wrong" data-success="right"></span>
                                 </div>
-                                <div class="row">
-                                    <div class="col s12 l12">
-                                        <div class="progress" id="preloader-search" style="display: none;">
-                                            <div class="indeterminate"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="row">
-                                    <a class='dropdown-trigger btn' href='#' data-target='convert'>
-                                        Exportar para...
-                                    </a>
-
-                                    <!-- Dropdown Structure -->
-                                    <ul id='convert' class='dropdown-content'>
-                                        <li>
-                                            <a href="/local/export-pdf">
-                                                PDF
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="/local/export-excel">
-                                                EXCEL
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="row">
-                            <div class="col s12 l12">
-                                <table id="locais" class="responsive-table highlight">
-                                <thead>
-                                    <tr>
-                                        <th>Nome</th>
-                                        <th>Logradouro</th>
-                                        <th>Numero</th>
-                                        <th>Bairro</th>
-                                        <th>Cidade</th>
-                                        <th>UF</th>
-                                        <th>Telefone</th>
-                                        <th>Cadastrado Em</th>
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-                                    <?php foreach($this->view->locais as $key => $value) { ?>
-                                        <tr>
-                                            <td><?= $value['nome'];?></td>
-                                            <td><?= $value['logradouro'];?></td>
-                                            <td><?= $value['numero'];?></td>
-                                            <td><?= $value['bairro'];?></td>
-                                            <td><?= $value['cidade'];?></td>
-                                            <td><?= $value['uf'];?></td>
-                                            <td><?= $value['telefone'];?></td>
-                                            <td><?= DateTimeHelper::toNormalFormat($value['dtcadastro']);?></td>
-                                        </tr>
-                                    <?php } ?>
-                                </tbody>
-                            </table>
                             </div>
-                        </div>
-                        
-                    <ul class="pagination">
-                        <li class="<?php echo $pagina <= 1 ? 'disabled' : ''; ?>"><a href="/ver-locais/pagina/1">Primeira</a></li>
-                        <?php for ($i = 1; $i <= $this->view->totalPaginas; $i++): ?>
-                        <li class="<?php echo $this->view->paginaAtiva  == $i? 'active green darken-1' : ''; ?>"><a href="/ver-locais/pagina/<?php echo $i; ?>"><?php echo $i; ?></a></li>
-                        <?php endfor; ?>
-                        <li class="<?php echo $pagina >= $this->view->totalPaginas ? 'disabled' : ''; ?>"><a href="?pagina=<?php echo $this->view->totalPaginas; ?>">Última</a></li>
-                    </ul>
+                            <div class="row">
+                                <div class="col s12 l12">
+                                    <div class="progress" id="preloader-search" style="display: none;">
+                                        <div class="indeterminate"></div>
+                                    </div>
+                                </div>
+                            </div>
+                                
+                            <div class="row">
+                                <a class='dropdown-trigger btn' href='#' data-target='convert'>
+                                    Exportar para...
+                                </a>
 
-                </div>      
+                                <!-- Dropdown Structure -->
+                                <ul id='convert' class='dropdown-content'>
+                                    <li>
+                                        <a href="/local/export-pdf">
+                                            PDF
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/local/export-excel">
+                                            EXCEL
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 l12">
+                            <table id="locais" class="responsive-table highlight">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Logradouro</th>
+                                    <th>Numero</th>
+                                    <th>Bairro</th>
+                                    <th>Cidade</th>
+                                    <th>UF</th>
+                                    <th>Telefone</th>
+                                    <th>Cadastrado Em</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach($this->view->locais as $key => $value) { ?>
+                                    <tr>
+                                        <td><?= $value['nome'];?></td>
+                                        <td><?= $value['logradouro'];?></td>
+                                        <td><?= $value['numero'];?></td>
+                                        <td><?= $value['bairro'];?></td>
+                                        <td><?= $value['cidade'];?></td>
+                                        <td><?= $value['uf'];?></td>
+                                        <td><?= $value['telefone'];?></td>
+                                        <td><?= DateTimeHelper::toNormalFormat($value['dtcadastro']);?></td>
+                                    </tr>
+                                <?php } ?>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-            
+                        
+                <ul class="pagination">
+                    <li class="<?php echo $pagina <= 1 ? 'disabled' : ''; ?>"><a href="/ver-locais/pagina/1">Primeira</a></li>
+                    <?php for ($i = 1; $i <= $this->view->totalPaginas; $i++): ?>
+                    <li class="<?php echo $this->view->paginaAtiva  == $i? 'active green darken-1' : ''; ?>"><a href="/ver-locais/pagina/<?php echo $i; ?>"><?php echo $i; ?></a></li>
+                    <?php endfor; ?>
+                    <li class="<?php echo $pagina >= $this->view->totalPaginas ? 'disabled' : ''; ?>"><a href="?pagina=<?php echo $this->view->totalPaginas; ?>">Última</a></li>
+                </ul>
+            </div>      
         </div>
-        
+    </div>       
+<?php }?>   
 </div>
 
 <div id="modalLoadingLocais" class="modal">

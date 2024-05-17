@@ -16,7 +16,7 @@ class LocalAbrigoDao
 
     public function insert(LocalAbrigo $model)
     {
-        $sql = "INSERT INTO abrigo (nome, logradouro, numero, bairro, cidade, uf, vagas, telefone, dtcadastro) VALUES (:nome, :logradouro, :numero, :bairro, :cidade, :uf, :vagas, :telefone, NOW())";
+        $sql = "INSERT INTO local_abrigo (nome, logradouro, numero, bairro, cidade, uf, vagas, telefone, tipo, dtcadastro) VALUES (:nome, :logradouro, :numero, :bairro, :cidade, :uf, :vagas, :telefone, :tipo, NOW())";
         $this->connection->prepare($sql);
         $this->connection->bind(':nome', $model->getNome());
         $this->connection->bind(':logradouro', $model->getLogradouro());
@@ -26,14 +26,15 @@ class LocalAbrigoDao
         $this->connection->bind(':uf', $model->getUf());
         $this->connection->bind(':vagas', $model->getVagas());
         $this->connection->bind(':telefone', $model->getTelefone());
+        $this->connection->bind(':tipo', $model->getTipo());
         return $this->connection->execute();
     }
 
     public function filtroPorAbrigo(string $filtro)
     {
-        $sql = "SELECT nome, logradouro, numero, bairro , cidade, uf, vagas, telefone, dtcadastro
-        FROM abrigo";
-        $sql .= " WHERE nome LIKE :nome OR cidade LIKE :cidade";
+        $sql = "SELECT nome, logradouro, numero, bairro , cidade, uf,  tipo, vagas, telefone,  dtcadastro
+        FROM local_abrigo";
+        $sql .= " WHERE (nome LIKE :nome OR cidade LIKE :cidade) AND tipo = 'civil' ";
         $this->connection->prepare($sql);
         $this->connection->bind(':nome', '%'.$filtro.'%');
         $this->connection->bind(':cidade', '%'.$filtro.'%');
@@ -41,11 +42,36 @@ class LocalAbrigoDao
 
     }
 
-    public function getAbrigoPorPagina(int $limite, int $offset)
+    public function filtroPetPorAbrigo(string $filtro)
+    {
+        $sql = "SELECT nome, logradouro, numero, bairro , cidade, uf, tipo, vagas, telefone,  dtcadastro
+        FROM local_abrigo";
+        $sql .= " WHERE (nome LIKE :nome OR cidade LIKE :cidade) AND tipo = 'pet' ";
+        $this->connection->prepare($sql);
+        $this->connection->bind(':nome', '%'.$filtro.'%');
+        $this->connection->bind(':cidade', '%'.$filtro.'%');
+        return $this->connection->rs();
+
+    }
+
+    public function getAbrigoPorPagina(int $limite, int $offset, $where = false)
     {
         $sql = "
-            SELECT nome, logradouro, numero, bairro, cidade, uf, vagas, telefone, dtcadastro 
-            FROM abrigo 
+            SELECT nome, logradouro, numero, bairro, cidade, uf, tipo, vagas, telefone,  dtcadastro 
+            FROM local_abrigo WHERE tipo = 'civil' 
+            ORDER BY dtcadastro DESC
+            LIMIT $limite 
+            OFFSET $offset";
+            $this->connection->query($sql);
+        $resultado = $this->connection->rs();
+        return $resultado;
+    }
+
+    public function getAbrigoPetsPorPagina(int $limite, int $offset, $where = false)
+    {
+        $sql = "
+            SELECT nome, logradouro, numero, bairro, cidade, uf, tipo, vagas, telefone, dtcadastro 
+            FROM local_abrigo WHERE tipo = 'pet'  
             ORDER BY dtcadastro DESC
             LIMIT $limite 
             OFFSET $offset";
@@ -56,10 +82,21 @@ class LocalAbrigoDao
 
     public function returnAllAbrigo()
     {
-        $sql = "SELECT idabrigo, nome, vagas, telefone FROM abrigo";
-        if(isset($orderBy)){
-            $sql .= " GROUP BY nome "; 
-        }
+        $sql = "SELECT idlocal_abrigo, nome, vagas, telefone, tipo FROM local_abrigo";
+        $sql .= " WHERE tipo = 'civil'"; 
+        $sql .= " GROUP BY nome "; 
+        
+        $this->connection->query($sql);
+        $resultado = $this->connection->rs();
+        return $resultado;
+    }
+
+    public function returnAllAbrigoPet()
+    {
+        $sql = "SELECT idlocal_abrigo, nome, vagas, telefone, tipo FROM local_abrigo";
+        $sql .= " WHERE tipo = 'pet'"; 
+        $sql .= " GROUP BY nome "; 
+    
         $this->connection->query($sql);
         $resultado = $this->connection->rs();
         return $resultado;
@@ -67,7 +104,7 @@ class LocalAbrigoDao
 
     public function returnAll()
     {
-        $sql = "SELECT nome, logradouro, numero, bairro, cidade, uf, vagas, telefone, dtcadastro FROM abrigo";
+        $sql = "SELECT idlocal_abrigo, nome, logradouro, numero, bairro, cidade, uf, vagas, telefone, tipo, dtcadastro FROM local_abrigo";
         $sql .= " ORDER BY cidade"; 
         $this->connection->query($sql);
         $resultado = $this->connection->rs();
@@ -76,7 +113,15 @@ class LocalAbrigoDao
 
     public function getTotalAbrigos()
     {
-        $sql = "SELECT COUNT(*) as total FROM abrigo";
+        $sql = "SELECT COUNT(*) as total FROM local_abrigo";
+        $this->connection->query($sql);
+        $resultado = $this->connection->rs();
+        return $resultado[0]['total'];
+    }
+
+    public function getTotalAbrigoPets()
+    {
+        $sql = "SELECT COUNT(*) as total FROM local_abrigo WHERE tipo = 'pet' ";
         $this->connection->query($sql);
         $resultado = $this->connection->rs();
         return $resultado[0]['total'];

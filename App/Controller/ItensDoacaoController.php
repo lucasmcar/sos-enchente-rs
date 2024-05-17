@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Helper\DateTimeHelper;
+use App\Helper\InputFilterHelper;
 use App\Helper\JsonHelper;
 use App\Model\ItensDoacao;
 use App\Repository\ItensDoacaoRepository;
@@ -19,20 +20,22 @@ class ItensDoacaoController extends Action
     public function create()
     {
 
-        $data = json_decode(file_get_contents("php://input"), true);
+        $data = InputFilterHelper::filterInputs(INPUT_POST, [
+            'nome', 'quantidade', 'selectLocal', 'select'
+        ]);
 
         $novoItem = new ItensDoacao();
 
-        $novoItem->setNome(ucwords($data['inputs']['nome']));
-        $novoItem->setTipo($data['inputs']['select']);
-        $novoItem->setLocal($data['inputs']['selectLocal']);
-        $novoItem->setQuantidade(intval($data['inputs']['quantidade']));
+        $novoItem->setNome(ucwords($data['nome']));
+        $novoItem->setTipo($data['select']);
+        $novoItem->setLocal($data['selectLocal']);
+        $novoItem->setQuantidade(intval($data['quantidade']));
 
         $registroItens = new ItensDoacaoRepository();
 
         $registroItens->create($novoItem);
        
-        header('location: /');
+        echo JsonHelper::toJson(['status' => 'sucesso']);
         
     }
 

@@ -1,7 +1,6 @@
 <?php 
 use App\Helper\DateTimeHelper;
 ?>
-
 <div class="container">
     <div class="row">
     <?php if(isset($this->view->itens['retorno']) && $this->view->itens['retorno'] == "Sem Resultado"){ ?>
@@ -17,8 +16,8 @@ use App\Helper\DateTimeHelper;
     </div>
     <?php } else { ?>
     <div class="col s12 l12 m7">
-        <h4 class="header">Itens necessários</h4>
-        <p>Verifique aqui os itens necessários para serem doados</p>
+        <h4 class="header">Doações necessárias</h4>
+        <p>Verifique aqui os itens necessários</p>
         <div class="card">
             <div class="card-content">
                 <div id="data-items">
@@ -104,7 +103,6 @@ use App\Helper\DateTimeHelper;
             
     </div>
     <?php } ?>
-    </div>
 </div>
 
 <div class="fixed-action-btn">
@@ -146,7 +144,7 @@ use App\Helper\DateTimeHelper;
                             <option value="">Escolha</option>
                             <?php if(!empty($this->view->dataSelectLocalV) && !isset($this->view->dataSelectLocalV['retorno'])) { ?>
                               <?php foreach($this->view->dataSelectLocalV as $key => $value) { ?>
-                                <option value="<?= $value['idlocaldoacao'];?>"><?=$value['nome']; ?></option>
+                                <option value="<?= $value['idlocal_doacao'];?>"><?=$value['nome']; ?></option>
                               <?php }?>
                             <?php } ?>
                         </select>
@@ -218,18 +216,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('.dropdown-trigger');
-    var instances = M.Dropdown.init(elems, {
-        hover : true
-    });
-});
-
-document.addEventListener('DOMContentLoaded', function() {
       var elems = document.querySelectorAll('select');
       var instances = M.FormSelect.init(elems, {});
 });
 
 $(".dropdown-trigger").dropdown();
+
+document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.dropdown-trigger');
+    var instances = M.Dropdown.init(elems, {
+        hover : true
+    });
+});
 
 document.addEventListener('DOMContentLoaded', function() {
     // Show preloader
@@ -243,30 +241,33 @@ document.addEventListener('DOMContentLoaded', function() {
         endingTop: '20%' // Define a posição final do modal
     });
 
-    dataItens.style.display = "none";
-    let fetch = new Fetch("http://localhost:8000");
-    preloader.style.display = 'block';
-    modalLoading.style.alignItems= "center"
-    instance.open()
+    if(dataItens != null && dataItens != undefined){
+        dataItens.style.display = "none";
+        let fetch = new Fetch("http://localhost:8000");
+        preloader.style.display = 'block';
+        modalLoading.style.alignItems= "center"
+        instance.open()
+        
+        fetch.get('/ver-doacoes', {"Content-Type" : "application/json"})
+        .then(data => {
+
+            // Hide preloader
+            preloader.style.display = 'none';
+
+            // Display data in the 'data' div
+            //var dataDiv = document.getElementById('data');
+            //dataDiv.innerHTML = JSON.stringify(data);
+            instance.close();
+            dataItens.style.display = "block";
+
+        }).catch(error => {
+            console.error('Error:', error);
+            // Hide preloader in case of error
+            preloader.style.display = 'none';
+            instance.close();
+        });
+    }
     
-    fetch.get('/ver-doacoes', {"Content-Type" : "application/json"})
-    .then(data => {
-
-        // Hide preloader
-        preloader.style.display = 'none';
-
-        // Display data in the 'data' div
-        //var dataDiv = document.getElementById('data');
-        //dataDiv.innerHTML = JSON.stringify(data);
-        instance.close();
-        dataItens.style.display = "block";
-
-    }).catch(error => {
-        console.error('Error:', error);
-        // Hide preloader in case of error
-        preloader.style.display = 'none';
-        instance.close();
-    });
     
    
 });

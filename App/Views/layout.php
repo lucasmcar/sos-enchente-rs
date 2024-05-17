@@ -8,6 +8,13 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"/>
     <title>SOS Enchente RS</title>
+    <style>
+        footer {
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
 <ul id="drpDoacao" class="dropdown-content">
@@ -68,7 +75,7 @@
     <?= $this->content() ?>
 </main>		
 
-<footer class="page-footer fixed-bottom  green darken-1">
+<footer class="page-footer green darken-1">
 	<div class="container">
 		<div class="row">
 			<div class="col l12 s6">

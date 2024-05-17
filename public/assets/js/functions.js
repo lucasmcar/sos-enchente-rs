@@ -17,7 +17,16 @@ if(button.submitDoacao != undefined){
 
     const fetch = new Fetch("http://localhost:8000");
 
-      fetch.post('/nova/doacao', { inputs }, {"Content-Type": "application/json",})
+    var formData = new FormData();
+     // Adiciona os campos de texto ao FormData
+      for (const key in inputs) {
+        if(inputs[key] == null){
+          delete inputs[key];
+        }
+        formData.append(key, inputs[key]);
+      }
+
+      fetch.post('/nova/doacao', formData)
       .then( (data) => {
         if(data != undefined){
           var successModal = document.getElementById('successModal');
@@ -36,9 +45,18 @@ if(button.submitLocal != undefined){
 
       let inputs = initVarsLocalDoacao();
 
+      var formData = new FormData();
+     // Adiciona os campos de texto ao FormData
+      for (const key in inputs) {
+        if(inputs[key] == null){
+          delete inputs[key];
+        }
+        formData.append(key, inputs[key]);
+      }
+
       const fetch = new Fetch("http://localhost:8000");
 
-      fetch.post('/novo/local-doacao', { inputs }, {"Content-Type": "application/json",})
+      fetch.post('/novo/local-doacao',  formData)
       .then( (data) => {
         var successModal = document.getElementById('successModal');
         var instance = M.Modal.init(successModal);
@@ -61,9 +79,19 @@ if(button.submitLocalAbrigo != undefined){
 
     let inputs = initVarsLocalAbrigo();
 
+    var formData = new FormData();
+     // Adiciona os campos de texto ao FormData
+    for (const key in inputs) {
+      if(inputs[key] == null){
+        delete inputs[key];
+      }
+      formData.append(key, inputs[key]);
+    }
+
     const fetch = new Fetch("http://localhost:8000");
 
-    fetch.post('/novo/abrigo', { inputs }, {"Content-Type": "application/json",})
+
+    fetch.post('/novo/abrigo', formData )
       .then( (data) => {
         var successModal = document.getElementById('successModal');
         var instance = M.Modal.init(successModal);
@@ -127,30 +155,40 @@ if(button.submitCadastroCilvil != undefined){
     e.preventDefault();
 
     let inputs = initVarsCivil();
-
+    
     let fetch = new Fetch('http://localhost:8000');
 
-    if(inputs.selectCP == "Pet"){
+    var formData = new FormData();
+     // Adiciona os campos de texto ao FormData
+    for (const key in inputs) {
+      if(inputs[key] == null){
+        delete inputs[key];
+      }
+      formData.append(key, inputs[key]);
+    }
 
-      fetch.post('/novo/pet', {inputs}, {"Content-Type" : "application/json"}, "json")
+
+    if(inputs.pet_civil == "Pet"){
+
+      fetch.post('/novo/pet', formData)
       .then(data => {
         if(data.status == "sucesso"){
-          var successModal = document.getElementById('successModal');
+          var successModal = document.getElementById('successModalPessoaPet');
           var instance = M.Modal.init(successModal);
             instance.open();
         }
         
           setTimeout(()=>{
             location.reload();
-          },5000)
+          },6000)
       })
       .catch(error => console.log(error))
 
     }
 
-    if(inputs.selectCP == "Civil"){
+    if(inputs.pet_civil == "Civil"){
 
-      fetch.post('/novo/civil', {inputs}, {"Content-Type" : "application/json"}, "json")
+      fetch.post('/novo/civil', formData)
       .then(data => {
         if(data.status == "sucesso"){
           var successModal = document.getElementById('successModalPessoaPet');

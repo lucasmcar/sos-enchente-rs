@@ -5,16 +5,28 @@
   $values = [];
   $valuesLocal = [];
   foreach($this->view->itensPorCidade as $key => $value){
-    $labels[] = $value['cidade'];
-    $values[] = $value['total'];
+    if($value == 'Sem Resultado'){
+      $labels[] = "";
+      $values[] = ""; 
+    } else {
+      $labels[] = $value['cidade'];
+      $values[] = $value['total'];
+    }
+    
   }
 
   $labels_str = json_encode($labels);
   $values_str = json_encode($values);
 
   foreach($this->view->itensPorLocal as $key => $value ){
-    $labelsLocal[] = $value['nome'];
-    $valuesLocal[] = $value['total'];
+    if($value == 'Sem Resultado'){
+      $valuesLocal[] = "";
+      $labelsLocal[] = "";
+    } else {
+      $labelsLocal[] = $value['nome'];
+      $valuesLocal[] = $value['total'];
+    }
+    
   }
 
   $labels_local = json_encode($labelsLocal);
@@ -29,6 +41,7 @@
         <a href="/ver-doacoes" class="collection-item"><span class="badge"><?= $this->view->infoTotal; ?></span>Total de itens para doação</a>
         <a href="/ver-locais" class="collection-item"><span class="badge"><?= $this->view->infoTotalLocal; ?></span>Total de locais que recebem doações</a>
         <a href="/ver-abrigos" class="collection-item"><span class="badge"><?= $this->view->infoTotalAbrigos; ?></span>Total de abrigos cadastrados</a>
+        <a href="/ver-abrigos-pets" class="collection-item"><span class="badge"><?= $this->view->infoTotalAbrigosPets; ?></span>Total de abrigos cadastrados para pets</a>
       </div>
     </div>
   </div>
@@ -81,7 +94,9 @@ $(document).ready(function(){
 $(".dropdown-trigger").dropdown();
 
 
-getChart(<?php echo $labels_str; ?>, <?php echo $values_str; ?> ,'myChart', 'bar', "#Total de itens por cidade");
+//getChart([], [] ,'myChart', 'bar', "#Total de itens por cidade");
+getChart( <?php echo $labels_str;?>,  <?php echo $values_str;?>  ,'myChart', 'bar', "#Total de itens por cidade");
+//getChart([], [] , "myChart2", "pie", "#Itens por local");
 getChart(<?php echo $labels_local; ?>, <?php echo $values_local; ?>, "myChart2", "pie", "#Itens por local");
 getChart([], [], "abrigoCidade", "bar", "#Abrigos por Cidade");
 getChart([], [], "pessoasAbrigo", "bar", "#Pessoas por Abrigo");

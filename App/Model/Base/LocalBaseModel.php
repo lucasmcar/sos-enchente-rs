@@ -12,6 +12,7 @@ abstract class LocalBaseModel
     protected $cidade;
     protected $uf;
     protected $telefone;
+    protected $tipo;
 
 
     public abstract function setNome(string $nome) : void;
@@ -28,4 +29,6 @@ abstract class LocalBaseModel
     public abstract function getUf() : string;
     public abstract function setTelefone(string $telefone) : void;
     public abstract function getTelefone() : string;
+    public abstract function setTipo(string $tipo) : void;
+    public abstract function getTipo() : string;
 }

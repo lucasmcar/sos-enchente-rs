@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Helper\DateTimeHelper;
+use App\Helper\InputFilterHelper;
 use App\Model\LocalAbrigo;
 use App\Repository\LocalAbrigoRepository;
 use App\Router\Controller\Action;
@@ -19,18 +20,25 @@ class LocalAbrigoController extends Action
     public function create()
     {
 
-        $data = json_decode(file_get_contents("php://input"), true);
+        $data = InputFilterHelper::filterInputs(INPUT_POST, [
+            'nome', 'logradouro', 
+            'numero', 'bairro', 
+            'cidade', 'uf', 
+            'selected', 'vaga', 
+            'telefone'
+        ]);
+
         $novoAbrigo = new LocalAbrigo();
 
-        $novoAbrigo->setNome(ucwords($data['inputs']['nome']));
-        $novoAbrigo->setLogradouro(ucwords($data['inputs']['logradouro']));
-        $novoAbrigo->setNumero($data['inputs']['numero']);
-        $novoAbrigo->setBairro(ucwords($data['inputs']['bairro']));
-        $novoAbrigo->setCidade(ucwords($data['inputs']['cidade']));
-        $novoAbrigo->setUf($data['inputs']['uf']);
-        $novoAbrigo->setUf($data['inputs']['tipo']);
-        $novoAbrigo->setVagas($data['inputs']['vaga']);
-        $novoAbrigo->setTelefone($data['inputs']['telefone']);
+        $novoAbrigo->setNome(ucwords($data['nome']));
+        $novoAbrigo->setLogradouro(ucwords($data['logradouro']));
+        $novoAbrigo->setNumero($data['numero']);
+        $novoAbrigo->setBairro(ucwords($data['bairro']));
+        $novoAbrigo->setCidade(ucwords($data['cidade']));
+        $novoAbrigo->setUf($data['uf']);
+        $novoAbrigo->setTipo($data['selected']);
+        $novoAbrigo->setVagas($data['vaga']);
+        $novoAbrigo->setTelefone($data['telefone']);
 
         $localDoacaoRepo = new LocalAbrigoRepository();
 
@@ -53,19 +61,49 @@ class LocalAbrigoController extends Action
         $totalLocaisAbrigos = $viewLocaisAbrigos->totalAbrigo();
         $this->view->totalPaginas = ceil($totalLocaisAbrigos/$total_registros);
         $this->view->paginaAtiva = $pagina;
+
         
-        //$array = $viewItens->getAll();
         $this->view->abrigos = $abrigos;
         $this->render('local-abrigo');
     }
 
+    public function verAbrigosPets($pagina)
+    {
+
+        $viewLocaisAbrigoPets = new LocalAbrigoRepository();
+
+        $total_registros = 10;
+
+        $pagina = isset($pagina) ? $pagina : 1;
+
+        $deslocamento = ($pagina-1) * $total_registros;
+        
+
+        $abrigos = $viewLocaisAbrigoPets->pegarAbrigoPetsPorPagina($total_registros, $deslocamento);
+        $totalLocaisAbrigosPets = $viewLocaisAbrigoPets->totalAbrigoPets();
+        $this->view->totalPaginas = ceil($totalLocaisAbrigosPets/$total_registros);
+        $this->view->paginaAtiva = $pagina;
+       
+        $this->view->abrigoPets = $abrigos;
+        $this->render('local-abrigo-pet');    
+    }
+
+
+
     public function filtroAbrigo($filtro)
     {
         $filtroLocais = new LocalAbrigoRepository();
-        
-        //$filtro = json_decode(file_get_contents("php://input"), true);
 
         $dados = $filtroLocais->filtroPorAbrigo($filtro);
+        
+        echo JsonHelper::toJson($dados);
+    }
+
+    public function filtroPetAbrigo($filtro)
+    {
+        $filtroLocaisPets = new LocalAbrigoRepository();
+
+        $dados = $filtroLocaisPets->filtroPetPorAbrigo($filtro);
         
         echo JsonHelper::toJson($dados);
     }
