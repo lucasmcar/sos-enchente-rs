@@ -1,5 +1,8 @@
 <?php
 
+use App\Router\Router;
+
+$router = new Router();
 //básicas
 $router->get('/', 'IndexController', 'inicio');
 $router->get('/about', 'IndexController@about');

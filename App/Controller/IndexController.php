@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Core\View\View;
 use App\Model\ItensDoacao;
 use App\Repository\ItensDoacaoRepository;
 use App\Repository\LocalDoacaoRepository;
@@ -22,17 +23,24 @@ class IndexController extends Action
 
     public function inicio()
     {
-
-
         $repo = new ItensDoacaoRepository();
         $localDoacaoRepo = new LocalDoacaoRepository();
-
         $localAbrigo = new LocalAbrigoRepository();
-
 
         $arrayTypes = $repo->returnAllTypes();
         $arrayLocals = $localDoacaoRepo->returnAllLocal();
-        $arrayLocalAbrigo = $localAbrigo->returnAllAbrigo();
+        $arrayLocalAbrigo = $localAbrigo->selectAll();
+        
+        /*$datas = [
+            'title' => 'SOS Enchentes',
+            'locais' => ['locais' => $arrayLocals],
+            'selects' => ['selectTypes' => $arrayTypes,],
+            'local' => ['local_abrigo' => $arrayLocalAbrigo ]
+        ];
+
+
+        return new View('index/inicio', $datas);*/
+
 
         @$this->view->dataSelectLocal = $arrayLocals;
         @$this->view->dataSelect = $arrayTypes;

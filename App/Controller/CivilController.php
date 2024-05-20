@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Bot\Alert;
+use App\Bot\Api;
+use App\Bot\Bot;
 use App\Helper\InputFilterHelper;
 use App\Helper\JsonHelper;
 use App\Model\Pessoa;
@@ -63,6 +66,19 @@ class CivilController extends Action
 
 
             if($petRepo->insert($pet)){
+                $localAbrigo = new LocalAbrigoRepository();
+                $result = $localAbrigo->returnAbrigoById($pet->getIdLocalAbrigo());
+
+                $bot = new Bot(BOT_TOKEN);
+                $msg = Alert::sendMessagePet(
+                    $result['nome'] , 
+                    $result['telefone'],
+                    $pet->getNome(), 
+                    $pet->getIdade(),
+                    $pet->getRaca(),
+                    $pet->getEspecie(), 
+                    $pet->getInfoAdicional());
+                $bot->sendMessage($msg, null, false, null, null);
                 echo JsonHelper::toJson(['status' => 'sucesso']);
                 
             }
@@ -102,6 +118,12 @@ class CivilController extends Action
             }
 
             if($pessoaRepo->insert($pessoa)){
+                $localAbrigo = new LocalAbrigoRepository();
+                $result = $localAbrigo->returnAbrigoById($pessoa->getIdLocalAbrigo());
+                
+                $bot = new Bot(BOT_TOKEN);
+                $msg = Alert::sendMessagePessoa($result['nome'], $pessoa->getNome(), $pessoa->getIdade(), $pessoa->getInfoAdicional(), $result['telefone']);
+                $bot->sendMessage($msg, null, false, null, null);
                 echo JsonHelper::toJson(['status' => 'sucesso']);
             }
         }

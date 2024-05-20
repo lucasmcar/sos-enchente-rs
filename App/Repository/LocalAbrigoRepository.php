@@ -63,4 +63,9 @@ class LocalAbrigoRepository
     {
         return $this->dao->returnAll();
     }
+
+    public function returnAbrigoById($id)
+    {
+        return $this->dao->returnAbrigoById($id);
+    }
 }

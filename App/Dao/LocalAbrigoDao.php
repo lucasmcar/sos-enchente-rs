@@ -102,6 +102,16 @@ class LocalAbrigoDao
         return $resultado;
     }
 
+    public function returnAbrigoById($id)
+    {
+        $sql = "SELECT idlocal_abrigo, nome, vagas, telefone, tipo FROM local_abrigo";
+        $sql .= " WHERE idlocal_abrigo = :idlocal_abrigo"; 
+        $this->connection->prepare($sql);
+        $this->connection->bind(':idlocal_abrigo', $id);
+        $only = $this->connection->rs();
+        return $only[0];
+    }
+
     public function returnAll()
     {
         $sql = "SELECT idlocal_abrigo, nome, logradouro, numero, bairro, cidade, uf, vagas, telefone, tipo, dtcadastro FROM local_abrigo";

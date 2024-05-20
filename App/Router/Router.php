@@ -10,6 +10,16 @@ class Router implements IRouter
 
     private $routes = [];
     private $notFoundCallback;
+    private $prefix;
+
+
+    public function group($attributes, $callback) {
+        $previousPrefix = $this->prefix;
+        $this->prefix = $previousPrefix . $attributes['prefix'];
+        $callback($this);
+        $this->prefix = $previousPrefix;
+    }
+
     
     // Adiciona uma rota para o método GET
     public function get($path, $controller, $action = '') 
@@ -41,7 +51,7 @@ class Router implements IRouter
             $controller = explode("@", $controller);
             $this->routes[] = [
                 'method' => $method,
-                'path' => urldecode($path),
+                'path' => $this->prefix. urldecode($path),
                 'controller' => $controller[0],
                 'action' => $controller[1]
             ];

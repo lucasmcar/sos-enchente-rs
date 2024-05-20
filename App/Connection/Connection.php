@@ -93,7 +93,7 @@ class Connection implements IConnection
         return 0;
     }
 
-    public function one() : array | null
+    public function one() : array 
     {
         $this->execute();
         return $this->stmt->fetch(\PDO::FETCH_ASSOC) ? $this->stmt->fetch(\PDO::FETCH_ASSOC) : null;
